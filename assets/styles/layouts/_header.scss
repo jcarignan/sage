@@ -32,9 +32,21 @@ header {
         top: 0;
         right: 0;
         height: 100%;
+        text-align: right;
+    }
+
+    .mini-menu {
+        li {
+            border-right: 1px solid $brand-primary;
+            padding-right: 5px;
+            &:last-of-type {
+                border-right: 0;
+            }
+        }
     }
 
     ul {
+        padding: 0;
         margin: 0;
 
         li {
