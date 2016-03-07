@@ -27,7 +27,9 @@ function setup() {
   // Register wp_nav_menu() menus
   // http://codex.wordpress.org/Function_Reference/register_nav_menus
   register_nav_menus([
-    'primary_navigation' => __('Primary Navigation', 'sage')
+    'primary_navigation' => __('Primary Navigation', 'sage'),
+    'top_right' => 'Top right',
+    'social_medias' => 'Social Medias'
   ]);
 
   // Enable post thumbnails
@@ -84,8 +86,7 @@ function display_sidebar() {
     // The sidebar will NOT be displayed if ANY of the following return true.
     // @link https://codex.wordpress.org/Conditional_Tags
     is_404(),
-    is_front_page(),
-    is_page_template('template-custom.php'),
+    is_page()
   ]);
 
   return apply_filters('sage/display_sidebar', $display);
