@@ -49,6 +49,8 @@ function setup() {
   // Use main stylesheet for visual editor
   // To add custom styles edit /assets/styles/layouts/_tinymce.scss
   add_editor_style(Assets\asset_path('styles/main.css'));
+
+  add_filter('show_admin_bar', '__return_false');
 }
 add_action('after_setup_theme', __NAMESPACE__ . '\\setup');
 
@@ -96,6 +98,10 @@ function display_sidebar() {
  * Theme assets
  */
 function assets() {
+  // load fonts
+  wp_register_style('googleFonts', 'https://fonts.googleapis.com/css?family=Noto+Sans:400,700');
+  wp_enqueue_style( 'googleFonts');
+
   wp_enqueue_style('sage/css', Assets\asset_path('styles/main.css'), false, null);
 
   if (is_single() && comments_open() && get_option('thread_comments')) {

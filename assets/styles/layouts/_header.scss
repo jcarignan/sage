@@ -6,6 +6,10 @@ header {
     height: $header-height;
     background-color: #121212;
     z-index: 1;
+    color: $brand-primary;
+    font-weight: bold;
+    padding: 6px 10px;
+    box-sizing: border-box;
 
     .brand {
         display: block;
@@ -19,46 +23,109 @@ header {
         background-image: url($image-path+'/logo.png');
     }
 
+    .header-content {
+        position: relative;
+        height: 100%;
+    }
+
+    ul {
+        padding: 0;
+        margin: 0;
+        font-size: 0;
+        white-space:nowrap;
+
+        li {
+            font-size: $main-menu-font-size;
+            display: inline-block;
+            white-space: normal;
+
+            a {
+                display: inline-block;
+                text-transform: uppercase;
+            }
+        }
+    }
+
     .nav-primary {
         position: absolute;
         bottom: 0;
         left: 0;
         width: 100%;
         text-align: center;
+
+        li {
+            font-size: $main-menu-font-size;
+            margin-right: 14px;
+
+            &.current-menu-item {
+                a {
+                    color: $brand-secondary;
+                }
+            }
+        }
+
     }
 
-    .right-content {
+    .menu-top-right-mini-menu-container {
         position: absolute;
         top: 0;
         right: 0;
-        height: 100%;
         text-align: right;
-    }
 
-    .mini-menu {
         li {
-            border-right: 1px solid $brand-primary;
-            padding-right: 5px;
+            font-size: $mini-menu-font-size;
+            &:after
+            {
+                content: '|';
+                font-weight: normal;
+                display: inline;
+            }
             &:last-of-type {
-                border-right: 0;
+                &:after {
+                    content: none;
+                    display: none;
+                }
             }
         }
     }
 
-    ul {
-        padding: 0;
-        margin: 0;
+    .menu-social-medias-container {
+        position: absolute;
+        bottom: 0;
+        right: 0;
+        text-align: right;
 
         li {
-            display: inline-block;
+            width: 24px;
+            height: 20px;
+            margin-right: 4px;
+
+            &:last-of-type {
+                margin-right: 0;
+            }
+
+            a {
+                width:100%;
+                height: 100%;
+                text-indent: 100%;
+            	white-space: nowrap;
+            	overflow: hidden;
+                background-size: contain;
+                background-repeat: no-repeat;
+                background-position: center bottom;
+            }
+
+            &.facebook a {
+                background-image: url($image-path+'/social/facebook.svg');
+            }
+
+            &.linkedin a {
+                background-image: url($image-path+'/social/linkedin.svg');
+            }
+
+            &.twitter a {
+                background-image: url($image-path+'/social/twitter.svg');
+            }
         }
-    }
-
-    a {
-        text-transform: uppercase;
-    }
-
-    .qtranxs-lang-menu
-    {
     }
 }
