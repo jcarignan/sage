@@ -1,0 +1,72 @@
+body.page-template-page-about {
+    main {
+        background-color: $brand-secondary;
+    }
+    .block {
+        display: table;
+        width: 100%;
+        table-layout: fixed;
+
+        .block-content {
+            display: table-cell;
+            width: 100%;
+        }
+
+        &.block-main {
+            background-color: $brand-primary;
+
+            .content-description {
+                padding: $header-extra-height $main-padding $main-padding;
+                .page-header {
+                    padding: 20px 0;
+                    text-transform: uppercase;
+                }
+            }
+            .content-image {
+                width: 300px;
+                background-size: cover;
+                background-repeat: no-repeat;
+                background-position: center;
+            }
+        }
+
+        &.block-columns {
+            background-color: $brand-secondary;
+            color: $brand-primary;
+            text-align: center;
+
+            .content-step {
+                font-family: $font-secondary;
+                padding: 7em $about-step-padding $about-step-padding;
+                position: relative;
+                .step-number {
+                    position: absolute;
+                    top: 0;
+                    left: 0;
+                    width: 100%;
+                    z-index: 0;
+
+                    font-size: 10em;
+                    font-weight: bold;
+                    color: $brand-third;
+                }
+
+                .step-title, .step-content {
+                    position: relative;
+                    font-family: $font-primary;
+                    z-index: 1;
+                }
+
+                .step-title {
+                    font-size: 34px;
+                    font-weight: bold;
+                    margin-bottom: 0.5em;
+                }
+
+                .step-content {
+                    font-size: 18px;
+                }
+            }
+        }
+    }
+}

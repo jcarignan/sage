@@ -1,16 +1,35 @@
 body.home {
     .wp-tiles-tile {
         text-transform: uppercase;
+        z-index: 0;
 
         &[data-post-type="page"], &[data-post-type="post"] {
 
-            transition: transform 0.4s ease-in-out, box-shadow 0.4s ease-in-out;
+            @keyframes updateDepthIn {
+                0% { z-index: 0;}
+                50% { z-index: 1;}
+                100% { z-index: 2;}
+            }
+
+            @keyframes updateDepthOut {
+                0% { z-index: 2;}
+                50% { z-index: 1;}
+                100% { z-index: 0;}
+            }
+
+            transition-property: transform, box-shadow, z-index;
+            transition-duration: .4s, .4s, 0s;
+            transition-delay: 0s, 0s, .4s;
             box-shadow: 0 0 4px #000;
+            animation-name: updateDepthOut;
+            animation-duration: .4s;
 
             &:hover {
+                z-index: 2;
+                animation-name: updateDepthIn;
+                animation-duration: .2s;
                 transform: scale(1.1, 1.1);
                 box-shadow: 0 0 4px #000;
-                z-index: 1;
             }
 
             .wp-tiles-byline {

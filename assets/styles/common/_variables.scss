@@ -6,17 +6,27 @@ $image-path:        "../images/";
 $main-sm-columns:       12;
 $sidebar-sm-columns:    4;
 
+// Fonts
+$font-primary: "Noto Sans";
+$font-secondary: Calibri, Segoe, "Segoe UI", Optima, Arial, sans-serif;
 
 // Layout
-$header-height: 68px;
-$logo-width: 254px;
-$logo-height: 90px;
+
 
 // Colors
 $brand-primary:         #FFFFFF;
 $brand-secondary:       #2c87a5;
+$brand-third:           #d67f32;
 
 
 // Header
 $main-menu-font-size: 14px;
 $mini-menu-font-size: 12px;
+$header-height: 68px;
+$logo-width: 254px;
+$logo-height: 90px;
+$header-extra-height: $logo-height - $header-height;
+
+//Page
+$main-padding: 30px;
+$about-step-padding: 20px;
