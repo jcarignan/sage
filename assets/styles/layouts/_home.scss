@@ -3,7 +3,7 @@ body.home {
         text-transform: uppercase;
         z-index: 0;
 
-        &[data-post-type="page"], &[data-post-type="post"] {
+        &.with-link {
 
             @keyframes updateDepthIn {
                 0% { z-index: 0;}
@@ -77,7 +77,7 @@ body.home {
             }
         }
 
-        &[data-post-type="home-button"] {
+        &.without-link {
 
             .wp-tiles-byline {
 

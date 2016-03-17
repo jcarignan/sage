@@ -9,7 +9,6 @@ body.page-template-page-about {
 
         .block-content {
             display: table-cell;
-            width: 100%;
         }
 
         &.block-main {
@@ -23,7 +22,7 @@ body.page-template-page-about {
                 }
             }
             .content-image {
-                width: 300px;
+                width: 30%;
                 background-size: cover;
                 background-repeat: no-repeat;
                 background-position: center;
@@ -34,12 +33,14 @@ body.page-template-page-about {
             background-color: $brand-secondary;
             color: $brand-primary;
             text-align: center;
+            counter-reset: COLUMNS 0;
 
             .content-step {
-                font-family: $font-secondary;
-                padding: 7em $about-step-padding $about-step-padding;
+                padding: 8.75em $about-step-padding $about-step-padding;
                 position: relative;
-                .step-number {
+                &:before {
+                    content: counter(COLUMNS);
+                    counter-increment: COLUMNS;
                     position: absolute;
                     top: 0;
                     left: 0;
@@ -51,19 +52,18 @@ body.page-template-page-about {
                     color: $brand-third;
                 }
 
-                .step-title, .step-content {
+                header, section {
                     position: relative;
-                    font-family: $font-primary;
                     z-index: 1;
                 }
 
-                .step-title {
+                header {
                     font-size: 34px;
                     font-weight: bold;
                     margin-bottom: 0.5em;
                 }
 
-                .step-content {
+                section {
                     font-size: 18px;
                 }
             }

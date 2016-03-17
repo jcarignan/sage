@@ -4,11 +4,6 @@
 ?>
 
 <?php while (have_posts()) : the_post(); ?>
-<?php
-    $post = get_post();
-    $id = ! empty( $post ) ? $post->ID : false;
-    $image = $id !== false ? get_field('about_image', $id):false;
-?>
     <section class="block block-main">
         <section class="block-content content-description">
             <?php get_template_part('templates/page', 'header'); ?>
@@ -16,41 +11,26 @@
                 <?php the_content(); ?>
             </article>
         </section>
-<?php if ($image) { ?>
-        <section class="block-content content-image" data-title="<?php echo $image['title'] ?>" style="background-image: url(<?php echo $image['url']?>);"></section>
-<?php } ?>
+    <?php if (has_post_thumbnail(get_the_ID()) ):$image = wp_get_attachment_image_src(get_post_thumbnail_id(get_the_ID()), 'single-post-thumbnail');?>
+        <section class="block-content content-image" style="background-image: url(<?php echo $image[0]?>);"></section>
+    <?php endif; ?>
     </section>
-<?php
-    $i = 1;
-    $strTitle = get_field('column_'.$i.'_title', $id);
-    $strContent = get_field('column_'.$i.'_content', $id);
-    while ($strTitle && $strContent) {
-        if ($i === 1){
-?>
-    <section class="block block-columns">
-<?php
-        }
-?>
-        <section class="block-content content-step">
-            <div class="step-number"><?= $i ?></div>
-            <div class="step-title"><?= $strTitle ?></div>
-            <div class="step-content"><?= $strContent ?></div>
-        </section>
-<?php
-        $i++;
-        $strTitle = get_field('column_'.$i.'_title', $id);
-        $strContent = get_field('column_'.$i.'_content', $id);
-    }
-    if (i > 1) {
-?>
-    </section>
-<?php
-    }
-?>
+    <?php if(have_rows('columns')): ?>
 
-<?php
-
-?>
-    </div>
-    <div class="bottom-content">
+    <ul class="block block-columns">
+        <?php while( have_rows('columns') ): the_row();
+            $title = get_sub_field('title');
+            $content = get_sub_field('content');
+        ?>
+        <li class="block-content content-step">
+            <?php if( $title ): ?>
+				<header><?php echo $title; ?></header>
+			<?php endif; ?>
+            <?php if( $content ): ?>
+				<section><?php echo $content; ?></section>
+			<?php endif; ?>
+        </li>
+        <?php endwhile; ?>
+    </ul>
+    <?php endif; ?>
 <?php endwhile; ?>
