@@ -1,0 +1,36 @@
+body.page-template-page-multicontent {
+    .block {
+
+        &.block-main {
+
+
+            &.block-main-even {
+                background-color: $brand-primary;
+
+                header, .page-header, ul {
+                    color: $brand-secondary;
+                }
+            }
+
+            &.block-main-odd {
+
+                color: $brand-primary;
+                background-color: $brand-secondary;
+
+                .content-description {
+                    position: relative;
+                    left: 30%;
+                }
+                .content-image {
+                    position: relative;
+                    left: -70%;
+                }
+            }
+        }
+
+        &.block-without-content {
+            background-color: $brand-dark;
+            color: $brand-primary;
+        }
+    }
+}

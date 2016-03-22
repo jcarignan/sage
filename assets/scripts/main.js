@@ -19,6 +19,23 @@
     'common': {
       init: function() {
         // JavaScript to be fired on all pages
+
+        $('.hamburger').click(function(e){
+            e.preventDefault();
+            $('.banner').toggleClass('opened');
+            if ($('.banner').is('.opened'))
+            {
+            }
+        });
+
+        $('body .content').removeClass('hidden');
+
+        $('a').click(function(e){
+            if (e.currentTarget.host === window.location.host)
+            {
+                $('body .content').addClass('hidden');
+            }
+        });
       },
       finalize: function() {
         // JavaScript to be fired on all pages, after page specific JS is fired

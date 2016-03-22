@@ -22,7 +22,7 @@
             $title = get_sub_field('title');
             $content = get_sub_field('content');
         ?>
-        <li class="block-content content-step">
+        <li class="block-content content-column">
             <?php if( $title ): ?>
 				<header><?php echo $title; ?></header>
 			<?php endif; ?>

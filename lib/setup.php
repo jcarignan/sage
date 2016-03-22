@@ -18,7 +18,7 @@ function setup() {
 
   // Make theme available for translation
   // Community translations can be found at https://github.com/roots/sage-translations
-  load_theme_textdomain('sage', get_template_directory() . '/lang');
+  load_theme_textdomain('immersiveproductions', get_template_directory() . '/languages');
 
   // Enable plugins to manage the document title
   // http://codex.wordpress.org/Function_Reference/add_theme_support#Title_Tag
@@ -27,9 +27,9 @@ function setup() {
   // Register wp_nav_menu() menus
   // http://codex.wordpress.org/Function_Reference/register_nav_menus
   register_nav_menus([
-    'primary_navigation' => __('Primary Navigation', 'sage'),
-    'top_right' => 'Top right',
-    'social_medias' => 'Social Medias'
+    'primary_navigation' => __('Primary Navigation', 'immersiveproductions'),
+    'secondary_navigation' => __('Secondary Navigation', 'immersiveproductions'),
+    'tertiary_navigation' => __('Tertiary Navigation', 'immersiveproductions')
   ]);
 
   // Enable post thumbnails
@@ -59,7 +59,7 @@ add_action('after_setup_theme', __NAMESPACE__ . '\\setup');
  */
 function widgets_init() {
   register_sidebar([
-    'name'          => __('Primary', 'sage'),
+    'name'          => __('Primary', 'immersiveproductions'),
     'id'            => 'sidebar-primary',
     'before_widget' => '<section class="widget %1$s %2$s">',
     'after_widget'  => '</section>',
@@ -68,7 +68,7 @@ function widgets_init() {
   ]);
 
   register_sidebar([
-    'name'          => __('Footer', 'sage'),
+    'name'          => __('Footer', 'immersiveproductions'),
     'id'            => 'sidebar-footer',
     'before_widget' => '<section class="widget %1$s %2$s">',
     'after_widget'  => '</section>',
@@ -76,7 +76,7 @@ function widgets_init() {
     'after_title'   => '</h3>'
   ]);
 }
-add_action('widgets_init', __NAMESPACE__ . '\\widgets_init');
+//add_action('widgets_init', __NAMESPACE__ . '\\widgets_init');
 
 /**
  * Determine which pages should NOT display the sidebar
@@ -93,6 +93,8 @@ function display_sidebar() {
 
   return apply_filters('sage/display_sidebar', $display);
 }
+
+
 
 /**
  * Theme assets

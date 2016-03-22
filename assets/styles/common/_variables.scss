@@ -10,20 +10,20 @@ $sidebar-sm-columns:    4;
 $font-primary: "Noto Sans";
 
 // Layout
-
+$small-width:           320px;
+$medium-width:          1024px;
+$large-width:           1920px;
 
 // Colors
-$brand-primary:         #FFFFFF;
-$brand-secondary:       #2c87a5;
-$brand-third:           #d67f32;
+$brand-primary:         #FFFFFF;// white
+$brand-secondary:       #2c87a5;// blue
+$brand-third:           #d67f32;// orange
+$brand-dark:            #121212;// black
 
 
 // Header
-$main-menu-font-size: 14px;
-$mini-menu-font-size: 12px;
-$header-height: 68px;
-$logo-width: 254px;
-$logo-height: 90px;
+$header-height: 50px;
+$logo-height: 60px;
 $header-extra-height: $logo-height - $header-height;
 
 //Page

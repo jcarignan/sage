@@ -3,30 +3,10 @@ body.page-template-page-about {
         background-color: $brand-secondary;
     }
     .block {
-        display: table;
-        width: 100%;
-        table-layout: fixed;
-
-        .block-content {
-            display: table-cell;
-        }
 
         &.block-main {
             background-color: $brand-primary;
-
-            .content-description {
-                padding: $header-extra-height $main-padding $main-padding;
-                .page-header {
-                    padding: 20px 0;
-                    text-transform: uppercase;
-                }
-            }
-            .content-image {
-                width: 30%;
-                background-size: cover;
-                background-repeat: no-repeat;
-                background-position: center;
-            }
+            min-height: 40%;
         }
 
         &.block-columns {
@@ -35,7 +15,7 @@ body.page-template-page-about {
             text-align: center;
             counter-reset: COLUMNS 0;
 
-            .content-step {
+            .content-column {
                 padding: 8.75em $about-step-padding $about-step-padding;
                 position: relative;
                 &:before {
