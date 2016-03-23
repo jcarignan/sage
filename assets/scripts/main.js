@@ -31,7 +31,7 @@
         $('body .content').removeClass('hidden');
 
         $('a').click(function(e){
-            if (e.currentTarget.host === window.location.host)
+            if (e.currentTarget.host === window.location.host && $(e.currentTarget).attr('rel') !== 'lightbox' && $(e.currentTarget).attr('target') !== '_blank')
             {
                 $('body .content').addClass('hidden');
             }

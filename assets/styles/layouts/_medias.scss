@@ -1,5 +1,53 @@
 body.page-template-page-medias {
     main {
         overflow: visible;
+
+        header, .page-header {
+            color: $brand-secondary;
+            padding-left: 20px;
+            padding-right: 20px;
+        }
+    }
+
+    .press-article {
+        position: relative;
+        img {
+            width: 100%;
+            vertical-align: bottom;
+        }
+
+        .link-infos {
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+            left: 0;
+            color: $brand-primary;
+            background-color: rgba(0,0,0,0.8);
+            display: table;
+            padding: 5px 20px;
+            box-sizing: border-box;
+
+            .names, .date {
+                display: table-cell;
+                vertical-align: bottom;
+            }
+
+            .names {
+                width: 100%;
+                h3 {
+                    color: $brand-secondary;
+                }
+            }
+            .date {
+                opacity: 0.8;
+                font-size: 1.3em;
+            }
+
+            &:after {
+                content: '';
+                clear: both;
+                display: block;
+            }
+        }
     }
 }

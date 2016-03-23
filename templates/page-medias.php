@@ -4,11 +4,10 @@
 ?>
 
 <?php while (have_posts()) : the_post(); ?>
-    <div class="independant-scrollable">
+    <div class="scrollable-container">
         <div class="scrollable-content content-press">
-            <?php
-                the_content();
-                $args = array(
+            <div class="page-header"><h1><?php the_content(); ?></h1></div>
+            <?php $args = array(
                   'post_type' => 'press-article',
                   'post_status' => 'publish',
                   'posts_per_page' => -1,
@@ -22,10 +21,21 @@
                 if( $query->have_posts() ) {
                   while ($query->have_posts()) : $query->the_post(); ?>
                     <div class="press-article">
-                        <p><a href="<?php the_permalink() ?>"><?php the_title(); ?></a></p>
-                        <p><?php the_content(); ?></p>
-                        <p><?php the_field('date'); ?></p>
-                        <a href="<?php the_field('link'); ?>">Link</a>
+                        <a href="<?php the_field('link'); ?>" target="_blank">
+                            <?php if (has_post_thumbnail(get_the_ID() ) ): ?>
+                                <?php $image = wp_get_attachment_image_src( get_post_thumbnail_id( get_the_ID() ), 'single-post-thumbnail' ); ?>
+                                <img src="<?php echo $image[0]; ?>" />
+                            <?php endif; ?>
+                            <div class="link-infos">
+                                <div class="names">
+                                    <h3><?php the_title(); ?></h3>
+                                    <h4><?php the_content(); ?></h4>
+                                </div>
+                                <div class="date">
+                                    <?php the_field('date'); ?>
+                                </div>
+                            </div>
+                        </a>
                     </div>
                     <?php
                   endwhile;
@@ -39,8 +49,8 @@
             <ul>
                 <?php foreach( $images as $image ): ?>
                     <li>
-                        <a href="<?php echo $image['url']; ?>">
-                             <img src="<?php echo $image['sizes']['medium']; ?>" alt="<?php echo $image['alt']; ?>" />
+                        <a href="<?php echo $image['url']; ?>" rel="lightbox">
+                             <div style="background-image: url(<?php echo $image['sizes']['medium']; ?>);"></div>
                         </a>
                         <p><?php echo $image['caption']; ?></p>
                     </li>

@@ -1,6 +1,9 @@
-body.page-template {
+body.page {
     main {
-
+        header, .page-header {
+            text-transform: uppercase;
+            padding: 20px 0;
+        }
     }
     .block {
         display: table;
@@ -16,11 +19,6 @@ body.page-template {
 
             .content-description {
                 padding: $header-extra-height $main-padding $main-padding;
-
-                header, .page-header {
-                    padding: 20px 0;
-                    text-transform: uppercase;
-                }
             }
             .content-image {
                 width: 30%;
@@ -39,33 +37,115 @@ body.page-template {
         }
     }
 
-    .independant-scrollable {
-        display: table;
-        width: 100%;
-        table-layout: fixed;
+    .scrollable-container {
+        height: 100%;
+        &:after {
+            content: '';
+            clear: both;
+            display: block;
+        }
     }
 
     .scrollable-content {
         vertical-align: top;
-        display: table-cell;
+        float: left;
         width: 50%;
+        height: 100%;
+        overflow-x: hidden;
         overflow-y: auto;
 
         &.content-gallery {
             ul {
                 li {
                     width: 33.33333%;
+                    height: 0;
+                    padding-bottom: 23%;
                     float: left;
                     list-style-type: none;
+                    position: relative;
 
                     a {
+                        position: absolute;
+                        top: 0;
+                        left: 0;
+                        right: 0;
+                        bottom: 0;
                         width: 100%;
-                        img {
-                            width: 100%;
+                        height: 100%;
+
+                        div {
+                            height: 100%;
+                            background-size: cover;
+                            background-repeat: no-repeat;
+                            background-position: center;
+                            background-color: $brand-dark;
                         }
+                    }
+                }
+
+                &:after {
+                    content: '';
+                    clear: both;
+                    display: block;
+                }
+            }
+        }
+    }
+
+    .wp-tiles-tile {
+
+        z-index: 0;
+
+        &.with-post-id, &.with-url {
+
+            @keyframes updateDepthIn {
+                0% { z-index: 0;}
+                50% { z-index: 1;}
+                100% { z-index: 2;}
+            }
+
+            @keyframes updateDepthOut {
+                0% { z-index: 2;}
+                50% { z-index: 1;}
+                100% { z-index: 0;}
+            }
+
+            transition-property: transform, box-shadow, z-index;
+            transition-duration: .4s, .4s, 0s;
+            transition-delay: 0s, 0s, .4s;
+            box-shadow: 0 0 0 #000;
+            animation-name: updateDepthOut;
+            animation-duration: .4s;
+
+            &:hover {
+                z-index: 2;
+                animation-name: updateDepthIn;
+                animation-duration: .2s;
+                transform: scale(1.1, 1.1);
+                box-shadow: 0 0 4px #000;
+            }
+
+            .wp-tiles-byline {
+                box-sizing: border-box;
+
+                .wp-tiles-byline-wrapper {
+                    position: relative;
+                    height: 100%;
+                    box-sizing: border-box;
+                }
+
+                .wp-tiles-byline-title {
+                }
+
+                .wp-tiles-byline-content {
+
+                    .tagline {
+                        display: block;
                     }
                 }
             }
         }
+
+
     }
 }
