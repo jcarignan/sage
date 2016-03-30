@@ -10,6 +10,10 @@ body.page-template-page-multicontent {
                 header, .page-header, ul {
                     color: $brand-secondary;
                 }
+
+                svg * {
+                    fill: $brand-secondary !important;
+                }
             }
 
             &.block-main-odd {
@@ -25,12 +29,38 @@ body.page-template-page-multicontent {
                     position: relative;
                     left: -70%;
                 }
+
+                svg * {
+                    fill: $brand-primary !important;
+                }
             }
         }
 
         &.block-without-content {
             background-color: $brand-dark;
             color: $brand-primary;
+
+            svg * {
+                fill: $brand-primary !important;
+            }
+        }
+    }
+
+    ul.list-items {
+        padding: 10px;
+        text-align: center;
+        .list-item {
+            display: inline-block;
+            margin-right: 30px;
+
+            &:last-of-type {
+                margin-right: 0;
+            }
+
+            svg, img {
+                width: 50px !important;
+                height: auto !important;
+            }
         }
     }
 }

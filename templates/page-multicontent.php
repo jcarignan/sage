@@ -39,7 +39,7 @@
                                 ?>
                                 <li class="list-item">
                                     <?php if( $icon ): ?>
-                        				<img class="icon" src="<?php echo $icon['url']; ?>" />
+                        				<img class="icon style-svg" src="<?php echo $icon['url']; ?>" />
                         			<?php endif; ?>
                                     <?php if( $label ): ?>
                         				<div class="label"><?php echo $label; ?></div>
