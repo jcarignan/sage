@@ -23,17 +23,20 @@
         $('.hamburger').click(function(e){
             e.preventDefault();
             $('.banner').toggleClass('opened');
-            if ($('.banner').is('.opened'))
-            {
-            }
         });
 
         $('body .content').removeClass('hidden');
 
         $('a').click(function(e){
+            if ($('.banner').is('.opened'))
+            {
+                $('.banner').removeClass('opened');
+            }
             if (e.currentTarget.host === window.location.host && $(e.currentTarget).attr('rel') !== 'lightbox' && $(e.currentTarget).attr('target') !== '_blank')
             {
                 $('body .content').addClass('hidden');
+                $('.current-menu-item').removeClass('current-menu-item');
+                $(e.currentTarget).parent().addClass('current-menu-item');
             }
         });
       },

@@ -5,6 +5,20 @@
 
 <?php while (have_posts()) : the_post(); ?>
     <div class="scrollable-container">
+        <?php if ($images = get_field('gallery')): ?>
+        <div class="scrollable-content content-gallery">
+            <ul>
+                <?php foreach( $images as $image ): ?>
+                    <li>
+                        <a href="<?php echo $image['url']; ?>" rel="lightbox">
+                             <div style="background-image: url(<?php echo $image['sizes']['medium']; ?>);"></div>
+                        </a>
+                        <p><?php echo $image['caption']; ?></p>
+                    </li>
+                <?php endforeach; ?>
+            </ul>
+        </div>
+        <?php endif; ?>
         <div class="scrollable-content content-press">
             <div class="page-header"><h1><?php the_content(); ?></h1></div>
             <?php $args = array(
@@ -43,20 +57,5 @@
                 wp_reset_query();
             ?>
         </div>
-
-    <?php if ($images = get_field('gallery')): ?>
-        <div class="scrollable-content content-gallery">
-            <ul>
-                <?php foreach( $images as $image ): ?>
-                    <li>
-                        <a href="<?php echo $image['url']; ?>" rel="lightbox">
-                             <div style="background-image: url(<?php echo $image['sizes']['medium']; ?>);"></div>
-                        </a>
-                        <p><?php echo $image['caption']; ?></p>
-                    </li>
-                <?php endforeach; ?>
-            </ul>
-        </div>
-    <?php endif; ?>
     </div>
 <?php endwhile; ?>

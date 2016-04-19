@@ -74,4 +74,21 @@ body.home {
             }
         }
     }
+
+    @media screen and (max-width: $medium-width) {
+        .wp-tiles-tile {
+
+            &:nth-child(2) {
+                left: 0 !important;
+                top: 25% !important;
+            }
+
+            &:nth-child(3) {
+                left: 50% !important;
+                top: 0 !important;
+            }
+
+
+        }
+    }
 }

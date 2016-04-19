@@ -16,10 +16,13 @@ body {
     &.hidden {
         opacity: 0;
     }
+
+    @media screen and (max-width: $medium-width) {
+        padding-top: $header-mobile-height;
+    }
 }
 
 .main {
-    /*padding-top: $logo-height - $header-height;*/
     box-sizing: border-box;
     height: 100%;
     overflow-y: auto;
@@ -28,4 +31,12 @@ body {
 
 p.qtranxs-available-languages-message {
     display:none;
+}
+
+h1 {
+    font-size: 1.20em;
+}
+
+p {
+    font-size: 1.1em;
 }

@@ -16,15 +16,20 @@ $large-width:           1920px;
 
 // Colors
 $brand-primary:         #FFFFFF;// white
-$brand-secondary:       #2c87a5;// blue
-$brand-third:           #d67f32;// orange
-$brand-dark:            #121212;// black
+$brand-secondary:       #1891b9;// blue
+$brand-third:           #D67F32;// orange
+$brand-dark:            #1C1C1C;// black
 
 
 // Header
-$header-height: 50px;
-$logo-height: 60px;
+$header-height: 60px;
+$logo-height: 70px;
 $header-extra-height: $logo-height - $header-height;
+
+// Mobile header
+$header-mobile-height: 40px;
+$logo-mobile-height: 50px;
+$header-extra-mobile-height: $logo-mobile-height - $header-mobile-height;
 
 //Page
 $main-padding: 30px;

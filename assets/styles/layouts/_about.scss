@@ -2,11 +2,16 @@ body.page-template-page-about {
     main {
         background-color: $brand-secondary;
     }
+
     .block {
 
         &.block-main {
             background-color: $brand-primary;
             min-height: 40%;
+
+            header, .page-header, ul {
+                color: $brand-secondary;
+            }
         }
 
         &.block-columns {

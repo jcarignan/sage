@@ -1,3 +1,21 @@
+html[lang=en-US] {
+    header.banner {
+        nav {
+            &.nav-tertiary {
+                li {
+                    width: 20px;
+                    height: 20px;
+                    margin-right: 6px;
+
+                    &:last-of-type {
+                        margin-right: 0;
+                    }
+                }
+            }
+        }
+    }
+}
+
 header.banner {
     position: absolute;
     top: 0;
@@ -24,23 +42,12 @@ header.banner {
 
     .hamburger {
         display: none;
+        cursor: pointer;
     }
 
     .header-content {
         position: relative;
         height: 100%;
-    }
-
-    .admin-url {
-        font-size: 12px;
-        text-transform: uppercase;
-
-        &:after
-        {
-            content: '|';
-            font-weight: normal;
-            display: inline;
-        }
     }
 
     nav {
@@ -53,13 +60,26 @@ header.banner {
             white-space:nowrap;
 
             li {
-                font-size: 14px;
+                font-size: 16px;
                 display: inline-block;
                 white-space: normal;
 
                 a {
                     display: inline-block;
                     text-transform: uppercase;
+                    transition: color .2s ease-in-out;
+
+                    &:hover {
+                        color: $brand-secondary;
+                    }
+                }
+
+                &.current-menu-item {
+                    a {
+                        color: $brand-secondary;
+                        pointer-events: none;
+                        cursor: default;
+                    }
                 }
             }
         }
@@ -71,12 +91,6 @@ header.banner {
 
             li {
                 margin-right: 14px;
-
-                &.current-menu-item {
-                    a {
-                        color: $brand-secondary;
-                    }
-                }
             }
         }
 
@@ -95,10 +109,10 @@ header.banner {
             }
 
             li {
-                font-size: 12px;
+                font-size: 14px;
                 &:after
                 {
-                    content: '|';
+                    content: '\00a0|\00a0';
                     font-weight: normal;
                     display: inline;
                 }
@@ -117,9 +131,9 @@ header.banner {
             text-align: right;
 
             li {
-                width: 20px;
-                height: 20px;
-                margin-right: 4px;
+                width: 22px;
+                height: 22px;
+                margin-right: 14px;
 
                 &:last-of-type {
                     margin-right: 0;
@@ -153,54 +167,108 @@ header.banner {
 
     @media screen and (max-width: $medium-width) {
 
+        height: $header-mobile-height;
+
+        .brand {
+            height: $logo-mobile-height;
+        }
+
         .hamburger {
-            z-index: 1;
-            display: table-cell;
-            position: relative;
+            z-index: 2;
+            display: block;
+            position: absolute;
             top: 0;
             right: 0;
-            width: $header-height;
+            width: $header-mobile-height;
             height: 100%;
 
             background: url($image-path+'hamburger.svg') no-repeat center;
         }
 
-        .header-content {
-            background-color: #121212;
+        &:before {
+            z-index: 1;
+            content: '';
+            display: block;
             position: absolute;
             top: 0;
-            right: 0;
+            left: 0;
+            width: 100%;
             height: 100%;
-            display: table;
-            /* width: 100%; */
-            text-align: right;
+            background-color: $brand-dark;
         }
+
+        .header-content {
+            z-index: 0;
+            background-color: $brand-dark;
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            height: auto;
+            width: 100%;
+            padding: 30px 10px 10px;
+            box-sizing: border-box;
+
+            transform: translateY(0%);
+            transition: transform .4s ease-in-out;
+
+            &:after {
+                content: '';
+                display: block;
+                clear: both;
+            }
+        }
+
 
         nav {
             ul li {
-                font-size: 20px;
+                font-size: 14px;
             }
 
             &.nav-primary {
                 z-index: 1;
-                background-color: #121212;
-                position: absolute;
-                top: 100%;
-                right: 0;
+                position: relative;
                 bottom: auto;
                 left: auto;
-
                 display: block;
+                margin-bottom: 20px;
 
-                transform: translateX(100%);
-                transition: transform .4s ease-in-out;
+                ul {
+                    &:after {
+                        content: '';
+                        display: block;
+                        clear: both;
+                    }
+                    li {
+                        display: block;
+                        float: left;
+                        width: 50%;
+                        margin: 0;
+                        box-sizing: border-box;
+                        position: relative;
+                        text-align: left;
 
-                ul li {
-                    display: block;
-                    margin: 0;
-                    a {
-                        width: 100%;
-                        padding: 10px 0;
+                        a {
+                            width: 100%;
+                            padding: 10px 0 10px 10px;
+                            border-bottom: 1px solid rgba(255, 255, 255, 0.5);
+                            position: relative;
+                            box-sizing: border-box;
+
+                            &:after {
+                                content: '>\00a0';
+                                position: absolute;
+                                right: 0;
+                                line-height: 1.4em;
+                                color: $brand-secondary;
+                            }
+                        }
+
+                        &:nth-child(odd){
+                            padding-right: 10px;
+                        }
+                        &:nth-child(even){
+                            padding-left: 10px;
+                        }
                     }
                 }
             }
@@ -208,14 +276,19 @@ header.banner {
             &.nav-secondary {
                 z-index: 2;
                 position: relative;
-                /* float: right; */
-                display: table-cell;
-
+                float: left;
+                width: 50%;
                 vertical-align: middle;
-                /* height: 100%; */
-                ul li {
-                    font-size: 20px;
+                text-align: left;
+                padding-left: 10px;
+                box-sizing: border-box;
 
+                .menu-links-container {
+                    float: none;
+                }
+
+                ul li {
+                    font-size: 14px;
                     &:after {
                         padding:0 6px;
                     }
@@ -224,21 +297,20 @@ header.banner {
 
             &.nav-tertiary {
                 z-index: 2;
-                height: 100%;
-                /* float: right; */
-                display: table-cell;
+                height: auto;
                 vertical-align: middle;
                 position: relative;
-                width: auto;
+                float: left;
+                width: 50%;
                 right: auto;
                 bottom: auto;
-                text-align: center;
+                text-align: left;
+                padding-left: 16px;
+                box-sizing: border-box;
                 ul {
-                    margin-left: 16px;
                     li {
                         margin-right: 10px;
                         width: 24px;
-                        height: $header-height;
 
                         &:last-of-type {
                             margin-right: 10px;
@@ -249,14 +321,10 @@ header.banner {
         }
 
         &.opened {
-            nav.nav-primary {
-                transform: translateX(0%);
+            .header-content {
+                transform: translateY(100%);
             }
         }
-    }
-
-    @media screen and (max-width: $small-width) {
-
     }
 
 }

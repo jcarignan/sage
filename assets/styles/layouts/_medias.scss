@@ -9,8 +9,15 @@ body.page-template-page-medias {
         }
     }
 
+    .scrollable-content {
+        position: absolute;
+    }
+
     .press-article {
         position: relative;
+        z-index: 0;
+        overflow: hidden;
+
         img {
             width: 100%;
             vertical-align: bottom;
@@ -47,6 +54,28 @@ body.page-template-page-medias {
                 content: '';
                 clear: both;
                 display: block;
+            }
+
+            transform: translateY(100%);
+            transition: transform .2s ease-in-out;
+        }
+
+        &:hover {
+            .link-infos {
+                transform: translateY(0%);
+            }
+        }
+    }
+
+    .content-gallery {
+        z-index: 1;
+        /*padding-left: 50px;/* avoid overflow cutoff */
+    }
+
+    @media screen and (max-width: $medium-width) {
+        .press-article {
+            .link-infos {
+                transform: translateY(0%);
             }
         }
     }

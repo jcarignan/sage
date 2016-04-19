@@ -1,5 +1,5 @@
 <header class="banner">
-    <a class="brand" href="<?= esc_url(home_url('/'));?>"><img src="<?php echo get_template_directory_uri().'/dist/images/logo.png';?>" alt="<?php bloginfo('name'); ?>" /></a>
+    <a class="brand" href="<?= esc_url(home_url('/'));?>"><img src="<?php echo get_template_directory_uri().'/dist/images/logo.svg';?>" alt="<?php bloginfo('name'); ?>" /></a>
     <div class="header-content">
         <?php if (has_nav_menu('primary_navigation')) : ?>
             <nav class="nav-primary">
@@ -8,7 +8,6 @@
         <?php endif; ?>
         <?php if (has_nav_menu('secondary_navigation')) :  ?>
             <nav class="nav-secondary">
-                <span class="admin-url"><?php wp_loginout(get_permalink()); ?></span>
                 <?php wp_nav_menu(['theme_location' => 'secondary_navigation']); ?>
             </nav>
         <?php endif; ?>
@@ -17,6 +16,6 @@
                 <?php wp_nav_menu(['theme_location' => 'tertiary_navigation']); ?>
             </nav>
         <?php endif; ?>
-        <a class="hamburger" href="#"></a>
     </div>
+    <button type="button" class="hamburger"></button>
 </header>

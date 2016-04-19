@@ -6,7 +6,7 @@
 <?php while (have_posts()) : the_post(); ?>
     <div class="scrollable-container">
         <div class="scrollable-content content-gallery">
-            <?php echo do_shortcode('[wp-tiles grids="clients" small_screen_grid="clients" breakpoint="1000" padding="10" byline_height_auto="true" post_type="client" order="asc" orderby="menu_order"]'); ?>
+            <?php echo do_shortcode('[wp-tiles grids="clients" small_screen_grid="clients-mobile" breakpoint="493" padding="10" byline_height_auto="true" post_type="client" order="asc" orderby="menu_order"]'); ?>
         </div>
         <div class="scrollable-content content-list">
             <div class="page-header"><h1><?php the_content(); ?></h1></div>

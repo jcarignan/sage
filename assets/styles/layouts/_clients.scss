@@ -7,12 +7,10 @@ body.page-template-page-clients {
         }
     }
 
-
-
     .scrollable-container {
 
         .content-gallery {
-            padding: 10px;
+            padding: 30px 10px;
             box-sizing: border-box;
 
             .wp-tiles-tile {
@@ -50,7 +48,11 @@ body.page-template-page-clients {
             ul {
                 list-style-type: none;
                 li {
-                    padding: 10px 20px;
+                    padding: 14px 20px;
+
+                    h4 {
+                        color: $brand-dark;
+                    }
 
                     p {
                         font-size: 0.8em;
@@ -58,7 +60,7 @@ body.page-template-page-clients {
 
                     &:nth-child(odd)
                     {
-                        background-color: rgba(0,0,0,0.2);
+                        background-color: rgba(255,255,255,0.2);
                     }
                     &:nth-child(even)
                     {
