@@ -1,0 +1,102 @@
+body.page-template-page-contact {
+
+    .main {
+        background-color: $brand-secondary;
+    }
+
+    .block-main-container {
+        background-color: $brand-primary;
+    }
+
+    .block.block-main {
+        padding-top: $header-extra-height;
+        max-width: 1100px !important;
+        margin: 0 auto;
+
+        .content-description {
+            position: relative;
+            padding: 70px 160px 160px;
+            background-repeat: no-repeat;
+            background-position: top center;
+            background-size: cover;
+
+            .page-content {
+                position: relative;
+            }
+
+            .page-infos {
+                text-align: right;
+                font-weight: bold;
+                h1 {
+                    color: $brand-secondary;
+                    font-size: 24px;
+                }
+
+                a:hover {
+                    text-decoration: underline;
+                }
+
+            }
+        }
+    }
+
+    .block.block-form {
+        max-width: 980px;
+        margin: 0 auto;
+        color: $brand-primary;
+        text-align: center;
+        font-size: 14px;
+
+        h2 {
+            padding: 30px 0 20px;
+        }
+
+
+
+        .wpcf7-form-control-wrap {
+
+            &.your-name, &.your-email {
+                width: 50%;
+                display: inline-block;
+                box-sizing: border-box;
+            }
+
+            &.your-name {
+                padding-right: 20px;
+            }
+
+            &.your-email {
+                padding-left: 20px;
+            }
+
+            &.your-message {
+                margin: 10px 0;
+                display: block;
+            }
+        }
+
+        .wpcf7-form-control.wpcf7-submit {
+            display: block;
+            background-color: $brand-third;
+            color: inherit;
+            font-weight: bold;
+        }
+
+        input, textarea {
+            display: block;
+            appearance: none;
+            border: 0;
+            width: 100%;
+            padding: 4px;
+            box-sizing: border-box;
+            font-size: inherit;
+            font-family: inherit;
+            color: $brand-dark;
+            box-shadow: 3px 3px 2px 1px rgba(0,0,0,0.5);
+        }
+
+        textarea {
+            resize: vertical;
+        }
+    }
+}
