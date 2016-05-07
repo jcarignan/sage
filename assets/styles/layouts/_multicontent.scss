@@ -63,6 +63,13 @@ body.page-template-page-multicontent {
                 svg * {
                     fill: $brand-primary !important;
                 }
+
+                @media screen and (max-width: $small-width) {
+                    .content-description, .content-image {
+                        position: static;
+                        left: auto;
+                    }
+                }
             }
 
             .label {

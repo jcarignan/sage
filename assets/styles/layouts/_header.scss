@@ -74,6 +74,10 @@ header.banner {
                     }
                 }
 
+                &.hidden {
+                    display: none;
+                }
+
                 &.current-menu-item {
                     a {
                         color: $brand-secondary;

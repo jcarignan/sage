@@ -14,6 +14,13 @@ body.page {
             display: table-cell;
         }
 
+        @media screen and (max-width: $small-width) {
+            display: block;
+            .block-content {
+                display: block;
+            }
+        }
+
         &.block-main {
             background-color: $brand-primary;
 
@@ -27,6 +34,62 @@ body.page {
                 background-position: center;
                 background-color: $brand-dark;
             }
+            @media screen and (max-width: $medium-width) {
+                .content-image {
+                    width: 40%;
+                }
+            }
+
+            @media screen and (max-width: $small-width) {
+                .content-image {
+                    width: 100%;
+                    height: 300px;
+                }
+            }
+
+            @media screen and (max-width: $phone-width) {
+
+            }
+        }
+
+        &.block-columns {
+            background-color: $brand-secondary;
+            color: $brand-primary;
+            text-align: center;
+            counter-reset: COLUMNS 0;
+
+            .content-column {
+                padding: 8.75em $about-step-padding $about-step-padding;
+                position: relative;
+                &:before {
+                    content: counter(COLUMNS);
+                    counter-increment: COLUMNS;
+                    position: absolute;
+                    top: 0;
+                    left: 0;
+                    width: 100%;
+                    z-index: 0;
+
+                    font-size: 11em;
+                    font-weight: bold;
+                    color: $brand-third;
+                }
+
+                header, section {
+                    position: relative;
+                    z-index: 1;
+                }
+
+                header {
+                    font-size: 34px;
+                    font-weight: bold;
+                    margin-bottom: 0.5em;
+                }
+
+                section {
+                    font-size: 18px;
+                }
+            }
         }
     }
 
@@ -37,62 +100,115 @@ body.page {
         }
     }
 
-    .scrollable-container {
-        position: relative;
+    .two-columns-scrollable {
         height: 100%;
-    }
+        display: flex;
+        flex-direction: column;
 
-    .scrollable-content {
-        vertical-align: top;
-        position: absolute;
-        width: 50%;
-        height: 100%;
-        overflow-x: hidden;
-        overflow-y: auto;
+        .scrollable-nav {
+            display: none;
+            text-align: center;
+            font-weight: bold;
+            font-size: 0;
+            white-space: nowrap;
+            padding: $header-extra-mobile-height + 20px 0 $header-extra-mobile-height;
 
-        &.content-gallery {
-            ul {
-                li {
-                    width: 33.33333%;
-                    height: 0;
-                    padding-bottom: 23%;
-                    float: left;
-                    list-style-type: none;
-                    position: relative;
+            .scrollable-nav-item {
+                display: inline-block;
+                font-size: 20px;
 
-                    a {
-                        position: absolute;
-                        top: 0;
-                        left: 0;
-                        right: 0;
-                        bottom: 0;
-                        width: 100%;
-                        height: 100%;
+                &:after {
+                    content: '\00a0|\00a0';
+                    display: inline;
+                }
 
-                        div {
-                            height: 100%;
-                            background-size: cover;
-                            background-repeat: no-repeat;
-                            background-position: center;
-                            background-color: $brand-dark;
-                        }
+                &:last-of-type {
+                    &:after {
+                        display: none;
                     }
                 }
 
-                &:after {
-                    content: '';
-                    clear: both;
-                    display: block;
+                &.active a {
+                    text-decoration: underline;
                 }
             }
         }
 
-        &:first-of-type {
-            left: 0;
+        .scrollable-container {
+            position: relative;
+            flex-grow: 2;
         }
 
-        &:last-of-type {
-            right: 0;
+        .scrollable-content {
+            vertical-align: top;
+            position: absolute;
+            width: 50%;
+            height: 100%;
+            overflow-x: hidden;
+            overflow-y: auto;
+
+            &.content-gallery {
+                ul {
+                    li {
+                        width: 33.33333%;
+                        height: 0;
+                        padding-bottom: 23%;
+                        float: left;
+                        list-style-type: none;
+                        position: relative;
+
+                        a {
+                            position: absolute;
+                            top: 0;
+                            left: 0;
+                            right: 0;
+                            bottom: 0;
+                            width: 100%;
+                            height: 100%;
+
+                            div {
+                                height: 100%;
+                                background-size: cover;
+                                background-repeat: no-repeat;
+                                background-position: center;
+                                background-color: $brand-dark;
+                            }
+                        }
+                    }
+
+                    &:after {
+                        content: '';
+                        clear: both;
+                        display: block;
+                    }
+                }
+            }
+
+            &:first-of-type {
+                left: 0;
+            }
+
+            &:last-of-type {
+                right: 0;
+            }
+        }
+
+        @media screen and (max-width: $small-width) {
+            .scrollable-nav {
+                display: initial;
+            }
+            .scrollable-content {
+                width: 100%;
+                z-index: 0;
+                transition: opacity .4s;
+                opacity: 0;
+
+                &.active
+                {
+                    opacity: 1;
+                    z-index: 1;
+                }
+            }
         }
     }
 

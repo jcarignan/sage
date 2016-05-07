@@ -15,10 +15,12 @@ SECTIONS
 -Clients: Logos 3x3 sur fullscreen
 -Clients: Témoignages plus espacés
 -CLients: Témoignages blanc opacité 20%
--Clients: Témoignages enlevé les guillemets, mettre la personne en #1c1c1c
+-Clients: Témoignages enlever les guillemets, mettre la personne en #1c1c1c
+Services: Baisser le nombre d'icones de services
 
 TODO JULIEN
-Services: Baisser le nombre d'icones de services
 Médias: Scroll Bar
-Clients: Scoll-bar
-Contacts
+Clients: Scroll-bar
+
+http://immersiveproductions.local
+http://74.57.66.67:33800/

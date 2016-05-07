@@ -10,9 +10,11 @@ $sidebar-sm-columns:    4;
 $font-primary: "Noto Sans";
 
 // Layout
-$small-width:           320px;
-$medium-width:          1024px;
-$large-width:           1920px;
+$phone-width:           320px;
+$small-width:           768px;// tablet portrait
+$medium-width:          1024px;// tablet landscape
+$large-width:           1300px;
+$ultra-width:           1920px;
 
 // Colors
 $brand-primary:         #FFFFFF;// white

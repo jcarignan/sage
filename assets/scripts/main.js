@@ -32,11 +32,33 @@
             {
                 $('.banner').removeClass('opened');
             }
-            if (e.currentTarget.host === window.location.host && $(e.currentTarget).attr('rel') !== 'lightbox' && $(e.currentTarget).attr('target') !== '_blank')
+            var target = e.currentTarget;
+            var $target = $(target);
+            var isLocalLink = target.host === window.location.host;
+            var isLightBox = $target.attr('rel') === 'lightbox';
+            var isTargetBlank = $target.attr('target') === '_blank';
+            var isSrollableNavItem = $target.parent().is('.scrollable-nav-item');
+
+            if (isLocalLink && !isLightBox && !isTargetBlank && !isSrollableNavItem)
             {
                 $('body .content').addClass('hidden');
                 $('.current-menu-item').removeClass('current-menu-item');
                 $(e.currentTarget).parent().addClass('current-menu-item');
+            }
+
+            if (isSrollableNavItem)
+            {
+                if ($target.parent().is('.active'))
+                {
+                    return;
+                }
+                var scrollableClassName = $target.data('scrollable-classname');
+
+                $('.scrollable-nav-item').removeClass('active');
+                $('.scrollable-content').removeClass('active');
+
+                $target.parent().addClass('active');
+                $('.'+scrollableClassName).addClass('active');
             }
         });
       },

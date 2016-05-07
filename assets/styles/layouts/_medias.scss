@@ -76,6 +76,10 @@ body.page-template-page-medias {
         .press-article {
             .link-infos {
                 transform: translateY(0%);
+                position: relative;
+                bottom: auto;
+                left: auto;
+                width: auto;
             }
         }
     }
