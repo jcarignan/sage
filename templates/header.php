@@ -1,5 +1,13 @@
+<?php
+    $subtheme = get_option( 'immersiveproductions_theme_options')['subtheme'];
+    $logo_url = get_template_directory_uri().'/dist/images/'.($subtheme === 'default' ? '':$subtheme.'/').'logo.svg';
+    if (!file_exists($logo_url)) {
+		$logo_url = str_replace('.svg', '.png', $logo_url);
+    }
+?>
+
 <header class="banner">
-    <a class="brand" href="<?= esc_url(home_url('/'));?>"><img src="<?php echo get_template_directory_uri().'/dist/images/logo.svg';?>" alt="<?php bloginfo('name'); ?>" /></a>
+    <a class="brand" href="<?= esc_url(home_url('/'));?>"><img src="<?=$logo_url?>" alt="<?php bloginfo('name'); ?>" /></a>
     <div class="header-content">
         <?php if (has_nav_menu('primary_navigation')) : ?>
             <nav class="nav-primary">

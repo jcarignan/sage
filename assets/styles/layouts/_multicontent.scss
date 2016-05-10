@@ -4,25 +4,6 @@ body.page-template-page-multicontent {
         background-color: $brand-secondary;
     }
 
-    ul.list-items {
-        text-align: center;
-        font-weight: bold;
-        .list-item {
-            display: inline-block;
-            margin-right: 20px;
-            padding: 10px;
-
-            &:last-of-type {
-                margin-right: 0;
-            }
-
-            svg, img {
-                width: 50px !important;
-                height: auto !important;
-            }
-        }
-    }
-
     .block {
 
         &.block-main {

@@ -1,0 +1,31 @@
+$image-path: "../images/accro/";
+$accro-logo-height: 100px;
+
+body.subtheme-accro {
+
+    header.banner {
+        &:before {
+            background-color: transparent;
+            background-image: url($image-path+"/header-bg.png");
+        }
+        background-color: transparent;
+        background-image: url($image-path+"/header-bg.png");
+        .brand {
+            margin-left: 0;
+            height: $accro-logo-height;
+        }
+
+        li {
+            text-shadow: 0px 0px 3px $brand-dark;
+
+            a:hover {
+                color: $brand-third;
+            }
+        }
+
+        .nav-secondary {
+            bottom: 2px;
+        }
+    }
+
+}
