@@ -7,7 +7,9 @@
     <?php
         if( have_rows('multicontent') ):
             $mainBlocksCount = 0;
-            while (have_rows('multicontent')) : the_row();
+            while (have_rows('multicontent')) : the_row(); ?>
+            <section class="section-multicontent">
+            <?php
                 $withContent = get_sub_field('with_content');
                 $list = get_sub_field('list');
                 $title = get_sub_field('title');
@@ -52,6 +54,7 @@
                         <section class="block-content content-image" style="background-image: url(<?php echo $image['url']?>);"></section>
                     <?php endif; ?>
                 </section>
-        <?php endwhile; ?>
+            <?php endwhile; ?>
+        </section>
     <?php endif; ?>
 <?php endwhile; ?>

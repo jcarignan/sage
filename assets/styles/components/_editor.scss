@@ -1,0 +1,16 @@
+.mce-content-body {
+    ul {
+        li {
+            &:before {
+                content:'';
+                display: inline-block;
+                width: 0.6em;
+                height: 0.6em;
+                border-radius: 50%;
+                border: 2px solid $brand-secondary;
+                margin-right: 5px;
+            }
+            padding-bottom: 10px;
+        }
+    }
+}
