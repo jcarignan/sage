@@ -18,7 +18,7 @@ body.subtheme-accro {
         li {
             text-shadow: 0px 0px 3px $brand-dark;
 
-            a:hover {
+            &.current-menu-item a, a:hover {
                 color: $brand-third;
             }
         }

@@ -18,28 +18,39 @@
             </section>
             <section class="main-content">
                 <div class="main-description"><?php the_content(); ?></div>
-                <div class="main-columns">
-                    <ul class="list-items">
-                        <?php while( have_rows('list') ): the_row();
-                            $label = get_sub_field('label');
-                            $icon = get_sub_field('icon');
-                        ?>
-                        <li class="list-item">
-                            <?php if( $icon ): ?>
-                                <img class="icon style-svg" src="<?php echo $icon['url']; ?>" />
-                            <?php endif; ?>
-                            <?php if( $label ): ?>
-                                <div class="label"><?php echo $label; ?></div>
-                            <?php endif; ?>
-                        </li>
-                        <?php endwhile; ?>
-                    </ul>
-                </div>
+                <ul class="list-items">
+                    <?php while( have_rows('list') ): the_row();
+                        $label = get_sub_field('label');
+                        $icon = get_sub_field('icon');
+                    ?>
+                    <li class="list-item">
+                        <?php if( $icon ): ?>
+                            <img class="icon style-svg" src="<?php echo $icon['url']; ?>" />
+                        <?php endif; ?>
+                        <?php if( $label ): ?>
+                            <div class="label"><?php echo $label; ?></div>
+                        <?php endif; ?>
+                    </li>
+                    <?php endwhile; ?>
+                </ul>
             </section>
         </section>
         <section class="block-main-footer">
-            <span>Organisé par [logo]</span>
-            <span>[logo] Présenté par</span>
+            <ul class="list-items">
+                <?php while( have_rows('list_footer') ): the_row();
+                    $label = get_sub_field('label');
+                    $icon = get_sub_field('icon');
+                ?>
+                <li class="list-item">
+                    <?php if( $icon ): ?>
+                        <img class="icon style-svg" src="<?php echo $icon['url']; ?>" />
+                    <?php endif; ?>
+                    <?php if( $label ): ?>
+                        <div class="label"><?php echo $label; ?></div>
+                    <?php endif; ?>
+                </li>
+                <?php endwhile; ?>
+            </ul>
         </section>
     </div>
 <?php endwhile; ?>
