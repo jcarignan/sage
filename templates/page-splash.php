@@ -3,8 +3,12 @@
     */
 
     $subtheme = get_option( 'immersiveproductions_theme_options')['subtheme'];
-    $image_url = get_template_directory_uri().'/dist/images/'.($subtheme === 'default' ? '':$subtheme.'/').'splash.svg';
-    if (!file_exists($image_url)) {
+    
+    $image_path = '/dist/images/'.($subtheme === 'default' ? '':$subtheme.'/').'splash.svg';
+    $image_location = get_template_directory().$image_path;
+    $image_url = get_template_directory_uri().$image_path;
+
+    if (!file_exists($image_location)) {
 		$image_url = str_replace('.svg', '.png', $image_url);
     }
 ?>
