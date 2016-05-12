@@ -1,8 +1,10 @@
 <?php
     $subtheme = get_option( 'immersiveproductions_theme_options')['subtheme'];
-    $logo_url = get_template_directory_uri().'/dist/images/'.($subtheme === 'default' ? '':$subtheme.'/').'logo.svg';
+    $logo_path = '/dist/images/'.($subtheme === 'default' ? '':$subtheme.'/').'logo.svg';
+    $logo_location = get_template_directory().$logo_path;
+    $logo_url = get_template_directory_uri().$logo_path;
 
-    if (!file_exists($logo_url)) {
+    if (!file_exists($logo_location)) {
 		$logo_url = str_replace('.svg', '.png', $logo_url);
     }
 ?>
