@@ -28,4 +28,48 @@ body.subtheme-accro {
         }
     }
 
+    main.main {
+        .content-description {
+            .page-header, header {
+                white-space: nowrap;
+                padding-right: 20px;
+                h2, h3 {
+                    display: inline-block;
+                }
+            }
+        }
+
+        .section-multicontent {
+            .block.block-main {
+                &.block-main-even, &.block-main-odd {
+                    color: $brand-dark;
+                    header, .page-header, ul {
+                        color: $brand-dark;
+                    }
+                }
+                &.block-main-odd {
+                    background: initial;
+                }
+            }
+        }
+    }
+
+    @media screen and (max-width: $small-width) {
+        main.main {
+            .content-description {
+                .page-header, header {
+
+                }
+            }
+        }
+
+        .section-multicontent {
+            .block.block-main {
+                .block-content.content-description {
+                    display: block;
+                }
+            }
+        }
+    }
+
 }

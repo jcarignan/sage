@@ -97,12 +97,29 @@ body.page {
         .block {
 
             &.block-main {
+                display: flex;
+
+                .block-content {
+                    display: flex;
+                }
 
                 .content-description {
+                    flex-shrink: 4;
                     .page-content {
                         margin-bottom: 20px;
                     }
+                }
 
+                .content-image {
+                    flex-basis: 370px;
+                    width: auto;
+                }
+
+                @media screen and (max-width: $small-width) {
+                    display: block;
+                    .block-content {
+                        display: block;
+                    }
                 }
 
                 &.block-main-even {
@@ -123,12 +140,9 @@ body.page {
                     background-color: $brand-secondary;
 
                     .content-description {
-                        position: relative;
-                        left: 30%;
                     }
                     .content-image {
-                        position: relative;
-                        left: -70%;
+                        order: -1;
                     }
 
                     svg * {
@@ -140,6 +154,21 @@ body.page {
                             position: static;
                             left: auto;
                         }
+                    }
+                }
+
+                ul {
+                    li {
+                        &:before {
+                            content:'';
+                            display: inline-block;
+                            width: 0.6em;
+                            height: 0.6em;
+                            border-radius: 50%;
+                            border: 2px solid $brand-secondary;
+                            margin-right: 5px;
+                        }
+                        padding-bottom: 10px;
                     }
                 }
 
