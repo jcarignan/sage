@@ -1,7 +1,16 @@
 <?php
     $subtheme = get_option( 'immersiveproductions_theme_options')['subtheme'];
-    $logo_url = get_template_directory_uri().'/dist/images/'.($subtheme === 'default' ? '':$subtheme.'/').'logo.svg';
-    if (!file_exists($logo_url)) {
+    $logo_path = '/dist/images/'.($subtheme === 'default' ? '':$subtheme.'/').'logo.svg';
+
+    $logo_location = /*str_replace('\\', '/',  */get_template_directory().$logo_path/*)*/;
+    $logo_url = get_template_directory_uri().$logo_path;
+
+    /*var_dump($logo_location);
+    var_dump(file_exists($logo_location));
+    var_dump(file_exists($logo_url));
+    var_dump(file_exists($logo_path));*/
+
+    if (!file_exists($logo_location)) {
 		$logo_url = str_replace('.svg', '.png', $logo_url);
     }
 ?>

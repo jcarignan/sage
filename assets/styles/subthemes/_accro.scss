@@ -54,22 +54,4 @@ body.subtheme-accro {
         }
     }
 
-    @media screen and (max-width: $small-width) {
-        main.main {
-            .content-description {
-                .page-header, header {
-
-                }
-            }
-        }
-
-        .section-multicontent {
-            .block.block-main {
-                .block-content.content-description {
-                    display: block;
-                }
-            }
-        }
-    }
-
 }
