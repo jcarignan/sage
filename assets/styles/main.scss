@@ -1,4 +1,5 @@
 @import "common/variables";
+@import "common/accroVariables";
 
 // Automatically injected Bower dependencies via wiredep (never manually edit this block)
 // bower:scss
@@ -28,6 +29,7 @@
 @import "layouts/clients";
 @import "layouts/contact";
 @import "layouts/splash";
+@import "layouts/event";
 
 /* Subthemes */
 @import "subthemes/accro";

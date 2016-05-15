@@ -1,0 +1,176 @@
+body.page-template-page-event {
+    .block-main-container {
+        padding-bottom: 20px;
+        .block.block-main {
+
+            margin-top: $header-accro-extra-height - 10px;
+
+            .block-content .page-content, .block-text, .block-title, .block-gallery.static-width {
+                max-width: $medium-width;
+                margin: 0 auto;
+            }
+
+            .block-content.content-description {
+                background-color: $brand-light-gray;
+                box-shadow: 0px 4px 10px rgba(0,0,0,0.3);
+                padding: 30px;
+
+                .block-content .page-content {
+                    font-size: 16px;
+                }
+            }
+
+            .block-separator {
+                border-top: 2px solid rgba(0,0,0,0.3);
+                width: 40%;
+                margin: 0 auto;
+            }
+
+            .block-title {
+                text-transform: uppercase;
+                color: $brand-third;
+                padding: 8px 30px 20px;
+
+                &.align-center {
+                    text-align: center;
+                }
+
+                &.align-right {
+                    text-align: right;
+                }
+            }
+
+            .block-gallery {
+                position: relative;
+                &.gallery-interactive {
+                    .list-items {
+                        .list-item {
+                            box-sizing: border-box;
+                            &:hover {
+                                border: 1px solid $brand-dark;
+                                .item-content {
+                                    opacity: 1;
+                                }
+                            }
+
+                            .item-content {
+                                z-index: 1;
+                                display: flex;
+                                flex-direction: column;
+                                justify-content: center;
+                                position: relative;
+                                width: 100%;
+                                height: 100%;
+                                opacity: 0;
+                                transition: opacity .4s;
+                                background-color: rgba(0,0,0,0.7);
+
+                                div {
+                                    vertical-align: middle;
+                                }
+
+                                .item-title {
+                                    text-transform: uppercase;
+                                    color: $brand-primary;
+                                }
+                            }
+                        }
+                    }
+                }
+
+                &.gallery-normal {
+
+                    &.with-background-color {
+                        .list-item {
+                            background-color: $brand-light-gray;
+                        }
+                    }
+
+                    .list-item {
+                        margin-right: 10px;
+                    }
+
+                    .item-content {
+                        h1, div {
+                            text-indent: -999999px;
+                        }
+                    }
+                }
+
+                &.gallery-details {
+                    .list-items {
+                        display: flex;
+                        flex-wrap: wrap;
+                        justify-content: center;
+                        .list-item {
+                            display: flex;
+
+                            .item-content, .item-image {
+                                display: block;
+                                position: relative;
+                            }
+
+                            .item-content {
+                                padding-left: 10px;
+                                text-align: left;
+
+                                .item-title {
+
+                                }
+
+                                .item-subtitle {
+                                    color: $brand-third;
+                                    //font-size:
+                                }
+                            }
+                        }
+                    }
+                }
+
+                &.full-width {
+                    .list-items {
+                        display: flex;
+                        flex-wrap: wrap;
+                        justify-content: center;
+                        .list-item {
+                            margin: 0;
+                            padding: 0;
+                        }
+                    }
+                }
+
+                &.static-width {
+
+                }
+
+                .list-items {
+                    .list-item {
+                        position: relative;
+                        background-color: $brand-primary;
+                        .item-image {
+                            @extend .fullscreen;
+                            z-index: 0;
+                            background-repeat: no-repeat;
+                            background-position: center;
+
+                            @media screen and (max-width: $small-width) {
+                                width: 50% !important;
+                            }
+                        }
+                    }
+                }
+            }
+
+            .block-text {
+                padding: 30px;
+                a {
+                    display: inline-block;
+                    padding-top: 10px;
+                    font-weight: bold;
+                    text-decoration: underline;
+                    color: $brand-third;
+                }
+            }
+        }
+    }
+}

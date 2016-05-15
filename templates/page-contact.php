@@ -1,8 +1,6 @@
 <?php /*
     Template Name: Contact
     */
-
-    $imageUrl
 ?>
 
 <?php while (have_posts()) : the_post(); ?>

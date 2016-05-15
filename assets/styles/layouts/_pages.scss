@@ -165,7 +165,7 @@ body.page {
                             width: 0.6em;
                             height: 0.6em;
                             border-radius: 50%;
-                            border: 2px solid $brand-secondary;
+                            border: 3px solid $brand-secondary;
                             margin-right: 5px;
                         }
                         padding-bottom: 10px;
@@ -183,6 +183,47 @@ body.page {
 
                 svg * {
                     fill: $brand-primary !important;
+                }
+            }
+        }
+    }
+
+    .section-dual-tiles {
+        display: flex;
+        flex-wrap: wrap;
+        .block.block-dual-tile {
+            width: 50%;
+            display: flex;
+
+            .block-content {
+                display: block;
+                width: 50%;
+            }
+
+            &:nth-child(4n+3), &:nth-child(4n+4)
+            {
+                .content-description {
+                    order: 1;
+                }
+            }
+        }
+
+        @media screen and (max-width: $small-width) {
+            .block.block-dual-tile {
+                width: 100%;
+
+                &:nth-child(4n+3), &:nth-child(4n+4)
+                {
+                    .content-description {
+                        order: 0
+                    }
+                }
+
+                &:nth-child(even)
+                {
+                    .content-description {
+                        order: 1;
+                    }
                 }
             }
         }

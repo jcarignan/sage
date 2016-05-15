@@ -1,15 +1,12 @@
-$image-path: "../images/accro/";
-$accro-logo-height: 100px;
-
 body.subtheme-accro {
 
     header.banner {
         &:before {
             background-color: transparent;
-            background-image: url($image-path+"/header-bg.png");
+            background-image: url($accro-image-path+'/header-bg.png');
         }
         background-color: transparent;
-        background-image: url($image-path+"/header-bg.png");
+        background-image: url($accro-image-path+'/header-bg.png');
         .brand {
             margin-left: 0;
             height: $accro-logo-height;
@@ -22,17 +19,26 @@ body.subtheme-accro {
                 color: $brand-third;
             }
         }
-
-        .nav-secondary {
-            bottom: 2px;
-        }
     }
 
     main.main {
         .content-description {
+            font-weight: bold;
             .page-header, header {
                 white-space: nowrap;
-                padding-right: 20px;
+                padding-top: 0;
+                padding-right: 40px;
+                position: relative;
+                top: -0.5em;
+                h1 {
+                    text-transform: none;
+                    font-size: 1.7em;
+                }
+
+                h2 {
+                    color: $brand-secondary;
+                }
+
                 h2, h3 {
                     display: inline-block;
                 }
@@ -40,6 +46,7 @@ body.subtheme-accro {
         }
 
         .section-multicontent {
+            padding: $header-accro-extra-height 0;
             .block.block-main {
                 &.block-main-even, &.block-main-odd {
                     color: $brand-dark;
@@ -51,6 +58,17 @@ body.subtheme-accro {
                     background: initial;
                 }
             }
+        }
+
+        .section-about-immersive {
+            .immersive-title {
+                text-align: center;
+                text-transform: uppercase;
+            }
+        }
+
+        .block-content.content-image {
+            max-height: 200px;
         }
     }
 
