@@ -34,10 +34,13 @@
             </section>
         </section>
     </div>
-    <?php if(true): ?>
+    <?php
+        $formShortCode = get_field( "form_shortcode");
+        if($formShortCode): ?>
 
     <section class="block block-form">
-        <?= do_shortcode('[contact-form-7 id="314" title="Contact"]'); ?>
+        <?= do_shortcode($formShortCode); ?>
     </section>
-    <?php endif; ?>
+
+<?php   endif; ?>
 <?php endwhile; ?>
