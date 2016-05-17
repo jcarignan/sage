@@ -100,7 +100,6 @@ body.page {
                 display: flex;
 
                 .block-content {
-                    display: flex;
                 }
 
                 .content-description {
@@ -111,8 +110,7 @@ body.page {
                 }
 
                 .content-image {
-                    flex-basis: 35%;
-                    width: auto;
+                    width: 35%;
                     flex-grow: 1;
                 }
 
@@ -120,6 +118,10 @@ body.page {
                     display: block;
                     .block-content {
                         display: block;
+                    }
+
+                    .content-image {
+                        width: 100%;
                     }
                 }
 
