@@ -226,7 +226,7 @@ body.page {
             padding: 10px;
 
             &:last-of-type {
-                margin-right: 0;
+                margin-right: 0 !important;
             }
 
             svg, img {

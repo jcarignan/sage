@@ -82,6 +82,7 @@
                                     $isFullWidth = get_sub_field('is_full_width') === true;
                                     $style = get_sub_field('style');
                                     $backgroundSize = get_sub_field('background_size');
+                                    $marginRight = get_sub_field('margin_right');
                                     $className = ' gallery-'.$style;
                                     $liAttrs = 'style="';
                                     $imgWidth = '100%';
@@ -108,6 +109,7 @@
                                         {
                                             $imgWidth = get_sub_field('column_width').'px';
                                         }
+                                        $liAttrs .= 'margin-right: '.$marginRight.'; ';
                                     }
                                     if ($withBackgroundColor)
                                     {
@@ -124,20 +126,28 @@
 					                   $subtitle = get_sub_field('subtitle');
 					                   $itemContent = get_sub_field('content');
                                        $image = get_sub_field('image');
+                                       $slideUrl = get_sub_field('link');
                                        $imgStyle = 'background-image:url('.$image['url'].');  background-size:'.$backgroundSize.'; width:'.$imgWidth.';';
                                        $liClass = $image ? 'with-image':'without-image';
 					                   ?>
 	                <li class="list-item <?= $liClass?>" <?=$liAttrs?>>
+<?php if (strlen($slideUrl)>0):?>
+                        <a href="<?=$slideUrl?>" target="_blank">
+<?php endif; ?>
 <?php if ($image): ?>
                         <div class="item-image" style="<?=$imgStyle?>" ></div>
 <?php endif; ?>
                         <div class="item-content" style="<?=$contentStyle?>" >
+
                             <div class="item-content-inner">
                                 <h1 class="item-element item-title"><?=$title?></h1>
                                 <div class="item-element item-subtitle"><?=$subtitle?></div>
                                 <div class="item-element item-description"><?=$itemContent?></div>
                             </div>
                         </div>
+<?php if (strlen($slideUrl)>0):?>
+                        </a>
+<?php endif; ?>
                     </li>
 <?php				                endwhile; ?>
                 </ul>

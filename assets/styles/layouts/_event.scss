@@ -94,7 +94,6 @@ body.page-template-page-event {
                     }
 
                     .list-item {
-                        margin-right: 10px;
 
                         &.with-image {
                             .item-content {
@@ -151,7 +150,8 @@ body.page-template-page-event {
                                 }
 
                                 .item-description {
-                                    font-size: 12px;
+                                    padding-top: 10px;
+                                    font-size: 10px;
                                     overflow: auto;
                                 }
                             }
@@ -191,7 +191,7 @@ body.page-template-page-event {
                                     width: 100%;
                                 }
                             }
-                            .item-element {
+                            .item-image, .item-content {
                                 width: 50% !important;
                             }
 
