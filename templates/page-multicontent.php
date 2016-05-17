@@ -7,11 +7,9 @@
     <?php
         if( have_rows('multicontent') ): ?>
             <section class="section-multicontent">
-        ?>
+        <?php
             $mainBlocksCount = 0;
-            while (have_rows('multicontent')) : the_row(); ?>
-
-            <?php
+            while (have_rows('multicontent')) : the_row();
                 $withContent = get_sub_field('with_content');
                 $list = get_sub_field('list');
                 $title = get_sub_field('title');
