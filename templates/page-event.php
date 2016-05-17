@@ -26,7 +26,7 @@
                     $hasSeparator = get_sub_field('has_separator') === true;
                     while(the_flexible_field('layout')):
                         $layout = get_row_layout(); ?>
-        <section class="block block-main block-main-<?=$layout?>">
+        <section class="block block-main block-main-<?=$layout?> block-align-<?=$align?>" >
 
 <?php                   if ($hasSeparator): ?>
             <div class="block block-separator"></div>
@@ -41,16 +41,39 @@
             <div class="block block-text"><?= the_sub_field('content')?>
             </div>
 <?php                           break; ?>
-<?php                           case 'text_with_photo': ?>
-            <div class="block block-text-with-photo">
-                <div class="content-text"><?= the_sub_field('content')?></div>
-                <div class="content-image"></div>
+<?php                           case 'text_with_image': // ----------------------------------------------------------
+                                    $layoutContent = get_sub_field('content');
+                                    $layoutImage = get_sub_field('image');
+                                    $layoutAlign = get_sub_field('align');
+                                    $layoutFullWidth = get_sub_field('is_full_width') === true;
+                                    $layoutClassName = 'align-'.$layoutAlign.' '.($layoutFullWidth ? 'full-width':'not-full-width');
+?>
+            <div class="block block-text-with-image <?=$layoutClassName?>">
+                <section class="block-content content-description">
+                    <?= $layoutContent ?>
+                </section>
+                <?php if ($layoutImage):?>
+                    <section class="block-content content-image" style="background-image: url(<?php echo $layoutImage['url']?>);"></section>
+                <?php endif; ?>
             </div>
 <?php                           break; ?>
-<?php                           case 'social_medias': ?>
+<?php                           case 'about': // ----------------------------------------------------------
+                                    $layoutTitle = get_sub_field('title');
+                                    $layoutContent = get_sub_field('content');
+                                    $layoutImage = get_sub_field('image');
+?>
+            <div class="block block-about">
+                <section class="block-content content-description">
+                    <div class="page-header"><h1><?= $layoutTitle; ?></h1></div>
+                    <article class="page-content"><?= $layoutContent ?></article>
+                </section>
+                <section class="block-content content-image" style="background-image: url(<?php echo $layoutImage['url']?>);"></section>
+            </div>
+<?php                           break; ?>
+<?php                           case 'social_medias': // ---------------------------------------------------------- ?>
             <div class="block block-social-medias"><?= the_sub_field('content')?></div>
 <?php                           break; ?>
-<?php                           case 'gallery':
+<?php                           case 'gallery':  // ----------------------------------------------------------
                                     $isFullWidth = get_sub_field('is_full_width') === true;
                                     $style = get_sub_field('style');
                                     $backgroundSize = get_sub_field('background_size');
@@ -58,6 +81,8 @@
                                     $liAttrs = 'style="';
                                     $imgWidth = '100%';
                                     $withBackgroundColor = get_sub_field('with_background_color') === true;
+                                    $listItemsAttrs = 'style="text-align: '.$align.'";';
+
                                     if ($isFullWidth)
                                     {
                                         $className .= ' full-width';
@@ -79,19 +104,23 @@
                                         $className .= ' with-background-color';
                                     }
                                     $liAttrs .= 'height: '.get_sub_field('row_height').'px;";';
+                                    $contentStyle = $style === 'details' ? 'padding-left: '.$imgWidth:'';
 ?>
             <div class="block block-gallery<?= $className ?>">
 <?php                               if( have_rows('slides') ): ?>
-                <ul class="list-items">
+                <ul class="list-items" <?= $listItemsAttrs ?>>
 <?php                               while ( have_rows('slides') ) : the_row();
 					                   $title = get_sub_field('title');
 					                   $subtitle = get_sub_field('subtitle');
                                        $image = get_sub_field('image');
                                        $imgStyle = 'background-image:url('.$image['url'].');  background-size:'.$backgroundSize.'; width:'.$imgWidth.';';
+                                       $liClass = $image ? 'with-image':'without-image';
 					                   ?>
-	                <li class="list-item" <?=$liAttrs?>>
+	                <li class="list-item <?= $liClass?>" <?=$liAttrs?>>
+<?php if ($image): ?>
                         <div class="item-image" style="<?=$imgStyle?>" ></div>
-                        <div class="item-content">
+<?php endif; ?>
+                        <div class="item-content" style="<?=$contentStyle?>" >
                             <h1 class="item-title"><?=$title?></h1>
                             <div class="item-subtitle"><?=$subtitle?></div>
                         </div>

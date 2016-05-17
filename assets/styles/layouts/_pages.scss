@@ -111,8 +111,9 @@ body.page {
                 }
 
                 .content-image {
-                    flex-basis: 370px;
+                    flex-basis: 35%;
                     width: auto;
+                    flex-grow: 1;
                 }
 
                 @media screen and (max-width: $small-width) {
@@ -154,21 +155,6 @@ body.page {
                             position: static;
                             left: auto;
                         }
-                    }
-                }
-
-                ul {
-                    li {
-                        &:before {
-                            content:'';
-                            display: inline-block;
-                            width: 0.6em;
-                            height: 0.6em;
-                            border-radius: 50%;
-                            border: 3px solid $brand-secondary;
-                            margin-right: 5px;
-                        }
-                        padding-bottom: 10px;
                     }
                 }
 

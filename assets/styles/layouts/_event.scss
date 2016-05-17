@@ -3,18 +3,25 @@ body.page-template-page-event {
         padding-bottom: 20px;
         .block.block-main {
 
-            margin-top: $header-accro-extra-height - 10px;
+            margin-top: $header-accro-extra-height + 0px;
 
-            .block-content .page-content, .block-text, .block-title, .block-gallery.static-width {
+            @media screen and (max-width: $small-width) {
+                margin-top: $header-accro-mobile-extra-height + 10px;
+            }
+
+            .block-text, .block-title, .block-gallery.static-width, .block-text-with-image.not-full-width {
                 max-width: $medium-width;
                 margin: 0 auto;
+                padding: 0 30px;
+                box-sizing: border-box;
+            }
+
+            &.block-main-content .content-description {
+                background-color: $brand-light-gray;
+                box-shadow: 0px 4px 10px rgba(0,0,0,0.3);
             }
 
             .block-content.content-description {
-                background-color: $brand-light-gray;
-                box-shadow: 0px 4px 10px rgba(0,0,0,0.3);
-                padding: 30px;
-
                 .block-content .page-content {
                     font-size: 16px;
                 }
@@ -88,26 +95,47 @@ body.page-template-page-event {
 
                     .list-item {
                         margin-right: 10px;
+
+                        &.with-image {
+                            >* {
+                                text-indent: -999999px;
+                            }
+                        }
+
+                        &.without-image {
+                            background-color: $brand-light-gray;
+                            color: $brand-dark;
+                        }
                     }
 
                     .item-content {
-                        h1, div {
-                            text-indent: -999999px;
-                        }
+                        display: flex;
+                        flex-direction: column;
+                        justify-content: center;
+                        height: 100%;
+                        padding: 2em;
+                        box-sizing: border-box;
+
+                        font-size: 0.8em;
                     }
                 }
 
                 &.gallery-details {
                     .list-items {
-                        display: flex;
-                        flex-wrap: wrap;
-                        justify-content: center;
+                        display: block;
                         .list-item {
-                            display: flex;
+                            display: inline-block;
 
                             .item-content, .item-image {
                                 display: block;
                                 position: relative;
+                            }
+
+                            .item-image {
+                                position: absolute;
+                                top: 0;
+                                left: 0;
+                                height: 100%;
                             }
 
                             .item-content {
@@ -122,6 +150,89 @@ body.page-template-page-event {
                                     color: $brand-third;
                                     //font-size:
                                 }
+                            }
+
+                            @media screen and (max-width: $small-width) {
+                                .item-image {
+                                    width: 50% !important;
+                                }
+                            }
+                        }
+                    }
+                }
+
+                &.gallery-two-tiles {
+                    .list-items {
+                        flex-wrap: wrap;
+
+                        .list-item {
+                            width: 50%;
+                            display: flex;
+
+                            .item-image {
+                                position: relative;
+                            }
+
+                            .item-content {
+                                display: flex;
+                                flex-direction: column;
+                                justify-content: center;
+
+                                h1, div {
+                                    display: block;
+                                    width: 100%;
+                                }
+                            }
+                            .item-image, .item-content {
+                                width: 50% !important;
+                            }
+
+                            &:nth-child(4n+3), &:nth-child(4n+4)
+                            {
+                                .item-content {
+                                    order: -1;
+                                }
+                            }
+                        }
+
+                        @media screen and (max-width: $small-width) {
+                            .list-item {
+                                width: 100% !important;
+
+                                &:nth-child(4n+3), &:nth-child(4n+4)
+                                {
+                                    .item-content {
+                                        order: 0
+                                    }
+                                }
+
+                                &:nth-child(even)
+                                {
+                                    .item-content {
+                                        order: -1;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+
+                &.gallery-label {
+                    .list-items {
+                        .list-item {
+                            padding-bottom: 20px;
+                            margin: 0;
+                            .item-image {
+                                position: relative;
+                                box-sizing: border-box;
+                            }
+                        }
+                        @media screen and (max-width: $small-width) {
+                            display: flex;
+                            font-size: 14px;
+
+                            .list-item {
+                                height: 70px !important;
                             }
                         }
                     }
@@ -147,28 +258,123 @@ body.page-template-page-event {
                     .list-item {
                         position: relative;
                         background-color: $brand-primary;
+                        box-sizing: border-box;
+                        @media screen and (max-width: $small-width) {
+                            width: 50% !important;
+                        }
                         .item-image {
                             @extend .fullscreen;
                             z-index: 0;
                             background-repeat: no-repeat;
                             background-position: center;
 
-                            @media screen and (max-width: $small-width) {
-                                width: 50% !important;
-                            }
+
                         }
                     }
                 }
             }
 
             .block-text {
-                padding: 30px;
+                padding: 0 30px;
+                box-sizing: border-box;
                 a {
                     display: inline-block;
                     padding-top: 10px;
                     font-weight: bold;
                     text-decoration: underline;
                     color: $brand-third;
+                }
+            }
+
+            &.block-main-about {
+                .block-about {
+                    display: flex;
+                    .block-content {
+                        &.content-description {
+                            display: flex;
+                            ul {
+                                li {
+                                    position: relative;
+                                    padding-left: 1.4em;
+                                    &:before {
+                                        content:'';
+                                        display: block;
+                                        position: absolute;
+                                        top: 0.1em;
+                                        left: 0;
+                                        width: 0.6em;
+                                        height: 0.6em;
+                                        border-radius: 50%;
+                                        border: 3px solid $brand-secondary;
+                                    }
+                                    padding-bottom: 10px;
+                                }
+                            }
+                        }
+                    }
+                }
+
+
+                &.block-align-right {
+                    &.block-main-about {
+                        .block-about {
+                            .block-content {
+                                &.content-description {
+                                    order: 1;
+                                }
+                            }
+                        }
+                    }
+                }
+
+                @media screen and (max-width: $small-width) {
+                    &.block-main-about {
+                        .block-about {
+                            display: block;
+
+                            .content-description {
+                                display: block;
+                            }
+                        }
+                    }
+                }
+            }
+
+            .block-text-with-image {
+                display: flex;
+                .block-content {
+
+                    &.content-description {
+                        padding-bottom: 20px;
+                    }
+
+                    &.content-image {
+                        flex-shrink: 0;
+                    }
+                }
+
+                &.not-full-width {
+                    &.align-left {
+                        .block-content.content-description {
+                            padding-left: 0;
+                        }
+                    }
+
+                    &.align-right {
+                        .block-content.content-description {
+                            padding-right: 0;
+                        }
+                    }
+                }
+
+                &.align-right {
+                    .content-description {
+                        order: 1;
+                    }
+                }
+
+                @media screen and (max-width: $small-width) {
+                    display: block;
                 }
             }
         }
