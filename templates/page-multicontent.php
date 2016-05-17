@@ -5,10 +5,12 @@
 
 <?php while (have_posts()) : the_post(); ?>
     <?php
-        if( have_rows('multicontent') ):
+        if( have_rows('multicontent') ): ?>
+            <section class="section-multicontent">
+        ?>
             $mainBlocksCount = 0;
             while (have_rows('multicontent')) : the_row(); ?>
-            <section class="section-multicontent">
+
             <?php
                 $withContent = get_sub_field('with_content');
                 $list = get_sub_field('list');
@@ -26,7 +28,7 @@
                     $blockClass = 'block-without-content';
                 }
 
-                ?>
+            ?>
 
                 <section class="block <?php echo $blockClass;?>">
                     <?php if ($withContent): ?>
@@ -55,6 +57,6 @@
                     <?php endif; ?>
                 </section>
             <?php endwhile; ?>
-        </section>
+
     <?php endif; ?>
 <?php endwhile; ?>
