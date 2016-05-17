@@ -49,6 +49,7 @@ body.page-template-page-event {
 
             .block-gallery {
                 position: relative;
+
                 &.gallery-interactive {
                     .list-items {
                         .list-item {
@@ -96,6 +97,9 @@ body.page-template-page-event {
                     .list-item {
 
                         &.with-image {
+                            .item-image {
+                                position: relative;
+                            }
                             .item-content {
                                 text-indent: -999999px;
                             }
@@ -112,9 +116,7 @@ body.page-template-page-event {
                         flex-direction: column;
                         justify-content: center;
                         height: 100%;
-                        padding: 2em;
                         box-sizing: border-box;
-
                         font-size: 0.8em;
                     }
                 }
@@ -254,6 +256,14 @@ body.page-template-page-event {
                         .list-item {
                             margin: 0;
                             padding: 0;
+                        }
+                    }
+                }
+
+                &.with-padding {
+                    .list-items {
+                        .list-item {
+                            padding: 2em !important;
                         }
                     }
                 }

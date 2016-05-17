@@ -87,7 +87,9 @@
                                     $liAttrs = 'style="';
                                     $imgWidth = '100%';
                                     $withBackgroundColor = get_sub_field('with_background_color') === true;
+                                    $withPadding = get_sub_field('with_padding') === true;
                                     $listItemsAttrs = 'style="text-align: '.$align.'";';
+                                    $className .= $withPadding ? ' with-padding':'';
 
                                     if ($isFullWidth)
                                     {
