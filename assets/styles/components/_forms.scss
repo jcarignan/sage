@@ -1,6 +1,6 @@
 // Search form
 .search-form {
-    
+
 }
 .search-form label {
   font-weight: normal;
@@ -11,4 +11,108 @@
 }
 .search-form .search-submit {
 
+}
+
+
+.block.block-form {
+    max-width: 980px;
+    margin: 0 auto;
+    padding: 0 20px;
+    box-sizing: border-box;
+    color: $brand-primary;
+    font-size: 14px;
+
+    h2 {
+        padding: 0 0 20px;
+        text-align: center;
+    }
+
+    .wpcf7-form-control-wrap {
+
+        &.your-name, &.your-email {
+
+        }
+
+        &.your-name {
+
+        }
+
+        &.your-email {
+
+        }
+
+        &:not(.your-message) {
+
+            width: 50%;
+            display: inline-block;
+            box-sizing: border-box;
+            margin-bottom: 20px;
+
+            &:nth-of-type(even) {
+                padding-left: 20px;
+            }
+
+            &:nth-of-type(odd) {
+                padding-right: 20px;
+            }
+        }
+
+        &.your-message {
+            margin-bottom: 20px;
+            display: block;
+        }
+    }
+
+    .wpcf7-form-control.wpcf7-submit {
+        display: block;
+        background-color: $brand-third;
+        color: inherit;
+        font-weight: bold;
+    }
+
+    input, textarea {
+        display: block;
+        appearance: none;
+        border: 0;
+        width: 100%;
+        padding: 4px;
+        box-sizing: border-box;
+        font-size: inherit;
+        font-family: inherit;
+        color: $brand-dark;
+        box-shadow: 1px 1px 2px 2px rgba(0,0,0,0.5);
+    }
+
+    textarea {
+        resize: vertical;
+    }
+
+    @media screen and (max-width: $medium-width) {
+        .block.block-form {
+            .wpcf7-form-control-wrap {
+                &.your-name {
+                    padding-right: 10px;
+                }
+
+                &.your-email {
+                    padding-left: 10px;
+                }
+            }
+        }
+    }
+
+    @media screen and (max-width: $small-width) {
+        .block.block-form {
+            .wpcf7-form-control-wrap {
+                &.your-name, &.your-email {
+                    padding: 0;
+                    width: 100%;
+                }
+
+                &.your-name {
+                    padding-bottom: 10px;
+                }
+            }
+        }
+    }
 }

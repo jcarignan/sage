@@ -70,8 +70,13 @@
                 <section class="block-content content-image" style="background-image: url(<?php echo $layoutImage['url']?>);"></section>
             </div>
 <?php                           break; ?>
-<?php                           case 'social_medias': // ---------------------------------------------------------- ?>
-            <div class="block block-social-medias"><?= the_sub_field('content')?></div>
+<?php                           case 'contact_form': // ----------------------------------------------------------
+                                    $formShortCode = get_sub_field( "form_shortcode");
+                                    if($formShortCode): ?>
+                                    <section class="block block-form">
+                                        <?= do_shortcode($formShortCode); ?>
+                                    </section>
+<?php                               endif; ?>
 <?php                           break; ?>
 <?php                           case 'gallery':  // ----------------------------------------------------------
                                     $isFullWidth = get_sub_field('is_full_width') === true;
@@ -88,6 +93,11 @@
                                         $className .= ' full-width';
                                         $columnsNumber = get_sub_field('columns_number');
                                         $liAttrs .= 'width:'.(1/$columnsNumber*100).'%; ';
+                                        if ($style === 'details')
+                                        {
+                                            $imgWidth = get_sub_field('image_width');
+                                        }
+
                                     } else {
                                         $className .= ' static-width';
                                         if ($style !== 'details')
@@ -96,7 +106,7 @@
                                         }
                                         else
                                         {
-                                            $imgWidth = get_sub_field('column_width').'px;';
+                                            $imgWidth = get_sub_field('column_width').'px';
                                         }
                                     }
                                     if ($withBackgroundColor)
@@ -104,7 +114,7 @@
                                         $className .= ' with-background-color';
                                     }
                                     $liAttrs .= 'height: '.get_sub_field('row_height').'px;";';
-                                    $contentStyle = $style === 'details' ? 'padding-left: '.$imgWidth:'';
+                                    $contentStyle = $style === 'details' ? 'padding-left: '.$imgWidth.';':';';
 ?>
             <div class="block block-gallery<?= $className ?>">
 <?php                               if( have_rows('slides') ): ?>
@@ -112,6 +122,7 @@
 <?php                               while ( have_rows('slides') ) : the_row();
 					                   $title = get_sub_field('title');
 					                   $subtitle = get_sub_field('subtitle');
+					                   $itemContent = get_sub_field('content');
                                        $image = get_sub_field('image');
                                        $imgStyle = 'background-image:url('.$image['url'].');  background-size:'.$backgroundSize.'; width:'.$imgWidth.';';
                                        $liClass = $image ? 'with-image':'without-image';
@@ -121,8 +132,11 @@
                         <div class="item-image" style="<?=$imgStyle?>" ></div>
 <?php endif; ?>
                         <div class="item-content" style="<?=$contentStyle?>" >
-                            <h1 class="item-title"><?=$title?></h1>
-                            <div class="item-subtitle"><?=$subtitle?></div>
+                            <div class="item-content-inner">
+                                <h1 class="item-element item-title"><?=$title?></h1>
+                                <div class="item-element item-subtitle"><?=$subtitle?></div>
+                                <div class="item-element item-description"><?=$itemContent?></div>
+                            </div>
                         </div>
                     </li>
 <?php				                endwhile; ?>

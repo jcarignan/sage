@@ -97,7 +97,7 @@ body.page-template-page-event {
                         margin-right: 10px;
 
                         &.with-image {
-                            >* {
+                            .item-content {
                                 text-indent: -999999px;
                             }
                         }
@@ -126,7 +126,7 @@ body.page-template-page-event {
                         .list-item {
                             display: inline-block;
 
-                            .item-content, .item-image {
+                            .item-element {
                                 display: block;
                                 position: relative;
                             }
@@ -148,8 +148,16 @@ body.page-template-page-event {
 
                                 .item-subtitle {
                                     color: $brand-third;
-                                    //font-size:
                                 }
+
+                                .item-description {
+                                    font-size: 12px;
+                                    overflow: auto;
+                                }
+                            }
+
+                            .item-content-inner {
+                                padding: 0 20px;
                             }
 
                             @media screen and (max-width: $small-width) {
@@ -183,7 +191,7 @@ body.page-template-page-event {
                                     width: 100%;
                                 }
                             }
-                            .item-image, .item-content {
+                            .item-element {
                                 width: 50% !important;
                             }
 
