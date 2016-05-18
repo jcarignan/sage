@@ -29,18 +29,6 @@
 
     .wpcf7-form-control-wrap {
 
-        &.your-name, &.your-email {
-
-        }
-
-        &.your-name {
-
-        }
-
-        &.your-email {
-
-        }
-
         &:not(.your-message) {
 
             width: 50%;
@@ -88,31 +76,21 @@
     }
 
     @media screen and (max-width: $medium-width) {
-        .block.block-form {
-            .wpcf7-form-control-wrap {
-                &.your-name {
-                    padding-right: 10px;
-                }
+        .wpcf7-form-control-wrap:not(.your-message) {
+            &:nth-of-type(even) {
+                padding-left: 10px;
+            }
 
-                &.your-email {
-                    padding-left: 10px;
-                }
+            &:nth-of-type(odd) {
+                padding-right: 10px;
             }
         }
     }
 
     @media screen and (max-width: $small-width) {
-        .block.block-form {
-            .wpcf7-form-control-wrap {
-                &.your-name, &.your-email {
-                    padding: 0;
-                    width: 100%;
-                }
-
-                &.your-name {
-                    padding-bottom: 10px;
-                }
-            }
+        .wpcf7-form-control-wrap {
+            padding: 0 !important;
+            width: 100% !important;
         }
     }
 }

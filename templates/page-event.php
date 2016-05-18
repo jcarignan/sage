@@ -123,22 +123,22 @@
             <div class="block block-gallery<?= $className ?>">
 <?php                               if( have_rows('slides') ): ?>
                 <ul class="list-items" <?= $listItemsAttrs ?>>
-<?php                               while ( have_rows('slides') ) : the_row();
-					                   $title = get_sub_field('title');
-					                   $subtitle = get_sub_field('subtitle');
-					                   $itemContent = get_sub_field('content');
-                                       $image = get_sub_field('image');
-                                       $slideUrl = get_sub_field('link');
-                                       $imgStyle = 'background-image:url('.$image['url'].');  background-size:'.$backgroundSize.'; width:'.$imgWidth.';';
-                                       $liClass = $image ? 'with-image':'without-image';
-					                   ?>
+    <?php                               while ( have_rows('slides') ) : the_row();
+    					                   $title = get_sub_field('title');
+    					                   $subtitle = get_sub_field('subtitle');
+    					                   $itemContent = get_sub_field('content');
+                                           $image = get_sub_field('image');
+                                           $slideUrl = get_sub_field('link');
+                                           $imgStyle = 'background-image:url('.$image['url'].');  background-size:'.$backgroundSize.'; width:'.$imgWidth.';';
+                                           $liClass = $image ? 'with-image':'without-image';
+    					                   ?>
 	                <li class="list-item <?= $liClass?>" <?=$liAttrs?>>
-<?php if (strlen($slideUrl)>0):?>
+<?php                                       if (strlen($slideUrl)>0):?>
                         <a href="<?=$slideUrl?>" target="_blank">
-<?php endif; ?>
-<?php if ($image): ?>
+<?php                                       endif; ?>
+<?php                                       if ($image): ?>
                         <div class="item-image" style="<?=$imgStyle?>" ></div>
-<?php endif; ?>
+<?php                                       endif; ?>
                         <div class="item-content" style="<?=$contentStyle?>" >
 
                             <div class="item-content-inner">
@@ -147,14 +147,62 @@
                                 <div class="item-element item-description"><?=$itemContent?></div>
                             </div>
                         </div>
-<?php if (strlen($slideUrl)>0):?>
+<?php                                       if (strlen($slideUrl)>0):?>
                         </a>
-<?php endif; ?>
+<?php                                       endif; ?>
                     </li>
 <?php				                endwhile; ?>
                 </ul>
 <?php                           endif; ?>
             </div>
+<?php                       break; ?>
+<?php                       case 'columns_gallery': // ----------------------------------------------------------
+                                $columnsHeight = get_sub_field('height');
+                                if ( have_rows('columns') ):?>
+                                    <section class="block block-columns-gallery">
+<?php                               while ( have_rows('columns') ) : the_row();
+                                        $columnTitle = get_sub_field('title');
+                                    ?>
+                                        <div class="block-content block-content-gallery-column">
+                                            <h3 class="gallery-title" style="text-align: <?=$align?>;"><?=$columnTitle?></h3>
+                                            <ul class="list-items" style="height: <?=$columnsHeight?>">
+<?php                                   $elementsCount = count(get_sub_field('gallery'));
+                                        if ($elementsCount <= 1)
+                                        {
+                                            $elementSize = '100%';
+                                        }
+                                        else if ($elementsCount <= 4)
+                                        {
+                                            $elementSize = '50%';
+                                        }
+                                        else if ($elementsCount <= 9)
+                                        {
+                                            $elementSize = '33.3333%';
+                                        } else {
+                                            $elementSize = '25%';
+                                        }
+                                        while ( have_rows('gallery') ) : the_row();
+
+                                            $elementTitle = get_sub_field('title');
+                                            $elementImage = get_sub_field('image');
+                                            $elementLink = get_sub_field('link');
+                                            $hasLink = $elementLink && strlen($elementLink);?>
+                                            <li class="list-item" style="width: <?=$elementSize?>; height: <?=$elementSize?>">
+<?php                                       if ($hasLink): ?>
+                                                <a href="<?=$elementLink?>" target="_blank">
+<?php                                       endif; ?>
+                                                    <div class="item-content"><?=$elementTitle?></div>
+                                                    <div class="item-image" style="background-image: url(<?=$elementImage['url']?>);"></div>
+<?php                                       if ($hasLink): ?>
+                                                </a>
+<?php                                       endif; ?>
+                                            </li>
+<?php                                   endwhile; ?>
+                                        </ul>
+                                    </div>
+<?php				                endwhile; ?>
+                                </section>
+<?php                           endif; ?>
 <?php                       break; ?>
 <?php                   endswitch; ?>
         </section>

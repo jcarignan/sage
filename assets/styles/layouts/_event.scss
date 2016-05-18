@@ -163,8 +163,9 @@ body.page-template-page-event {
                             }
 
                             @media screen and (max-width: $small-width) {
+                                //width: 100% !important;
                                 .item-image {
-                                    width: 50% !important;
+                                    //width: 50% !important;
                                 }
                             }
                         }
@@ -273,12 +274,15 @@ body.page-template-page-event {
                 }
 
                 .list-items {
+                    font-size: 0;
                     .list-item {
                         position: relative;
                         background-color: $brand-primary;
                         box-sizing: border-box;
+                        font-size: 18px;
                         @media screen and (max-width: $small-width) {
                             width: 50% !important;
+                            margin: 0 !important;
                         }
                         .item-image {
                             @extend .fullscreen;
@@ -393,6 +397,37 @@ body.page-template-page-event {
 
                 @media screen and (max-width: $small-width) {
                     display: block;
+                }
+            }
+
+            &.block-main-columns_gallery {
+
+                .gallery-title {
+                    font-size: 16px;
+                    margin-bottom: 1em;
+                    text-transform: uppercase;
+                }
+
+                .list-items {
+                    font-size: 0;
+                    text-align: left;
+                    .list-item {
+                        font-size: 12px;
+                        margin: 0;
+                        position: relative;
+
+                        .item-content {
+                            text-indent: -9999999px;
+                            @extend .fullscreen;
+                        }
+
+                        .item-image {
+                            height: 100%;
+                            background-repeat: no-repeat;
+                            background-position: center;
+                            background-size: contain;
+                        }
+                    }
                 }
             }
         }

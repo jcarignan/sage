@@ -224,6 +224,7 @@ body.page {
             display: inline-block;
             margin-right: 20px;
             padding: 10px;
+            box-sizing: border-box;
 
             &:last-of-type {
                 margin-right: 0 !important;
