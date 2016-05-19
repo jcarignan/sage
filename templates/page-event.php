@@ -22,6 +22,8 @@
 <?php       if( have_rows('content') ): ?>
 <?php           while ( have_rows('content') ) : the_row(); ?>
 <?php               $title = get_sub_field('title');
+                    $showTitle = get_sub_field('show_title') === true;
+                    $titleStyle = get_sub_field('title_style');
                     $align = get_sub_field('align');
                     $hasSeparator = get_sub_field('has_separator') === true;
                     while(the_flexible_field('layout')):
@@ -32,8 +34,8 @@
             <div class="block block-separator"></div>
 <?php                    endif; ?>
 
-<?php                       if ($title): ?>
-            <h1 class="block block-title align-<?=$align?>"><?=$title?></h1>
+<?php                       if ($showTitle): ?>
+            <div class="block block-title style-<?=$titleStyle?>"><?=$title?></div>
 <?php                       endif; ?>
 
 <?php                       switch( $layout): ?>
