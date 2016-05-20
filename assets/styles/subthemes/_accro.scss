@@ -1,5 +1,7 @@
 body.subtheme-accro {
-
+    .content {
+        padding-bottom: $footer-height;
+    }
     header.banner {
         .header-wrapper {
             background-image: url($accro-image-path+'/header-bg-full.png');

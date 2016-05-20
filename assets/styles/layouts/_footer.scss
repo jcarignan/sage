@@ -1,0 +1,12 @@
+footer.content-info {
+    position: absolute;
+    width: 100%;
+    height: $footer-height;
+    bottom: 0;
+    background-color: $brand-light-gray;
+    text-align: center;
+
+    img {
+        width: auto !important;
+    }
+}

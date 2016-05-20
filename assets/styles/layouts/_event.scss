@@ -1,15 +1,20 @@
 body.page-template-page-event {
     .block-main-container {
-        padding-bottom: 20px;
+
         .block.block-main {
 
             margin-top: $header-accro-extra-height + 0px;
+            margin-bottom: 20px;
+
+            &:last-of-type {
+                margin-bottom: 0;
+            }
 
             @media screen and (max-width: $small-width) {
                 margin-top: $header-accro-mobile-extra-height + 10px;
             }
 
-            .block-text, .block-title, .block-gallery.static-width, .block-text-with-image.not-full-width {
+            .block-text, .block-title, .block-gallery.static-width, .block-text-with-image.not-full-width, &.block-main-columns_gallery {
                 max-width: $medium-width;
                 margin: 0 auto;
                 padding: 0 30px;
@@ -56,6 +61,10 @@ body.page-template-page-event {
 
                 &.align-right {
                     text-align: right;
+                }
+
+                @media screen and (max-width: $small-width) {
+                    text-align: center;
                 }
             }
 
@@ -174,13 +183,21 @@ body.page-template-page-event {
                                 padding: 0 20px;
                             }
 
-                            @media screen and (max-width: $small-width) {
-                                //width: 100% !important;
-                                .item-image {
-                                    //width: 50% !important;
-                                }
+
+                        }
+                    }
+
+                    @media screen and (max-width: $small-width) {
+                        .list-items {
+                            .list-item {
+                                width: 100% !important;
+                                margin-bottom: 20px !important;
+
+
                             }
                         }
+                        padding: 0 20px;
+                        box-sizing: border-box;
                     }
                 }
 
@@ -309,7 +326,7 @@ body.page-template-page-event {
             }
 
             .block-text {
-                padding: 0 30px;
+                padding: 0 30px 20px;
                 box-sizing: border-box;
                 a {
                     display: inline-block;

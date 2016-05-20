@@ -58,14 +58,14 @@ add_action('after_setup_theme', __NAMESPACE__ . '\\setup');
  * Register sidebars
  */
 function widgets_init() {
-  register_sidebar([
+  /*register_sidebar([
     'name'          => __('Primary', 'immersiveproductions'),
     'id'            => 'sidebar-primary',
     'before_widget' => '<section class="widget %1$s %2$s">',
     'after_widget'  => '</section>',
     'before_title'  => '<h3>',
     'after_title'   => '</h3>'
-  ]);
+]);*/
 
   register_sidebar([
     'name'          => __('Footer', 'immersiveproductions'),
@@ -74,9 +74,9 @@ function widgets_init() {
     'after_widget'  => '</section>',
     'before_title'  => '<h3>',
     'after_title'   => '</h3>'
-  ]);
+]);
 }
-//add_action('widgets_init', __NAMESPACE__ . '\\widgets_init');
+add_action('widgets_init', __NAMESPACE__ . '\\widgets_init');
 
 /**
  * Determine which pages should NOT display the sidebar
