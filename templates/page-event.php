@@ -82,6 +82,7 @@
 <?php                           break; ?>
 <?php                           case 'gallery':  // ----------------------------------------------------------
                                     $isFullWidth = get_sub_field('is_full_width') === true;
+                                    $usesMaxWidth = get_sub_field('uses_max_width') === true;
                                     $style = get_sub_field('style');
                                     $backgroundSize = get_sub_field('background_size');
                                     $marginRight = get_sub_field('margin_right');
@@ -89,9 +90,10 @@
                                     $liAttrs = 'style="';
                                     $imgWidth = '100%';
                                     $withBackgroundColor = get_sub_field('with_background_color') === true;
-                                    $withPadding = get_sub_field('with_padding') === true;
-                                    $listItemsAttrs = 'style="text-align: '.$align.'";';
-                                    $className .= $withPadding ? ' with-padding':'';
+                                    $imagePadding = get_sub_field('padding');
+                                    $listItemsPadding = get_sub_field('list_items_padding');
+                                    $listItemsStyle = 'text-align: '.$align.';padding:'.$listItemsPadding.';';
+                                    $liAttrs .= 'padding: '.$imagePadding.';';
 
                                     if ($isFullWidth)
                                     {
@@ -115,6 +117,12 @@
                                         }
                                         $liAttrs .= 'margin-right: '.$marginRight.'; ';
                                     }
+
+                                    if ($usesMaxWidth)
+                                    {
+                                        $className .= ' uses-max-width';
+                                    }
+
                                     if ($withBackgroundColor)
                                     {
                                         $className .= ' with-background-color';
@@ -124,7 +132,7 @@
 ?>
             <div class="block block-gallery<?= $className ?>">
 <?php                               if( have_rows('slides') ): ?>
-                <ul class="list-items" <?= $listItemsAttrs ?>>
+                <ul class="list-items" style="<?= $listItemsStyle ?>">
     <?php                               while ( have_rows('slides') ) : the_row();
     					                   $title = get_sub_field('title');
     					                   $subtitle = get_sub_field('subtitle');

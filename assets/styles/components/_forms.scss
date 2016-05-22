@@ -23,7 +23,7 @@
     font-size: 14px;
 
     h2 {
-        padding: 0 0 20px;
+        padding: 20px 0 20px;
         text-align: center;
     }
 
@@ -51,11 +51,33 @@
         }
     }
 
+    .wpcf7-not-valid-tip {
+        display: block;
+        position: absolute;
+        font-size: 0.6em;
+        margin-top: 0.2em;
+    }
+
     .wpcf7-form-control.wpcf7-submit {
         display: block;
         background-color: $brand-third;
         color: inherit;
         font-weight: bold;
+        cursor: pointer;
+    }
+
+    div.wpcf7 img.ajax-loader {
+        margin: 10px auto 0;
+        display: block;
+    }
+
+    div.wpcf7-response-output {
+        color: $brand-dark;
+        margin: 0;
+    }
+
+    div.wpcf7-validation-errors {
+        border-color: $brand-third;
     }
 
     input, textarea {

@@ -1,12 +1,37 @@
 footer.content-info {
-    position: absolute;
+    position: relative;
     width: 100%;
-    height: $footer-height;
-    bottom: 0;
     background-color: $brand-light-gray;
     text-align: center;
+    padding: 1em;
+    box-sizing: border-box;
+    font-weight: bold;
 
     img {
+        margin: 0 2em;
         width: auto !important;
+    }
+
+    ul {
+        display: flex;
+        justify-content: center;
+
+        li {
+            display: flex;
+            justify-content: center;
+            margin-right: 5%;
+
+            &:last-of-type {
+                margin-right: 0;
+            }
+        }
+    }
+
+    @media screen and (max-width: $small-width) {
+        ul {
+            li {
+                font-size: 0.7em;
+            }
+        }
     }
 }

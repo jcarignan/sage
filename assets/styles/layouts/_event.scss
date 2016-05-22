@@ -3,18 +3,18 @@ body.page-template-page-event {
 
         .block.block-main {
 
-            margin-top: $header-accro-extra-height + 0px;
-            margin-bottom: 20px;
+            margin-top: 30px;
+            margin-bottom: 10px;
+
+            &:first-of-type {
+                margin-top: 0;
+            }
 
             &:last-of-type {
                 margin-bottom: 0;
             }
 
-            @media screen and (max-width: $small-width) {
-                margin-top: $header-accro-mobile-extra-height + 10px;
-            }
-
-            .block-text, .block-title, .block-gallery.static-width, .block-text-with-image.not-full-width, &.block-main-columns_gallery {
+            .block-text, .block-title, .block-gallery.static-width, .block-gallery.uses-max-width, .block-text-with-image.not-full-width, &.block-main-columns_gallery {
                 max-width: $medium-width;
                 margin: 0 auto;
                 padding: 0 30px;
@@ -24,6 +24,13 @@ body.page-template-page-event {
             &.block-main-content .content-description {
                 background-color: $brand-light-gray;
                 box-shadow: 0px 4px 10px rgba(0,0,0,0.3);
+                padding-top: 40px;
+                padding-bottom: 30px;
+
+                @media screen and (max-width: $medium-width) {
+                    padding-top: 20px;
+                    padding-bottom: 16px;
+                }
             }
 
             .block-content.content-description {
@@ -35,7 +42,7 @@ body.page-template-page-event {
             .block-separator {
                 border-top: 2px solid rgba(0,0,0,0.3);
                 width: 40%;
-                margin: 0 auto;
+                margin: 20px auto;
             }
 
             .block-title {
@@ -51,6 +58,10 @@ body.page-template-page-event {
                     margin: auto 0 4px;
                     padding: 40px 0 30px;
                     box-shadow: 0px 3px 10px rgba(0,0,0,0.3);
+                    @media screen and (max-width: $medium-width) {
+                        padding-top: 20px;
+                        padding-bottom: 16px;
+                    }
                 }
 
                 padding: 8px 30px 20px;
@@ -101,6 +112,13 @@ body.page-template-page-event {
                                 .item-title {
                                     text-transform: uppercase;
                                     color: $brand-primary;
+                                }
+
+                                @media screen and (max-width: $small-width) {
+                                    height: 50%;
+                                    position: absolute;
+                                    bottom: 0;
+                                    opacity: 1;
                                 }
                             }
                         }
@@ -154,6 +172,7 @@ body.page-template-page-event {
                             }
 
                             .item-image {
+                                z-index: 1;
                                 position: absolute;
                                 top: 0;
                                 left: 0;
@@ -163,6 +182,8 @@ body.page-template-page-event {
                             .item-content {
                                 padding-left: 10px;
                                 text-align: left;
+                                height: 100%;
+                                overflow: auto;
 
                                 .item-title {
 
@@ -192,12 +213,28 @@ body.page-template-page-event {
                             .list-item {
                                 width: 100% !important;
                                 margin-bottom: 20px !important;
+                                .item-image {
+                                    width: 40% !important;
+                                }
 
-
+                                .item-content {
+                                    padding-left: 40% !important;
+                                    font-size: 0.8em;
+                                }
                             }
                         }
                         padding: 0 20px;
                         box-sizing: border-box;
+                    }
+
+                    @media screen and (max-width: $phone-width) {
+                        .list-items {
+                            .list-item {
+                                .item-content {
+                                    font-size: 0.6em;
+                                }
+                            }
+                        }
                     }
                 }
 
@@ -309,10 +346,6 @@ body.page-template-page-event {
                         background-color: $brand-primary;
                         box-sizing: border-box;
                         font-size: 18px;
-                        @media screen and (max-width: $small-width) {
-                            width: 50% !important;
-                            margin: 0 !important;
-                        }
                         .item-image {
                             @extend .fullscreen;
                             z-index: 0;
@@ -320,6 +353,17 @@ body.page-template-page-event {
                             background-position: center;
 
 
+                        }
+                    }
+                }
+
+                &.gallery-normal:not(.uses-max-width), &.gallery-interactive {
+                    @media screen and (max-width: $small-width) {
+                        .list-items {
+                            .list-item {
+                                width: 50% !important;
+                                margin: 0 !important;
+                            }
                         }
                     }
                 }
