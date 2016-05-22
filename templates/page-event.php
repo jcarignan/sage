@@ -26,6 +26,7 @@
                     $titleStyle = get_sub_field('title_style');
                     $align = get_sub_field('align');
                     $hasSeparator = get_sub_field('has_separator') === true;
+                    $titleUnderContent = get_sub_field('title_under_content') === true;
                     while(the_flexible_field('layout')):
                         $layout = get_row_layout(); ?>
         <section class="block block-main block-main-<?=$layout?> block-align-<?=$align?>" >
@@ -34,7 +35,7 @@
             <div class="block block-separator"></div>
 <?php                    endif; ?>
 
-<?php                       if ($showTitle): ?>
+<?php                       if ($showTitle && !$titleUnderContent): ?>
             <div class="block block-title style-<?=$titleStyle?>"><?=$title?></div>
 <?php                       endif; ?>
 
@@ -215,6 +216,9 @@
 <?php                           endif; ?>
 <?php                       break; ?>
 <?php                   endswitch; ?>
+<?php                   if ($showTitle && $titleUnderContent): ?>
+            <div class="block block-title style-<?=$titleStyle?>"><?=$title?></div>
+<?php                   endif; ?>
         </section>
 <?php               endwhile;
                 endwhile;
