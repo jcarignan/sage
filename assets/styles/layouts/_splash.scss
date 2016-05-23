@@ -81,10 +81,10 @@ body.page-template-page-splash {
         }
     }
 
-    footer.content-info {
+    /*footer.content-info {
         position: absolute;
         bottom: 0;
-    }
+    }*/
 
     @media screen and (max-width: $medium-width) {
         .main-content {
@@ -97,6 +97,10 @@ body.page-template-page-splash {
                     }
                 }
             }
+        }
+
+        header.banner .header-content {
+            padding-top: 0;
         }
     }
 

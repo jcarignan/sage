@@ -254,6 +254,10 @@ header.banner {
                         position: relative;
                         text-align: left;
 
+                        &.hidden {
+                            display: none;
+                        }
+
                         a {
                             width: 100%;
                             padding: 10px 0 10px 10px;
