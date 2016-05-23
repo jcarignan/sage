@@ -10,6 +10,7 @@ footer.content-info {
     img {
         margin: 0 2em;
         width: auto !important;
+        height: 40px;
     }
 
     ul {
@@ -19,6 +20,7 @@ footer.content-info {
         li {
             display: flex;
             justify-content: center;
+            align-items: center;
             margin-right: 5%;
 
             &:last-of-type {

@@ -128,7 +128,7 @@
                                     {
                                         $className .= ' with-background-color';
                                     }
-                                    $liAttrs .= 'height: '.get_sub_field('row_height').'px;";';
+                                    $liAttrs .= 'height: '.get_sub_field('row_height').'px;"';
                                     $contentStyle = $style === 'details' ? 'padding-left: '.$imgWidth.';':';';
 ?>
             <div class="block block-gallery<?= $className ?>">
@@ -143,7 +143,7 @@
                                            $imgStyle = 'background-image:url('.$image['url'].');  background-size:'.$backgroundSize.'; width:'.$imgWidth.';';
                                            $liClass = $image ? 'with-image':'without-image';
     					                   ?>
-	                <li class="list-item <?= $liClass?>" <?=$liAttrs?>>
+	                <li class="list-item <?= $liClass?>" <?=$liAttrs?> >
 <?php                                       if (strlen($slideUrl)>0):?>
                         <a href="<?=$slideUrl?>" target="_blank">
 <?php                                       endif; ?>

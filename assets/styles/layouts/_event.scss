@@ -166,6 +166,7 @@ body.page-template-page-event {
                         display: block;
                         .list-item {
                             display: inline-block;
+                            margin-bottom: 20px !important;
 
                             .item-element {
                                 display: block;
@@ -386,6 +387,7 @@ body.page-template-page-event {
                 .block-about {
                     display: flex;
                     .block-content {
+                        display: block;
                         &.content-description {
                             display: flex;
                             ul {
