@@ -232,7 +232,14 @@ body.page {
 
             svg, img {
                 width: 50px !important;
+            }
+
+            svg {
                 height: 50px !important;
+            }
+
+            img {
+                height: auto !important;
             }
         }
     }

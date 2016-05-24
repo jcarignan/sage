@@ -219,11 +219,10 @@ body.page-template-page-event {
                         }
                     }
 
-                    @media screen and (max-width: $small-width) {
+                    @media screen and (max-width: $medium-width) {
                         .list-items {
                             .list-item {
-                                width: 100% !important;
-                                margin-bottom: 20px !important;
+                                width: 50% !important;
                                 .item-image {
                                     width: 40% !important;
                                 }
@@ -236,6 +235,14 @@ body.page-template-page-event {
                         }
                         padding: 0 20px;
                         box-sizing: border-box;
+                    }
+
+                    @media screen and (max-width: $small-width) {
+                        .list-items {
+                            .list-item {
+                                width: 100% !important;
+                            }
+                        }
                     }
 
                     @media screen and (max-width: $phone-width) {
@@ -382,6 +389,22 @@ body.page-template-page-event {
                                 margin: 0 !important;
                             }
                         }
+                    }
+                }
+            }
+
+            &.block-align-left {
+                .block-gallery.full-width {
+                    .list-items {
+                        justify-content: flex-start;
+                    }
+                }
+            }
+
+            &.block-align-right {
+                .block-gallery.full-width {
+                    .list-items {
+                        justify-content: flex-end;
                     }
                 }
             }
