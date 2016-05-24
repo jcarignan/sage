@@ -217,7 +217,7 @@
 <?php                       break; ?>
 <?php                   endswitch; ?>
 <?php                   if ($showTitle && $titleUnderContent): ?>
-            <div class="block block-title style-<?=$titleStyle?>"><?=$title?></div>
+            <div class="block block-title block-title-under-content style-<?=$titleStyle?>"><?=$title?></div>
 <?php                   endif; ?>
         </section>
 <?php               endwhile;

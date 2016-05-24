@@ -73,9 +73,13 @@ body.page-template-page-splash {
             .list-item {
                 margin-right: 20%;
                 padding: 0;
-                img {
+                img, svg {
                     width: auto !important;
-                    height: 50px !important;
+                    height: 70px !important;
+                }
+
+                .label {
+                    font-size: 1.2em;
                 }
             }
         }
@@ -88,12 +92,16 @@ body.page-template-page-splash {
 
     @media screen and (max-width: $medium-width) {
         .main-content {
-            padding: 0 22%;
+            padding: 0 16%;
 
             ul.list-items {
                 .list-item {
                     //margin-right: 10px;
-                    img {
+                    img, svg {
+                    }
+
+                    .label {
+                        font-size: 1em;
                     }
                 }
             }
@@ -111,8 +119,11 @@ body.page-template-page-splash {
                 .list-item {
                     font-size: 0.8em;
                     margin-right: 10%;
-                    img {
+                    img, svg {
                         height: 40px !important;
+                    }
+
+                    .label {
                     }
                 }
             }
