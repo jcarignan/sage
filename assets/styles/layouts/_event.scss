@@ -110,6 +110,8 @@ body.page-template-page-event {
                                 opacity: 0;
                                 transition: opacity .4s;
                                 background-color: rgba(0,0,0,0.7);
+                                padding: 10px;
+                                box-sizing: border-box;
 
                                 div {
                                     vertical-align: middle;
@@ -120,12 +122,26 @@ body.page-template-page-event {
                                     color: $brand-primary;
                                 }
 
+                                @media screen and (max-width: $large-width) {
+                                    h1 {
+                                        font-size: 0.9em;
+                                    }
+                                }
+
+                                @media screen and (max-width: $medium-width) {
+                                    h1 {
+                                        font-size: 0.75em;
+                                    }
+                                }
+
                                 @media screen and (max-width: $small-width) {
                                     height: 30%;
                                     position: absolute;
                                     bottom: 0;
                                     opacity: 1;
-                                    font-size: 0.7em;
+                                    h1 {
+                                        font-size: 0.7em;
+                                    }
                                 }
                             }
                         }
