@@ -1,0 +1,16 @@
+body.page-template-page-tickets {
+    .block-main-container {
+
+        .block.block-main {
+
+            &.block-main-content .content-description {
+                padding-top: 40px;
+                padding-bottom: 30px;
+            }
+        }
+    }
+
+    ul.list-items {
+        color: $brand-third;
+    }
+}
