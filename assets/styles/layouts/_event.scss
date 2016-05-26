@@ -235,7 +235,7 @@ body.page-template-page-event {
                         }
                     }
 
-                    @media screen and (max-width: $medium-width) {
+                    @media screen and (max-width: $medium-large-width) {
                         .list-items {
                             .list-item {
                                 width: 50% !important;
@@ -257,6 +257,14 @@ body.page-template-page-event {
                         .list-items {
                             .list-item {
                                 width: 100% !important;
+                                .item-content-inner {
+                                    padding-left: 12px;
+                                    padding-right: 0;
+
+                                    p {
+                                        font-size: 1em;
+                                    }
+                                }
                             }
                         }
                     }

@@ -116,3 +116,223 @@ function assets() {
   }
 }
 add_action('wp_enqueue_scripts', __NAMESPACE__ . '\\assets', 100);
+
+
+/**
+ * Head meta
+ */
+
+function add_head_meta() {
+    $lang = 'fr';
+    if(function_exists('qtrans_getLanguage'))
+    {
+        $lang = qtrans_getLanguage();
+    }
+    $subtheme = get_option( 'immersiveproductions_theme_options')['subtheme'];
+    $image_path = '/dist/images/'.($subtheme === 'default' ? '':$subtheme.'/').'splash-'.$lang.'.png';
+    $image_url = get_template_directory_uri().$image_path;
+
+	echo '<meta name="description" content="'.get_option('meta_description').'" />';
+	echo '<meta name="keywords" content="'.get_option('meta_keywords').'" />';
+    echo '<meta property="og:url" content="'.get_home_url().'/" />';
+    echo '<meta property="og:type" content="website" />';
+    echo '<meta property="og:title" content="'.get_bloginfo().'" />';
+    echo '<meta property="og:description" content="'.get_option('meta_description').'" />';
+    echo '<meta property="og:image" content="'.$image_url.'" />';
+    echo "<script>(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){";
+	echo "(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),";
+    echo "m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)";
+    echo "})(window,document,'script','//www.google-analytics.com/analytics.js','ga');";
+	echo "ga('create', '".get_option("google_analytics_code")."', 'auto');";
+	echo "ga('send', 'pageview');";
+	echo "</script>";
+}
+
+add_action( 'wp_head', __NAMESPACE__ . '\\add_head_meta' );
+
+/**
+ * Add SEO Settings
+ */
+
+function add_seo_settings() {
+    add_settings_section(
+        'seo_settings',
+        'SEO',
+        __NAMESPACE__ . '\\seo_callback',
+        'general'
+    );
+
+    add_settings_field(
+        'meta_description',
+        'Meta description',
+        __NAMESPACE__ . '\\textbox_callback_qtranslate',
+        'general',
+        'seo_settings',
+        array(
+            'meta_description'
+        )
+    );
+
+    add_settings_field(
+        'meta_keywords',
+        'Meta keywords',
+        __NAMESPACE__ . '\\textbox_callback',
+        'general',
+        'seo_settings',
+        array(
+            'meta_keywords'
+        )
+    );
+
+    add_settings_field(
+        'google_analytics_code',
+        'Google analytics code',
+        __NAMESPACE__ . '\\textbox_callback',
+        'general',
+        'seo_settings',
+        array(
+            'google_analytics_code'
+        )
+    );
+
+    register_setting('general','meta_description', 'esc_attr');
+    register_setting('general','meta_keywords', 'esc_attr');
+    register_setting('general','google_analytics_code', 'esc_attr');
+}
+
+add_action('admin_init',  __NAMESPACE__ . '\\add_seo_settings' );
+
+
+/**
+ * Add Ticket settings
+ */
+
+function add_ticket_settings() {
+    add_settings_section(
+        'ticket_settings',
+        'Tickets Settings',
+        __NAMESPACE__ . '\\ticket_callback',
+        'general'
+    );
+
+    add_settings_field(
+        'ticket_promo_price',
+        'Promo price',
+        __NAMESPACE__ . '\\number_callback',
+        'general',
+        'ticket_settings',
+        array(
+            'ticket_promo_price'
+        )
+    );
+
+    add_settings_field(
+        'ticket_promo_count',
+        'Promo count',
+        __NAMESPACE__ . '\\number_callback',
+        'general',
+        'ticket_settings',
+        array(
+            'ticket_promo_count'
+        )
+    );
+
+    add_settings_field(
+        'ticket_early_price',
+        'Early price',
+        __NAMESPACE__ . '\\number_callback',
+        'general',
+        'ticket_settings',
+        array(
+            'ticket_early_price'
+        )
+    );
+
+    add_settings_field(
+        'ticket_normal_price',
+        'Normal price',
+        __NAMESPACE__ . '\\number_callback',
+        'general',
+        'ticket_settings',
+        array(
+            'ticket_normal_price'
+        )
+    );
+
+    add_settings_field(
+        'ticket_normal_price_start_date',
+        'Normal price start date',
+        __NAMESPACE__ . '\\date_callback',
+        'general',
+        'ticket_settings',
+        array(
+            'ticket_normal_price_start_date'
+        )
+    );
+
+    add_settings_field(
+        'ticket_combo_count',
+        'Combo count',
+        __NAMESPACE__ . '\\number_callback',
+        'general',
+        'ticket_settings',
+        array(
+            'ticket_combo_count'
+        )
+    );
+
+    add_settings_field(
+        'ticket_combo_price',
+        'Combo price',
+        __NAMESPACE__ . '\\number_callback',
+        'general',
+        'ticket_settings',
+        array(
+            'ticket_combo_price'
+        )
+    );
+
+    register_setting('general','ticket_promo_price', 'esc_attr');
+    register_setting('general','ticket_promo_count', 'esc_attr');
+    register_setting('general','ticket_early_price', 'esc_attr');
+    register_setting('general','ticket_normal_price', 'esc_attr');
+    register_setting('general','ticket_normal_price_start_date', 'esc_attr');
+    register_setting('general','ticket_combo_count', 'esc_attr');
+    register_setting('general','ticket_combo_price', 'esc_attr');
+}
+
+function ticket_callback() {
+
+}
+
+add_action('admin_init',  __NAMESPACE__ . '\\add_ticket_settings' );
+
+
+function seo_callback() {
+
+}
+
+function textbox_callback($args) {
+    $option = get_option($args[0]);
+    echo '<input type="text" id="'. $args[0] .'" name="'. $args[0] .'" value="' . $option . '" />';
+}
+
+function date_callback($args) {
+    $option = get_option($args[0]);
+    echo '<input type="date" id="'. $args[0] .'" name="'. $args[0] .'" value="' . $option . '" />';
+}
+
+function textbox_callback_qtranslate($args) {
+    $option = get_option($args[0]);
+    echo '<input class="regular-text qtranxs-translatable" type="text" id="'. $args[0] .'" name="'. $args[0] .'" value="' . $option . '" />';
+    /*
+    echo '<input name="qtranslate-fields['.$args[0].'][fr]" type="hidden" class="hidden" value="'.$option.'" />';
+    echo '<input name="qtranslate-fields['.$args[0].'][en]" type="hidden" class="hidden" value="'.$option.'"/>';
+    echo '<input name="qtranslate-fields['.$args[0].'][qtranslate-separator]" type="hidden" class="hidden" value="["/>';
+    echo '<input name="'.$args[0].'" type="text" id="'.$args[0].'" value="'.$option.'" class="regular-text qtranxs-translatable"/>';*/
+}
+
+function number_callback($args) {
+    $option = get_option($args[0]);
+    echo '<input type="number" id="'. $args[0] .'" name="'. $args[0] .'" value="' . $option . '" />';
+}

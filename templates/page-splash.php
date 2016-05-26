@@ -25,7 +25,7 @@
                             <img class="icon style-svg" src="<?php echo $icon['url']; ?>" />
                         <?php endif; ?>
                         <?php if( $label ): ?>
-                            <div class="label"><?php echo $label; ?></div>
+                            <div class="label"><?php echo do_shortcode($label); ?></div>
                         <?php endif; ?>
                     </li>
                     <?php endwhile; ?>
