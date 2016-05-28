@@ -6,11 +6,22 @@ body.page-template-page-tickets {
             &.block-main-content .content-description {
                 padding-top: 40px;
                 padding-bottom: 30px;
+                padding: 40px 8% 30px;
             }
         }
     }
 
     ul.list-items {
         color: $brand-third;
+    }
+
+    .create-event-ticket {
+        .repeatable-fields {
+            &:first-of-type {
+                .remove-ticket-button {
+                    display: none;
+                }
+            }
+        }
     }
 }

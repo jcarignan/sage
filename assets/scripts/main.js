@@ -75,10 +75,50 @@
         // JavaScript to be fired on the home page, after the init JS
       }
     },
-    // About us page, note the change from about-us to about_us.
-    'about_us': {
+    'billeterie': {
       init: function() {
-        // JavaScript to be fired on the about us page
+        console.log(ajaxData);
+        $('.add-ticket-button').click(function(e){
+            console.log('ADD TICKET');
+        });
+
+        $('.remove-ticket-button').click(function(e){
+            console.log('REMOVE TICKET');
+        });
+
+        $('.create-event-ticket').ajaxForm({
+            url: ajaxData.ajaxUrl,
+            type: 'post',
+            dataType: 'json',
+            success: function(data) {
+                console.log('success', data);
+
+                var $paypalForm = $('<form>', {
+                    'action': data.paypal_url,
+                    'target': '_top'
+                });
+
+                for (var key in data.fields)
+                {
+                    $paypalForm.append($('<input>', {
+                        'name': key,
+                        'value': data.fields[key],
+                        'type': 'hidden'
+                    }));
+                }
+
+                $paypalForm.submit();
+            },
+            beforeSubmit : function(arr, $form, options){
+                arr.push({
+                    name: 'nonce',
+                    value: ajaxData.nonce
+                },{
+                    name: 'action',
+                    value: 'create_ticket_and_pay'
+                });
+            }
+        });
       }
     }
   };

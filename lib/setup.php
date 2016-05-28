@@ -113,6 +113,14 @@ function assets() {
   // conflicts with acf (loads before plugin's jQuery without jquery plugins)
   if(!is_admin()){
       wp_enqueue_script('sage/js', Assets\asset_path('scripts/main.js'), ['jquery'], null, true);
+
+      if (is_page('billeterie'))
+      {
+          wp_localize_script('sage/js', 'ajaxData', array(
+            'ajaxUrl' => admin_url( 'admin-ajax.php' ),
+            'nonce' => wp_create_nonce( 'unique_id_nonce' )
+          ));
+      }
   }
 }
 add_action('wp_enqueue_scripts', __NAMESPACE__ . '\\assets', 100);
@@ -216,6 +224,39 @@ function add_ticket_settings() {
     );
 
     add_settings_field(
+        'ticket_sandboxed',
+        'Use sandboxed paypal environment',
+        __NAMESPACE__ . '\\checkbox_callback',
+        'general',
+        'ticket_settings',
+        array(
+            'ticket_sandboxed'
+        )
+    );
+
+    add_settings_field(
+        'ticket_name',//
+        'Ticket name',
+        __NAMESPACE__ . '\\textbox_callback_qtranslate',
+        'general',
+        'ticket_settings',
+        array(
+            'ticket_name'
+        )
+    );
+
+    add_settings_field(
+        'ticket_promo_label',//
+        'Promo label',
+        __NAMESPACE__ . '\\textbox_callback_qtranslate',
+        'general',
+        'ticket_settings',
+        array(
+            'ticket_promo_label'
+        )
+    );
+
+    add_settings_field(
         'ticket_promo_price',
         'Promo price',
         __NAMESPACE__ . '\\number_callback',
@@ -227,13 +268,46 @@ function add_ticket_settings() {
     );
 
     add_settings_field(
+        'ticket_promo_button_id',
+        'Promo paypal button ID',
+        __NAMESPACE__ . '\\textbox_callback',
+        'general',
+        'ticket_settings',
+        array(
+            'ticket_promo_button_id'
+        )
+    );
+
+    add_settings_field(
         'ticket_promo_count',
-        'Promo count',
+        'Promo tickets count',
         __NAMESPACE__ . '\\number_callback',
         'general',
         'ticket_settings',
         array(
             'ticket_promo_count'
+        )
+    );
+
+    add_settings_field(
+        'ticket_early_label',
+        'Early label',
+        __NAMESPACE__ . '\\textbox_callback_qtranslate',
+        'general',
+        'ticket_settings',
+        array(
+            'ticket_early_label'
+        )
+    );
+
+    add_settings_field(
+        'ticket_early_button_id',
+        'Early paypal button ID',
+        __NAMESPACE__ . '\\textbox_callback',
+        'general',
+        'ticket_settings',
+        array(
+            'ticket_early_button_id'
         )
     );
 
@@ -245,6 +319,28 @@ function add_ticket_settings() {
         'ticket_settings',
         array(
             'ticket_early_price'
+        )
+    );
+
+    add_settings_field(
+        'ticket_normal_label',//
+        'Normal label',
+        __NAMESPACE__ . '\\textbox_callback_qtranslate',
+        'general',
+        'ticket_settings',
+        array(
+            'ticket_normal_label'
+        )
+    );
+
+    add_settings_field(
+        'ticket_normal_button_id',
+        'Normal paypal button ID',
+        __NAMESPACE__ . '\\textbox_callback',
+        'general',
+        'ticket_settings',
+        array(
+            'ticket_normal_button_id'
         )
     );
 
@@ -271,17 +367,6 @@ function add_ticket_settings() {
     );
 
     add_settings_field(
-        'ticket_combo_count',
-        'Combo count',
-        __NAMESPACE__ . '\\number_callback',
-        'general',
-        'ticket_settings',
-        array(
-            'ticket_combo_count'
-        )
-    );
-
-    add_settings_field(
         'ticket_combo_price',
         'Combo price',
         __NAMESPACE__ . '\\number_callback',
@@ -292,13 +377,60 @@ function add_ticket_settings() {
         )
     );
 
+    add_settings_field(
+        'ticket_combo_label',//
+        'Combo label',
+        __NAMESPACE__ . '\\textbox_callback_qtranslate',
+        'general',
+        'ticket_settings',
+        array(
+            'ticket_combo_label'
+        )
+    );
+
+    add_settings_field(
+        'ticket_combo_button_id',
+        'Combo paypal button ID',
+        __NAMESPACE__ . '\\textbox_callback',
+        'general',
+        'ticket_settings',
+        array(
+            'ticket_combo_button_id'
+        )
+    );
+
+    add_settings_field(
+        'ticket_combo_count',
+        'Combo count',
+        __NAMESPACE__ . '\\number_callback',
+        'general',
+        'ticket_settings',
+        array(
+            'ticket_combo_count'
+        )
+    );
+
+    register_setting('general','ticket_sandboxed', 'esc_attr');
+    register_setting('general','ticket_name', 'esc_attr');
+
+    register_setting('general','ticket_promo_label', 'esc_attr');
     register_setting('general','ticket_promo_price', 'esc_attr');
+    register_setting('general','ticket_promo_button_id', 'esc_attr');
     register_setting('general','ticket_promo_count', 'esc_attr');
+
+    register_setting('general','ticket_early_label', 'esc_attr');
     register_setting('general','ticket_early_price', 'esc_attr');
+    register_setting('general','ticket_early_button_id', 'esc_attr');
+
+    register_setting('general','ticket_normal_label', 'esc_attr');
     register_setting('general','ticket_normal_price', 'esc_attr');
+    register_setting('general','ticket_normal_button_id', 'esc_attr');
     register_setting('general','ticket_normal_price_start_date', 'esc_attr');
-    register_setting('general','ticket_combo_count', 'esc_attr');
+
+    register_setting('general','ticket_combo_label', 'esc_attr');
     register_setting('general','ticket_combo_price', 'esc_attr');
+    register_setting('general','ticket_combo_button_id', 'esc_attr');
+    register_setting('general','ticket_combo_count', 'esc_attr');
 }
 
 function ticket_callback() {
@@ -310,6 +442,11 @@ add_action('admin_init',  __NAMESPACE__ . '\\add_ticket_settings' );
 
 function seo_callback() {
 
+}
+
+function checkbox_callback($args) {
+    $option = get_option($args[0]);
+    echo '<input type="checkbox" id="'. $args[0] .'" name="'. $args[0] .'" value="1" '.checked('1', $option, false).'" />';
 }
 
 function textbox_callback($args) {
