@@ -3,6 +3,7 @@
 namespace Roots\Sage\Setup;
 
 use Roots\Sage\Assets;
+use Roots\Sage\Extras;
 
 /**
  * Theme setup
@@ -116,9 +117,13 @@ function assets() {
 
       if (is_page('billeterie'))
       {
-          wp_localize_script('sage/js', 'ajaxData', array(
+          $ticketStatus = Extras\get_ticket_status();
+          wp_localize_script('sage/js', 'ticketsData', array(
             'ajaxUrl' => admin_url( 'admin-ajax.php' ),
-            'nonce' => wp_create_nonce( 'unique_id_nonce' )
+            'nonce' => wp_create_nonce( 'unique_id_nonce' ),
+            'price' => $ticketStatus['price'],
+            'comboPrice' => $ticketStatus['combo_price'],
+            'comboCount' => $ticketStatus['combo_count']
           ));
       }
   }

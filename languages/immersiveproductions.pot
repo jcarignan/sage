@@ -5,7 +5,7 @@ msgstr ""
 "Project-Id-Version: Immersive Productions\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: Thu Mar 17 2016 01:39:11 GMT-0400 (Eastern Daylight Time)\n"
-"POT-Revision-Date: Thu Mar 17 2016 01:47:56 GMT-0400 (Eastern Daylight Time)\n"
+"POT-Revision-Date: Sat May 28 2016 23:00:28 GMT-0400 (Eastern Daylight Time)\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -28,7 +28,7 @@ msgstr ""
 msgid "Sorry, but the page you were trying to view does not exist."
 msgstr ""
 
-#: ../base.php:14
+#: ../base.php:17
 msgid ""
 "You are using an <strong>outdated</strong> browser. Please <a href=\"http:"
 "//browsehappy.com/\">upgrade your browser</a> to improve your experience."
@@ -43,31 +43,27 @@ msgstr ""
 msgid "Sorry, no results were found."
 msgstr ""
 
-#. Template Name of the plugin/theme
-msgid "Custom Template"
+#: ../lib/customizer.php:13 ../lib/customizer.php:24
+msgid "Sub-theme"
 msgstr ""
 
 #: ../lib/extras.php:31
 msgid "Continued"
 msgstr ""
 
-#: ../lib/setup.php:30
+#: ../lib/setup.php:31
 msgid "Primary Navigation"
 msgstr ""
 
-#: ../lib/setup.php:31
+#: ../lib/setup.php:32
 msgid "Secondary Navigation"
 msgstr ""
 
-#: ../lib/setup.php:32
+#: ../lib/setup.php:33
 msgid "Tertiary Navigation"
 msgstr ""
 
-#: ../lib/setup.php:62
-msgid "Primary"
-msgstr ""
-
-#: ../lib/setup.php:71
+#: ../lib/setup.php:72
 msgid "Footer"
 msgstr ""
 
@@ -114,6 +110,74 @@ msgstr ""
 
 #. Name of the template
 msgid "About"
+msgstr ""
+
+#. Name of the template
+msgid "Clients"
+msgstr ""
+
+#. Name of the template
+msgid "Contact"
+msgstr ""
+
+#. Name of the template
+msgid "Event"
+msgstr ""
+
+#. Name of the template
+msgid "Medias"
+msgstr ""
+
+#. Name of the template
+msgid "Multicontent"
+msgstr ""
+
+#. Name of the template
+msgid "Splash"
+msgstr ""
+
+#. Name of the template
+msgid "Thankyou"
+msgstr ""
+
+#. Name of the template
+msgid "Tickets"
+msgstr ""
+
+#: ../templates/page-tickets.php:36 ../templates/page-tickets.php:44
+msgid "taxes"
+msgstr ""
+
+#: ../templates/page-tickets.php:43
+msgid "ticket"
+msgstr ""
+
+#: ../templates/page-tickets.php:74
+msgid "Remove"
+msgstr ""
+
+#: ../templates/page-tickets.php:79
+msgid "Add ticket"
+msgstr ""
+
+#: ../templates/page-tickets.php:82
+msgid "Subtotal"
+msgstr ""
+
+#: ../templates/page-tickets.php:86
+msgid "PST"
+msgstr ""
+
+#: ../templates/page-tickets.php:90
+msgid "QST"
+msgstr ""
+
+#: ../templates/page-tickets.php:94
+msgid "Total"
+msgstr ""
+
+#: ../templates/page-tickets.php:98
+msgid "Pay with"
 msgstr ""
 
 #. Name of the theme

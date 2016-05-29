@@ -26,9 +26,12 @@ button {
     background:none;
     border:none;
     font-size: inherit;
+    font-family: inherit;
+    font-weight: inherit;
     color: inherit;
     outline:none;
     user-select: none;
+    cursor: pointer;
 }
 
 .fullscreen {

@@ -42,11 +42,14 @@ function get_ticket_status() {
     $comboPrice;
     $comboActive = false;
     $comboCount = get_option('ticket_combo_count');
-    $tickets_sold = $wpdb->get_var("SELECT COUNT(*) FROM wp_tickets WHERE `paid` = 1");
+    $promoCount = get_option('ticket_promo_count');
     $normalPriceStartDate = get_option('ticket_normal_price_start_date');
     $timeUntilNormalPrice = strtotime($normalPriceStartDate) - current_time('timestamp');
-    $promoActive = $tickets_sold < get_option('ticket_promo_count');
+
+    $tickets_sold = $wpdb->get_var("SELECT COUNT(*) FROM wp_tickets WHERE `paid` = 1");
+    $promoActive = $tickets_sold < $promoCount;
     $earlyActive = $timeUntilNormalPrice > 0;
+
     if ($promoActive)
     {
         $price = $comboPrice = get_option('ticket_promo_price');
@@ -65,6 +68,7 @@ function get_ticket_status() {
         'early_active' => $earlyActive,
         'combo_price' => $comboPrice,
         'combo_count' => $comboCount,
+        'promo_count' => $promoCount,
         'labels' => array(
             'ticket' => get_option('ticket_name'),
             'promo' => get_option('ticket_promo_label'),
@@ -75,9 +79,23 @@ function get_ticket_status() {
     );
 }
 
+function add_currency_to_price($price) {
+    return function_exists('qtrans_getLanguage') && qtrans_getLanguage() == 'fr' ? $price.'$':'$'.$price;
+}
+
 function get_current_price(){
     $ticketStatus = get_ticket_status();
-	return $ticketStatus['price'];
+    return add_currency_to_price($ticketStatus['price']);
+}
+
+function get_combo_price(){
+    $ticketStatus = get_ticket_status();
+	return add_currency_to_price($ticketStatus['combo_price']);
+}
+
+function get_promo_count(){
+    $ticketStatus = get_ticket_status();
+	return $ticketStatus['promo_count'];
 }
 
 function on_paypal_payment_completed($posted) {
@@ -180,6 +198,8 @@ function create_ticket_and_pay() {
             $price = $ticketStatus['combo_price'];
         }
     }
+    $itemName = qtranxf_use($q_config['language'], $itemName);
+    $ticketName = qtranxf_use($q_config['language'], $ticketStatus['labels']['ticket']);
     $paypalUrl;
     if (get_option('ticket_sandboxed') == 1 ){
         $paypalUrl = 'https://www.sandbox.paypal.com/cgi-bin/webscr';
@@ -187,59 +207,40 @@ function create_ticket_and_pay() {
         $paypalUrl = 'https://www.paypal.com/cgi-bin/webscr';
     }
 
-    $wpdb->insert('wp_tickets', array(
-        'first_name' => $_POST['firstname_0'],
-        'last_name' => $_POST['lastname_0'],
-        'entreprise' => $_POST['entreprise_0'],
-        'title' => $_POST['title_0'],
-        'email' => $_POST['email_0'],
-        'telephone' => $_POST['telephone_0'],
-        'price' => $price,
-        'item_name' => $itemName,
-        'invoice' => $invoice,
-        'qr_code' => md5(uniqid())
-    ), array(
-        '%s',
-        '%s',
-        '%s',
-        '%s',
-        '%s',
-        '%s',
-        '%d',
-        '%s',
-        '%s',
-        '%s'
-    ));
-    $wpdb->insert('wp_tickets', array(
-        'first_name' => $_POST['firstname_1'],
-        'last_name' => $_POST['lastname_1'],
-        'entreprise' => $_POST['entreprise_1'],
-        'title' => $_POST['title_1'],
-        'email' => $_POST['email_1'],
-        'telephone' => $_POST['telephone_1'],
-        'price' => $price,
-        'item_name' => $itemName,
-        'invoice' => $invoice,
-        'qr_code' => md5(uniqid())
-    ), array(
-        '%s',
-        '%s',
-        '%s',
-        '%s',
-        '%s',
-        '%s',
-        '%d',
-        '%s',
-        '%s',
-        '%s'
-    ));
+    for ($i = 0; $i < $quantity;$i++)
+    {
+        $wpdb->insert('wp_tickets', array(
+            'first_name' => $_POST['firstname_'.$i],
+            'last_name' => $_POST['lastname_'.$i],
+            'entreprise' => $_POST['entreprise_'.$i],
+            'title' => $_POST['title_'.$i],
+            'email' => $_POST['email_'.$i],
+            'telephone' => $_POST['telephone_'.$i],
+            'price' => $price,
+            'item_name' => $itemName,
+            'invoice' => $invoice,
+            'qr_code' => md5(uniqid())
+        ), array(
+            '%s',
+            '%s',
+            '%s',
+            '%s',
+            '%s',
+            '%s',
+            '%d',
+            '%s',
+            '%s',
+            '%s'
+        ));
+    }
+
     echo json_encode(array(
         'paypal_url' => $paypalUrl,
         'fields' => array(
             'hosted_button_id' => $buttonID,
             'quantity' => $quantity,
             'invoice' => $invoice,
-            'item_name' =>  $ticketStatus['labels']['ticket'].' - '.$itemName,
+            'item_name' => $ticketName.' - '.$itemName,
             'notify_url' => home_url().'/?AngellEYE_Paypal_Ipn_For_Wordpress&action=ipn_handler',
             'return' =>  home_url().'/merci',
             'cancel_return' =>  home_url().'/billeterie',
@@ -256,3 +257,4 @@ function create_ticket_and_pay() {
 add_action('wp_ajax_create_ticket_and_pay', __NAMESPACE__ .'\\create_ticket_and_pay');
 add_action('wp_ajax_nopriv_create_ticket_and_pay', __NAMESPACE__ .'\\create_ticket_and_pay');
 add_shortcode('current_price', __NAMESPACE__ . '\\get_current_price');
+add_shortcode('tickets_promo_count', __NAMESPACE__ . '\\get_promo_count');

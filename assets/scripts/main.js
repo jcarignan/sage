@@ -77,21 +77,115 @@
     },
     'billeterie': {
       init: function() {
-        console.log(ajaxData);
-        $('.add-ticket-button').click(function(e){
-            console.log('ADD TICKET');
-        });
 
-        $('.remove-ticket-button').click(function(e){
-            console.log('REMOVE TICKET');
-        });
+        ticketsData.comboCount = parseInt(ticketsData.comboCount);
+        ticketsData.comboPrice = parseFloat(ticketsData.comboPrice);
+        ticketsData.price = parseFloat(ticketsData.price);
 
+        var updateForm = function($form)
+        {
+            var $repeatableSets = $form.find('.repeatable-set');
+            var quantity = $repeatableSets.length;
+            var price = quantity >= ticketsData.comboCount ? ticketsData.comboPrice:ticketsData.price;
+            $form.find('input[name="quantity"]').attr('value',quantity);
+            var subtotal = 0;
+            $repeatableSets.each(function(i, repeatableSet){
+                $(repeatableSet).find('input').each(function(ii,input){
+                    var name = $(input).attr('name');
+                    var nameArray = name.split('_');
+                    $(input).attr('name', nameArray[0]+'_'+i);
+                });
+                subtotal += price;
+            });
+            var tps = subtotal * 0.05;
+            var tvq = subtotal * 0.09975;
+            var total = Math.round((subtotal + tps + tvq)*100)/100;
+            var $invoice = $form.find('.tickets-invoice');
+            $invoice.find('.row-subtotal .cell-price').text(subtotal.toFixed(2)+'$');
+            $invoice.find('.row-tps .cell-price').text(tps.toFixed(2)+'$');
+            $invoice.find('.row-tvq .cell-price').text(tvq.toFixed(2)+'$');
+            $invoice.find('.row-total .cell-price').text(total.toFixed(2)+'$');
+        };
+
+        var updateTicketName = function(e)
+        {
+            var $parent = $(e.currentTarget).parents('.repeatable-set');
+            var $title = $parent.find('.ticket-title');
+            var ticketLabelFirst = $title.data('label-first');
+            var ticketLabelSecond = $title.data('label-second');
+            var index = $parent.index();
+            var firstName = $parent.find('input[name="firstname_'+index+'"]').val();
+            var lastName = $parent.find('input[name="lastname_'+index+'"]').val();
+
+            var str = ticketLabelFirst + ' ' + (firstName.length || lastName.length ? ticketLabelSecond + ' ' + firstName + ' ' + lastName : '#'+(index+1));
+            $title.text(str);
+        };
+
+        var addInputChangeEvents = function(i, input){
+            var name = $(input).attr('name');
+            var nameArray = name.split('_');
+            if (nameArray[0] === 'firstname' || nameArray[0] === 'lastname')
+            {
+                $(input).on('input', updateTicketName);
+            }
+        };
+
+        var onRemoveTicketButton = function(e)
+        {
+            var repeatableSet = $(e.currentTarget).parent();
+            var $container = $(repeatableSet).parent();
+            var $form = $container.parent();
+            TweenMax.to(repeatableSet, 0.2, {
+                opacity: 0
+            });
+            TweenMax.to(repeatableSet, 0.4, {
+                height: 0,
+                onComplete: function(){
+                    $(this.target).remove();
+                    updateForm($form);
+                }
+            });
+        };
+
+        var onAddTicketButton = function(e)
+        {
+            var $form = $(e.currentTarget).parents('form');
+            var $container = $form.find('.repeatable-sets');
+            var repeatableSet = $form.find('.repeatable-set:eq(0)').clone()[0];
+            $(repeatableSet).find('.remove-ticket-button').click(onRemoveTicketButton);
+            $container.append($(repeatableSet));
+            updateForm($form);
+            $title = $(repeatableSet).find('.ticket-title');
+            $title.text($title.data('label-first')+' #'+($(repeatableSet).index()+1))
+            $(repeatableSet).find('input[type="text"]').each(addInputChangeEvents);
+            $(repeatableSet).find('input[type!="hidden"]').each(function(i,input){
+                $(input).val('');
+            });
+            var repeatableSetHeight = repeatableSet.offsetHeight;
+            var timeline = new TimelineMax();
+            timeline.set(repeatableSet, {
+                height: 0,
+                opacity: 0
+            });
+            timeline.to(repeatableSet, 0.4, {
+                height: repeatableSetHeight
+            });
+            timeline.to(repeatableSet, 0.2, {
+                opacity: 1,
+                clearProps: 'all'
+            });
+        };
+
+        $('.add-ticket-button').click(onAddTicketButton);
+        $('.remove-ticket-button').click(onRemoveTicketButton);
+        updateForm($('.create-event-ticket'));
+        $('.create-event-ticket input[type="text"]').each(addInputChangeEvents);
         $('.create-event-ticket').ajaxForm({
-            url: ajaxData.ajaxUrl,
+            url: ticketsData.ajaxUrl,
             type: 'post',
             dataType: 'json',
             success: function(data) {
-                console.log('success', data);
+                console.log('Ticket created! To paypal we go...');
 
                 var $paypalForm = $('<form>', {
                     'action': data.paypal_url,
@@ -110,13 +204,33 @@
                 $paypalForm.submit();
             },
             beforeSubmit : function(arr, $form, options){
+                var valid = true;
+                $form.find('input[type!="hidden"]').each(function(i, el){
+                    if (!$(el).attr('value').length)
+                    {
+                        valid = false;
+                        $(el).parent('span').addClass('error');
+                    } else {
+                        $(el).parent('span').removeClass('error');
+                    }
+                });
+                if (!valid){
+                    console.log('Errors in form.');
+                    $form.find('.wpcf7-validation-errors').css('visibility', 'visible');
+                    return false;
+                }
+
                 arr.push({
                     name: 'nonce',
-                    value: ajaxData.nonce
+                    value: ticketsData.nonce
                 },{
                     name: 'action',
                     value: 'create_ticket_and_pay'
                 });
+                $form.find('button, input[type!="hidden"]').attr('disabled', true);
+                $form.find('.ajax-loader').css('visibility', 'visible');
+                $form.find('.wpcf7-validation-errors').css('visibility', 'hidden');
+                console.log('Creating ticket...');
             }
         });
       }

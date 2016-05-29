@@ -27,28 +27,25 @@
         text-align: center;
     }
 
-    .wpcf7-form-control-wrap {
+    .wpcf7-form-control-wrap:not(.your-message) {
 
-        &:not(.your-message) {
+        width: 50%;
+        display: inline-block;
+        box-sizing: border-box;
+        margin-bottom: 20px;
 
-            width: 50%;
-            display: inline-block;
-            box-sizing: border-box;
-            margin-bottom: 20px;
-
-            &:nth-of-type(even) {
-                padding-left: 20px;
-            }
-
-            &:nth-of-type(odd) {
-                padding-right: 20px;
-            }
+        &:nth-of-type(even) {
+            padding-left: 20px;
         }
 
-        &.your-message {
-            margin-bottom: 20px;
-            display: block;
+        &:nth-of-type(odd) {
+            padding-right: 20px;
         }
+    }
+
+    .wpcf7-form-control-wrap.your-message {
+        margin-bottom: 20px;
+        display: block;
     }
 
     .wpcf7-not-valid-tip {
@@ -66,7 +63,7 @@
         cursor: pointer;
     }
 
-    div.wpcf7 img.ajax-loader {
+    img.ajax-loader {
         margin: 10px auto 0;
         display: block;
     }
@@ -80,14 +77,22 @@
         border-color: $brand-third;
     }
 
-    input, textarea {
+    input, textarea, button {
+        font-size: 16px;
+
+        &[disabled] {
+            opacity: 0.5;
+            cursor: default !important;
+        }
+    }
+
+    input, textarea, .wpcf7-submit {
         display: block;
         appearance: none;
         border: 0;
         width: 100%;
         padding: 4px;
         box-sizing: border-box;
-        font-size: inherit;
         font-family: inherit;
         color: $brand-dark;
         box-shadow: 1px 1px 2px 2px rgba(0,0,0,0.5);

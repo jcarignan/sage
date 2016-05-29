@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: Immersive Productions\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: Thu Mar 17 2016 01:39:11 GMT-0400 (Eastern Daylight Time)\n"
-"PO-Revision-Date: Thu Mar 17 2016 01:48:46 GMT-0400 (Eastern Daylight Time)\n"
+"PO-Revision-Date: Sat May 28 2016 23:02:30 GMT-0400 (Eastern Daylight Time)\n"
 "Last-Translator: julien <carignan.julien@gmail.com>\n"
 "Language-Team: \n"
 "Language: French (France)\n"
@@ -22,31 +22,19 @@ msgstr ""
 "esc_html_x:1,2c;comments_number_link:2,3;t:1;st:1;trans:1;transChoice:1,2\n"
 "X-Loco-Target-Locale: fr_FR"
 
-#. Name of the template
-msgid "About"
-msgstr "À propos"
+#: ../templates/page-tickets.php:86
+msgid "PST"
+msgstr "TPS"
 
-#. Name of the theme
-msgid "Immersive Productions"
-msgstr "Immersive Productions"
-
-#. Theme URI of the theme
-msgid "http://immersiveproductions.ca"
-msgstr "http://immersiveproductions.ca"
-
-#. Author of the theme
-msgid "Julien Carignan"
-msgstr "Julien Carignan"
-
-#. Author URI of the theme
-msgid "http://juliencarignan.com"
-msgstr "http://juliencarignan.com"
+#: ../templates/page-tickets.php:90
+msgid "QST"
+msgstr "TVQ"
 
 #: ../404.php:4
 msgid "Sorry, but the page you were trying to view does not exist."
 msgstr "Désolé, cette page est introuvable."
 
-#: ../base.php:14
+#: ../base.php:17
 msgid ""
 "You are using an <strong>outdated</strong> browser. Please <a href=\"http:"
 "//browsehappy.com/\">upgrade your browser</a> to improve your experience."
@@ -64,31 +52,27 @@ msgstr "Erreurr localiser %s pour inclusion"
 msgid "Sorry, no results were found."
 msgstr "Désolé, rien n'a été trouvé."
 
-#. Template Name of the plugin/theme
-msgid "Custom Template"
-msgstr "Custom Template "
+#: ../lib/customizer.php:13 ../lib/customizer.php:24
+msgid "Sub-theme"
+msgstr "Sous-thème"
 
 #: ../lib/extras.php:31
 msgid "Continued"
 msgstr "Suite"
 
-#: ../lib/setup.php:30
+#: ../lib/setup.php:31
 msgid "Primary Navigation"
 msgstr "Navigation Primaire"
 
-#: ../lib/setup.php:31
+#: ../lib/setup.php:32
 msgid "Secondary Navigation"
 msgstr "Navigation secondaire"
 
-#: ../lib/setup.php:32
+#: ../lib/setup.php:33
 msgid "Tertiary Navigation"
 msgstr "Navigation tertiaire"
 
-#: ../lib/setup.php:62
-msgid "Primary"
-msgstr "Primaire"
-
-#: ../lib/setup.php:71
+#: ../lib/setup.php:72
 msgid "Footer"
 msgstr "Pied de page"
 
@@ -133,6 +117,86 @@ msgstr "Pages:"
 msgid "By"
 msgstr "Par"
 
+#. Name of the template
+msgid "About"
+msgstr "À propos"
+
+#. Name of the template
+msgid "Clients"
+msgstr "Clients"
+
+#. Name of the template
+msgid "Contact"
+msgstr "Contact"
+
+#. Name of the template
+msgid "Event"
+msgstr "Événement"
+
+#. Name of the template
+msgid "Medias"
+msgstr "Médias"
+
+#. Name of the template
+msgid "Multicontent"
+msgstr "Multicontenu"
+
+#. Name of the template
+msgid "Splash"
+msgstr "Splash"
+
+#. Name of the template
+msgid "Thankyou"
+msgstr "Merci"
+
+#. Name of the template
+msgid "Tickets"
+msgstr "Billets"
+
+#: ../templates/page-tickets.php:36 ../templates/page-tickets.php:44
+msgid "taxes"
+msgstr "taxes"
+
+#: ../templates/page-tickets.php:43
+msgid "ticket"
+msgstr "billet"
+
+#: ../templates/page-tickets.php:74
+msgid "Remove"
+msgstr "Enlever"
+
+#: ../templates/page-tickets.php:79
+msgid "Add ticket"
+msgstr "Ajouter un billet"
+
+#: ../templates/page-tickets.php:82
+msgid "Subtotal"
+msgstr "Sous-total"
+
+#: ../templates/page-tickets.php:94
+msgid "Total"
+msgstr "Total"
+
+#: ../templates/page-tickets.php:98
+msgid "Pay with"
+msgstr "Payer avec"
+
+#. Name of the theme
+msgid "Immersive Productions"
+msgstr "Immersive Productions"
+
+#. Theme URI of the theme
+msgid "http://immersiveproductions.ca"
+msgstr "http://immersiveproductions.ca"
+
 #. Description of the theme
 msgid "Immersive productions' Wordpress theme - Sage boilerplate"
 msgstr "Thème Wordpress d'Immersive productions"
+
+#. Author of the theme
+msgid "Julien Carignan"
+msgstr "Julien Carignan"
+
+#. Author URI of the theme
+msgid "http://juliencarignan.com"
+msgstr "http://juliencarignan.com"

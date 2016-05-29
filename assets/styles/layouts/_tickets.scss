@@ -11,16 +11,237 @@ body.page-template-page-tickets {
         }
     }
 
+    .block-main-ticketinfos {
+        display: flex;
+
+        .block-content {
+            display: flex;
+            justify-content: center;
+            flex-direction: column;
+            width: 50%;
+            height: 240px;
+            &.content-image {
+                width: 50%;
+            }
+
+            .content-text {
+                padding: 8%;
+                font-size: 0.9em;
+                font-weight: bold;
+                box-sizing: border-box;
+                color: $brand-primary;
+                text-shadow: 0px 0px 2px rgba(0,0,0,0.7);
+            }
+            background-color: $brand-light-gray;
+
+            &.content-infos-container {
+                padding: 0 8%;
+
+                &.with-one-info {
+
+                }
+
+                &.with-two-infos {
+
+                }
+
+                .content-infos {
+                    h1 {
+
+                    }
+
+                    .price {
+
+                    }
+
+                    .per-ticket-label {
+
+                    }
+
+                    .tax-label {
+
+                    }
+
+                    .asterisk {
+
+                    }
+                }
+            }
+        }
+        box-shadow: 0px 2px 3px 3px rgba(0,0,0,0.2);
+        margin-bottom: 10px;
+    }
+
     ul.list-items {
         color: $brand-third;
     }
 
+    .block-separator {
+        border-top: 2px solid rgba(0,0,0,0.3);
+        width: 40%;
+        margin: 20px auto;
+    }
+
     .create-event-ticket {
-        .repeatable-fields {
-            &:first-of-type {
-                .remove-ticket-button {
-                    display: none;
+        .repeatable-sets {
+            .repeatable-set {
+                &:first-of-type {
+                    .remove-ticket-button {
+                        display: none;
+                    }
                 }
+            }
+        }
+    }
+
+    .ticket-title {
+        font-size: 12px;
+        font-weight: bold;
+        color: $brand-dark;
+        margin-bottom: 0.2em;
+    }
+
+    .repeatable-set {
+        font-size: 0;
+        position: relative;
+        box-sizing: border-box;
+
+        .wpcf7-form-control-wrap.error {
+            position: relative;
+
+            &:nth-of-type(even) {
+                &:after {
+                    right: 6px;
+                }
+            }
+
+            &:after {
+                content: '*';
+                position: absolute;
+                top: 0;
+                right: 26px;
+                display: block;
+                color: red;
+                font-size: 16px;
+                font-weight: bold;
+            }
+        }
+    }
+
+    .tickets-controls {
+        position: relative;
+        text-align: right;
+    }
+
+    .tickets-invoice-container {
+        display: inline-block;
+
+        .tickets-invoice {
+            display: table;
+        }
+
+        .invoice-row {
+            display: table-row;
+
+            &.row-subtotal {
+                .invoice-cell.cell-price {
+                    border-bottom: 1px dashed $brand-dark;
+                    font-weight: bold;
+                }
+            }
+
+            &.row-total {
+                font-weight: bold;
+                font-size: 1.2em;
+                .invoice-cell.cell-price {
+                    border-top: 1px solid $brand-dark;
+                }
+            }
+        }
+
+        .invoice-cell {
+            display: table-cell;
+            color: $brand-dark;
+
+            &.cell-label {
+                padding-right: 30px;
+            }
+        }
+    }
+
+    .buttons-container {
+        text-align: center;
+        position: absolute;
+        left: 0;
+        width: 100%;
+    }
+
+    .add-ticket-button {
+        background-color: $brand-light-gray;
+        color: $brand-dark;
+        padding: 10px;
+        display: inline-block;
+        min-width: 40%;
+        box-shadow: 1px 1px 2px 2px rgba(0,0,0,0.5);
+    }
+
+    .remove-ticket-button {
+        position: absolute;
+        top:0;
+        left:-26px;
+        width: 20px;
+        height: 20px;
+        background-color: red;
+        border-radius: 50%;
+        text-indent: -99999px;
+        background-image: url($image-path+'/icons/remove.svg');
+        background-size: cover;
+        background-repeat: no-repeat;
+        background-position: center;
+        border: 1px solid $brand-dark;
+    }
+
+    .block.block-form .wpcf7-form-control.wpcf7-submit {
+        margin-top: 10px;
+        padding: 10px;
+        img {
+            width: auto!important;
+            height: 22px;
+            margin-left: 10px;
+            vertical-align: top;
+        }
+    }
+
+    @media screen and (max-width: $medium-width) {
+        .block-main-ticketinfos {
+            width: 100%;
+            display: block;
+        }
+        .block.block-main .content-image {
+            height: 200px;
+            width: 100%;
+        }
+
+        .block-content.content-infos-container {
+            width: 100%;
+        }
+
+        .block-form{
+            padding: 0 30px;
+        }
+    }
+
+    @media screen and (max-width: $small-width) {
+        .block.block-main .content-image {
+            font-size: 0.9em;
+        }
+        .buttons-container {
+            position: relative;
+            margin-bottom: 10px;
+
+            button {
+                display: block;
+                width: 100%;
             }
         }
     }
