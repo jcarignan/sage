@@ -177,6 +177,7 @@ function create_ticket_and_pay() {
     $quantity = $_POST['quantity'];
     $ticketStatus = get_ticket_status();
     $price = $ticketStatus['price'];
+    $ticketName = $ticketStatus['labels']['ticket'];
     $itemName;
     if ($ticketStatus['promo_active'])
     {
@@ -198,8 +199,12 @@ function create_ticket_and_pay() {
             $price = $ticketStatus['combo_price'];
         }
     }
-    $itemName = qtranxf_use(qtranxf_getLanguage(), $itemName);
-    $ticketName = qtranxf_use(qtranxf_getLanguage(), $ticketStatus['labels']['ticket']);
+    if (function_exists('qtrans_getLanguage'))
+    {
+        $itemName = qtranxf_use(qtranxf_getLanguage(), $itemName);
+        $ticketName = qtranxf_use(qtranxf_getLanguage(), $ticketName);
+    }
+
     $paypalUrl;
     if (get_option('ticket_sandboxed') == 1 ){
         $paypalUrl = 'https://www.sandbox.paypal.com/cgi-bin/webscr';

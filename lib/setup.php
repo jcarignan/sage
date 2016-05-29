@@ -213,7 +213,57 @@ function add_seo_settings() {
     register_setting('general','google_analytics_code', 'esc_attr');
 }
 
-add_action('admin_init',  __NAMESPACE__ . '\\add_seo_settings' );
+/**
+ * Add Mail Settings
+ */
+
+function add_mail_settings() {
+    add_settings_section(
+        'mail_settings',
+        'Email settings',
+        __NAMESPACE__ . '\\mail_callback',
+        'general'
+    );
+
+    add_settings_field(
+        'from_email',
+        'From email',
+        __NAMESPACE__ . '\\textbox_callback',
+        'general',
+        'mail_settings',
+        array(
+            'from_email'
+        )
+    );
+
+    add_settings_field(
+        'from_name',
+        'From name',
+        __NAMESPACE__ . '\\textbox_callback_qtranslate',
+        'general',
+        'mail_settings',
+        array(
+            'from_name'
+        )
+    );
+
+    register_setting('general','from_email', 'esc_attr');
+    register_setting('general','from_name', 'esc_attr');
+}
+
+function set_mail_from($old) {
+    $email = get_option('from_email');
+    return $email;
+}
+
+function set_mail_from_name($old) {
+    $name = get_option('from_name');
+    if(function_exists('qtrans_getLanguage'))
+    {
+        $name = qtranxf_use(qtranxf_getLanguage(), $name);
+    }
+    return $name;
+}
 
 
 /**
@@ -438,14 +488,15 @@ function add_ticket_settings() {
     register_setting('general','ticket_combo_count', 'esc_attr');
 }
 
-function ticket_callback() {
+function seo_callback() {
 
 }
 
-add_action('admin_init',  __NAMESPACE__ . '\\add_ticket_settings' );
+function mail_callback() {
 
+}
 
-function seo_callback() {
+function ticket_callback() {
 
 }
 
@@ -478,3 +529,9 @@ function number_callback($args) {
     $option = get_option($args[0]);
     echo '<input type="number" id="'. $args[0] .'" name="'. $args[0] .'" value="' . $option . '" />';
 }
+
+add_action('admin_init',  __NAMESPACE__ . '\\add_seo_settings' );
+add_action('admin_init',  __NAMESPACE__ . '\\add_mail_settings' );
+add_action('admin_init',  __NAMESPACE__ . '\\add_ticket_settings' );
+add_filter('wp_mail_from', __NAMESPACE__ . '\\set_mail_from');
+add_filter('wp_mail_from_name', __NAMESPACE__ . '\\set_mail_from_name');
