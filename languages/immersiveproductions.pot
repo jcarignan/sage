@@ -5,7 +5,7 @@ msgstr ""
 "Project-Id-Version: Immersive Productions\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: Thu Mar 17 2016 01:39:11 GMT-0400 (Eastern Daylight Time)\n"
-"POT-Revision-Date: Sat May 28 2016 23:00:28 GMT-0400 (Eastern Daylight Time)\n"
+"POT-Revision-Date: Sun May 29 2016 02:30:22 GMT-0400 (Eastern Daylight Time)\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -152,31 +152,39 @@ msgstr ""
 msgid "ticket"
 msgstr ""
 
-#: ../templates/page-tickets.php:74
-msgid "Remove"
+#: ../templates/page-tickets.php:73 ../templates/page-tickets.php:73
+msgid "Ticket"
+msgstr ""
+
+#: ../templates/page-tickets.php:73
+msgid "of"
 msgstr ""
 
 #: ../templates/page-tickets.php:79
-msgid "Add ticket"
-msgstr ""
-
-#: ../templates/page-tickets.php:82
-msgid "Subtotal"
+msgid "Remove"
 msgstr ""
 
 #: ../templates/page-tickets.php:86
+msgid "Add ticket"
+msgstr ""
+
+#: ../templates/page-tickets.php:91
+msgid "Subtotal"
+msgstr ""
+
+#: ../templates/page-tickets.php:95
 msgid "PST"
 msgstr ""
 
-#: ../templates/page-tickets.php:90
+#: ../templates/page-tickets.php:99
 msgid "QST"
 msgstr ""
 
-#: ../templates/page-tickets.php:94
+#: ../templates/page-tickets.php:103
 msgid "Total"
 msgstr ""
 
-#: ../templates/page-tickets.php:98
+#: ../templates/page-tickets.php:109
 msgid "Pay with"
 msgstr ""
 

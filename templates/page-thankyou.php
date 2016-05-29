@@ -12,8 +12,7 @@
     <div class="block-main-container">
         <section class="block block-main block-main-content">
             <div class="content-description"><?php the_content(); ?></div>
-            <?php var_dump($_GET); ?>
-            <?php var_dump($_POST); ?>
+            <?=$_REQUEST['invoice']; ?>
         </section>
     </div>
 <?php endwhile; ?>

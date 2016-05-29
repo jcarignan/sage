@@ -198,8 +198,8 @@ function create_ticket_and_pay() {
             $price = $ticketStatus['combo_price'];
         }
     }
-    $itemName = qtranxf_use($q_config['language'], $itemName);
-    $ticketName = qtranxf_use($q_config['language'], $ticketStatus['labels']['ticket']);
+    $itemName = qtranxf_use(qtranxf_getLanguage(), $itemName);
+    $ticketName = qtranxf_use(qtranxf_getLanguage(), $ticketStatus['labels']['ticket']);
     $paypalUrl;
     if (get_option('ticket_sandboxed') == 1 ){
         $paypalUrl = 'https://www.sandbox.paypal.com/cgi-bin/webscr';
@@ -242,13 +242,14 @@ function create_ticket_and_pay() {
             'invoice' => $invoice,
             'item_name' => $ticketName.' - '.$itemName,
             'notify_url' => home_url().'/?AngellEYE_Paypal_Ipn_For_Wordpress&action=ipn_handler',
-            'return' =>  home_url().'/merci',
-            'cancel_return' =>  home_url().'/billeterie',
+            'return' =>  home_url().'/merci/?invoice='.$invoice,
+            'cancel_return' =>  home_url().'/billeterie/',
             'rm' =>  2,
             'undefined_ quantity' =>  1,
             'cmd' =>  '_s-xclick',
             'lc' =>  'CA',
-            'charset' => 'utf-8'
+            'charset' => 'utf-8',
+            'no_note' => '1'
         )
     ));
     wp_die();

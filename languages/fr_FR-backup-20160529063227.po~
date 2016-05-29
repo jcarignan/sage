@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: Immersive Productions\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: Thu Mar 17 2016 01:39:11 GMT-0400 (Eastern Daylight Time)\n"
-"PO-Revision-Date: Sun May 29 2016 02:32:15 GMT-0400 (Eastern Daylight Time)\n"
+"PO-Revision-Date: Sat May 28 2016 23:02:30 GMT-0400 (Eastern Daylight Time)\n"
 "Last-Translator: julien <carignan.julien@gmail.com>\n"
 "Language-Team: \n"
 "Language: French (France)\n"
@@ -22,13 +22,13 @@ msgstr ""
 "esc_html_x:1,2c;comments_number_link:2,3;t:1;st:1;trans:1;transChoice:1,2\n"
 "X-Loco-Target-Locale: fr_FR"
 
-#: ../templates/page-tickets.php:73 ../templates/page-tickets.php:73
-msgid "Ticket"
-msgstr "Billet"
+#: ../templates/page-tickets.php:86
+msgid "PST"
+msgstr "TPS"
 
-#: ../templates/page-tickets.php:73
-msgid "of"
-msgstr "de"
+#: ../templates/page-tickets.php:90
+msgid "QST"
+msgstr "TVQ"
 
 #: ../404.php:4
 msgid "Sorry, but the page you were trying to view does not exist."
@@ -161,31 +161,23 @@ msgstr "taxes"
 msgid "ticket"
 msgstr "billet"
 
-#: ../templates/page-tickets.php:79
+#: ../templates/page-tickets.php:74
 msgid "Remove"
 msgstr "Enlever"
 
-#: ../templates/page-tickets.php:86
+#: ../templates/page-tickets.php:79
 msgid "Add ticket"
 msgstr "Ajouter un billet"
 
-#: ../templates/page-tickets.php:91
+#: ../templates/page-tickets.php:82
 msgid "Subtotal"
 msgstr "Sous-total"
 
-#: ../templates/page-tickets.php:95
-msgid "PST"
-msgstr "TPS"
-
-#: ../templates/page-tickets.php:99
-msgid "QST"
-msgstr "TVQ"
-
-#: ../templates/page-tickets.php:103
+#: ../templates/page-tickets.php:94
 msgid "Total"
 msgstr "Total"
 
-#: ../templates/page-tickets.php:109
+#: ../templates/page-tickets.php:98
 msgid "Pay with"
 msgstr "Payer avec"
 

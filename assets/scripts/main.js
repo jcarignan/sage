@@ -156,7 +156,7 @@
             $container.append($(repeatableSet));
             updateForm($form);
             $title = $(repeatableSet).find('.ticket-title');
-            $title.text($title.data('label-first')+' #'+($(repeatableSet).index()+1))
+            $title.text($title.data('label-first')+' #'+($(repeatableSet).index()+1));
             $(repeatableSet).find('input[type="text"]').each(addInputChangeEvents);
             $(repeatableSet).find('input[type!="hidden"]').each(function(i,input){
                 $(input).val('');
