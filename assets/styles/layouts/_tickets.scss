@@ -45,33 +45,60 @@ body.page-template-page-tickets {
                 padding: 0 8%;
                 box-sizing: border-box;
 
-                &.with-one-info {
-
-                }
-
-                &.with-two-infos {
-
+                &.with-two-contents {
+                    .content-infos {
+                        height: 50%;
+                        &:first-of-type {
+                            border-bottom: 2px solid rgba(0,0,0,0.3);
+                        }
+                    }
                 }
 
                 .content-infos {
+                    display: flex;
+                    flex-direction: column;
+                    justify-content: space-between;
+                    align-items: center;
+                    padding: 10px 0;
+                    box-sizing: border-box;
+                    text-align: center;
+                    height: 100%;
                     h1 {
+                        color: $brand-third;
+                    }
 
+                    .price-container {
+                        position: relative;
+                        display: inline-block;
                     }
 
                     .price {
+                        display: inline-block;
+                        font-size: 2.2em;
+                        font-weight: bold;
+                    }
 
+                    .price-details {
+                        position: absolute;
+                        bottom: 6px;
+                        left: 100%;
+                        text-align: left;
+                        padding-left: 4px;
                     }
 
                     .per-ticket-label {
-
+                        font-size: 0.9em;
                     }
 
                     .tax-label {
-
+                        font-size: 0.6em;
+                        font-weight: bold;
                     }
 
                     .asterisk {
-
+                        display: block;
+                        font-weight: bold;
+                        font-size: 0.7em;
                     }
                 }
             }

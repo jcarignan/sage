@@ -1,18 +1,20 @@
+# Loco Gettext template
+#, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: Immersive Productions\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: Thu Mar 17 2016 01:39:11 GMT-0400 (Eastern Daylight Time)\n"
-"PO-Revision-Date: Sat May 28 2016 23:02:30 GMT-0400 (Eastern Daylight Time)\n"
-"Last-Translator: julien <carignan.julien@gmail.com>\n"
+"POT-Revision-Date: Sun May 29 2016 02:30:22 GMT-0400 (Eastern Daylight Time)\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: \n"
 "Language-Team: \n"
-"Language: French (France)\n"
-"Plural-Forms: nplurals=2; plural=n > 1\n"
+"Language: \n"
+"Plural-Forms: nplurals=INTEGER; plural=EXPRESSION\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Poedit-SourceCharset: UTF-8\n"
-"X-Generator: Loco - https://localise.biz/\n"
 "X-Poedit-Basepath: .\n"
 "X-Poedit-SearchPath-0: ..\n"
 "X-Poedit-KeywordsList: _:1;gettext:1;dgettext:2;ngettext:1,2;dngettext:2,3;"
@@ -20,183 +22,188 @@ msgstr ""
 "_x:1,2c;_ex:1,2c;_nx:1,2,4c;_nx_noop:1,2,3c;_n_js:1,2;_nx_js:1,2,3c;"
 "esc_attr__:1;esc_html__:1;esc_attr_e:1;esc_html_e:1;esc_attr_x:1,2c;"
 "esc_html_x:1,2c;comments_number_link:2,3;t:1;st:1;trans:1;transChoice:1,2\n"
-"X-Loco-Target-Locale: fr_FR"
-
-#: ../templates/page-tickets.php:86
-msgid "PST"
-msgstr "TPS"
-
-#: ../templates/page-tickets.php:90
-msgid "QST"
-msgstr "TVQ"
+"X-Generator: Loco - https://localise.biz/"
 
 #: ../404.php:4
 msgid "Sorry, but the page you were trying to view does not exist."
-msgstr "Désolé, cette page est introuvable."
+msgstr ""
 
 #: ../base.php:17
 msgid ""
 "You are using an <strong>outdated</strong> browser. Please <a href=\"http:"
 "//browsehappy.com/\">upgrade your browser</a> to improve your experience."
 msgstr ""
-"Vous utilisez une version obsolète de votre navigateur. Veuillez le  <a "
-"href=\"http://browsehappy.com/\">mettre à jour</a> pour visionner votre site "
-"correctement."
 
 #: ../functions.php:23
 #, php-format
 msgid "Error locating %s for inclusion"
-msgstr "Erreurr localiser %s pour inclusion"
+msgstr ""
 
 #: ../index.php:5 ../search.php:5
 msgid "Sorry, no results were found."
-msgstr "Désolé, rien n'a été trouvé."
+msgstr ""
 
 #: ../lib/customizer.php:13 ../lib/customizer.php:24
 msgid "Sub-theme"
-msgstr "Sous-thème"
+msgstr ""
 
 #: ../lib/extras.php:31
 msgid "Continued"
-msgstr "Suite"
+msgstr ""
 
 #: ../lib/setup.php:31
 msgid "Primary Navigation"
-msgstr "Navigation Primaire"
+msgstr ""
 
 #: ../lib/setup.php:32
 msgid "Secondary Navigation"
-msgstr "Navigation secondaire"
+msgstr ""
 
 #: ../lib/setup.php:33
 msgid "Tertiary Navigation"
-msgstr "Navigation tertiaire"
+msgstr ""
 
 #: ../lib/setup.php:72
 msgid "Footer"
-msgstr "Pied de page"
+msgstr ""
 
 #: ../lib/titles.php:13
 msgid "Latest Posts"
-msgstr "Articles Récents"
+msgstr ""
 
 #: ../lib/titles.php:18
 #, php-format
 msgid "Search Results for %s"
-msgstr "Résultats pour %s"
+msgstr ""
 
 #: ../lib/titles.php:20
 msgid "Not Found"
-msgstr "Non Trouvé"
+msgstr ""
 
 #: ../templates/comments.php:9
 #, php-format
 msgctxt "comments title"
 msgid "One response to &ldquo;%2$s&rdquo;"
 msgid_plural "%1$s responses to &ldquo;%2$s&rdquo;"
-msgstr[0] "Une réponse à &ldquo;%2$s&rdquo;"
-msgstr[1] "%1$s réponses à &ldquo;%2$s&rdquo;"
+msgstr[0] ""
+msgstr[1] ""
 
 #: ../templates/comments.php:19
 msgid "&larr; Older comments"
-msgstr "&larr; Commentaires anciens"
+msgstr ""
 
 #: ../templates/comments.php:22
 msgid "Newer comments &rarr;"
-msgstr "Commentaires récents &rarr;"
+msgstr ""
 
 #: ../templates/comments.php:31
 msgid "Comments are closed."
-msgstr "Commentaires fermés."
+msgstr ""
 
 #: ../templates/content-page.php:2 ../templates/content-single.php:11
 msgid "Pages:"
-msgstr "Pages:"
+msgstr ""
 
 #: ../templates/entry-meta.php:2
 msgid "By"
-msgstr "Par"
+msgstr ""
 
 #. Name of the template
 msgid "About"
-msgstr "À propos"
+msgstr ""
 
 #. Name of the template
 msgid "Clients"
-msgstr "Clients"
+msgstr ""
 
 #. Name of the template
 msgid "Contact"
-msgstr "Contact"
+msgstr ""
 
 #. Name of the template
 msgid "Event"
-msgstr "Événement"
+msgstr ""
 
 #. Name of the template
 msgid "Medias"
-msgstr "Médias"
+msgstr ""
 
 #. Name of the template
 msgid "Multicontent"
-msgstr "Multicontenu"
+msgstr ""
 
 #. Name of the template
 msgid "Splash"
-msgstr "Splash"
+msgstr ""
 
 #. Name of the template
 msgid "Thankyou"
-msgstr "Merci"
+msgstr ""
 
 #. Name of the template
 msgid "Tickets"
-msgstr "Billets"
+msgstr ""
 
 #: ../templates/page-tickets.php:36 ../templates/page-tickets.php:44
 msgid "taxes"
-msgstr "taxes"
+msgstr ""
 
 #: ../templates/page-tickets.php:43
 msgid "ticket"
-msgstr "billet"
+msgstr ""
 
-#: ../templates/page-tickets.php:74
-msgid "Remove"
-msgstr "Enlever"
+#: ../templates/page-tickets.php:73 ../templates/page-tickets.php:73
+msgid "Ticket"
+msgstr ""
+
+#: ../templates/page-tickets.php:73
+msgid "of"
+msgstr ""
 
 #: ../templates/page-tickets.php:79
+msgid "Remove"
+msgstr ""
+
+#: ../templates/page-tickets.php:86
 msgid "Add ticket"
-msgstr "Ajouter un billet"
+msgstr ""
 
-#: ../templates/page-tickets.php:82
+#: ../templates/page-tickets.php:91
 msgid "Subtotal"
-msgstr "Sous-total"
+msgstr ""
 
-#: ../templates/page-tickets.php:94
+#: ../templates/page-tickets.php:95
+msgid "PST"
+msgstr ""
+
+#: ../templates/page-tickets.php:99
+msgid "QST"
+msgstr ""
+
+#: ../templates/page-tickets.php:103
 msgid "Total"
-msgstr "Total"
+msgstr ""
 
-#: ../templates/page-tickets.php:98
+#: ../templates/page-tickets.php:109
 msgid "Pay with"
-msgstr "Payer avec"
+msgstr ""
 
 #. Name of the theme
 msgid "Immersive Productions"
-msgstr "Immersive Productions"
+msgstr ""
 
 #. Theme URI of the theme
 msgid "http://immersiveproductions.ca"
-msgstr "http://immersiveproductions.ca"
+msgstr ""
 
 #. Description of the theme
 msgid "Immersive productions' Wordpress theme - Sage boilerplate"
-msgstr "Thème Wordpress d'Immersive productions"
+msgstr ""
 
 #. Author of the theme
 msgid "Julien Carignan"
-msgstr "Julien Carignan"
+msgstr ""
 
 #. Author URI of the theme
 msgid "http://juliencarignan.com"
-msgstr "http://juliencarignan.com"
+msgstr ""

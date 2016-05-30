@@ -5,7 +5,7 @@ msgstr ""
 "Project-Id-Version: Immersive Productions\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: Thu Mar 17 2016 01:39:11 GMT-0400 (Eastern Daylight Time)\n"
-"POT-Revision-Date: Sun May 29 2016 02:30:22 GMT-0400 (Eastern Daylight Time)\n"
+"POT-Revision-Date: Sun May 29 2016 23:51:25 GMT-0400 (Eastern Daylight Time)\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -49,6 +49,10 @@ msgstr ""
 
 #: ../lib/extras.php:31
 msgid "Continued"
+msgstr ""
+
+#: ../lib/extras.php:195
+msgid "Your ticket for ACCRO 2016"
 msgstr ""
 
 #: ../lib/setup.php:31
@@ -144,47 +148,47 @@ msgstr ""
 msgid "Tickets"
 msgstr ""
 
-#: ../templates/page-tickets.php:36 ../templates/page-tickets.php:44
+#: ../templates/page-tickets.php:42 ../templates/page-tickets.php:54
 msgid "taxes"
 msgstr ""
 
-#: ../templates/page-tickets.php:43
+#: ../templates/page-tickets.php:53
 msgid "ticket"
 msgstr ""
 
-#: ../templates/page-tickets.php:73 ../templates/page-tickets.php:73
+#: ../templates/page-tickets.php:85 ../templates/page-tickets.php:85
 msgid "Ticket"
 msgstr ""
 
-#: ../templates/page-tickets.php:73
+#: ../templates/page-tickets.php:85
 msgid "of"
 msgstr ""
 
-#: ../templates/page-tickets.php:79
+#: ../templates/page-tickets.php:91
 msgid "Remove"
 msgstr ""
 
-#: ../templates/page-tickets.php:86
+#: ../templates/page-tickets.php:98
 msgid "Add ticket"
 msgstr ""
 
-#: ../templates/page-tickets.php:91
+#: ../templates/page-tickets.php:103
 msgid "Subtotal"
 msgstr ""
 
-#: ../templates/page-tickets.php:95
+#: ../templates/page-tickets.php:107
 msgid "PST"
 msgstr ""
 
-#: ../templates/page-tickets.php:99
+#: ../templates/page-tickets.php:111
 msgid "QST"
 msgstr ""
 
-#: ../templates/page-tickets.php:103
+#: ../templates/page-tickets.php:115
 msgid "Total"
 msgstr ""
 
-#: ../templates/page-tickets.php:109
+#: ../templates/page-tickets.php:121
 msgid "Pay with"
 msgstr ""
 

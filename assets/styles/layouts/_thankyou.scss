@@ -1,0 +1,27 @@
+body.page-template-page-thankyou {
+    .block-main-container {
+
+        .block.block-main {
+            text-align: center;
+            padding: 0;
+            margin: 0 auto;
+            box-sizing: border-box;
+            &.block-main-content .content-description {
+                padding: 40px 8% 30px;
+            }
+        }
+
+        .block-main-tickets {
+            div[style*="margin: 16px 0"] {
+                margin:0 !important;
+            }
+        }
+    }
+
+    @media only screen and (max-width: 600px){
+        .ticket-infos {
+            max-width: 400px !important;
+        }
+    }
+
+}

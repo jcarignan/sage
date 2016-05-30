@@ -11,12 +11,16 @@
     $ticketImage = get_field('ticket_image');
     $labels = $ticketStatus['labels'];
     $firstBlockLabel;
+    $firstBlockAsterisk;
     if ($ticketStatus['promo_active']){
         $firstBlockLabel = $labels['promo'];
+        $firstBlockAsterisk = get_field('promo_asterisk');
     } else if ($ticketStatus['early_active']){
         $firstBlockLabel = $labels['early'];
+        $firstBlockAsterisk = get_field('early_asterisk');
     } else {
         $firstBlockLabel = $labels['normal'];
+        $firstBlockAsterisk = get_field('normal_asterisk');
     }
     $secondBlockLabel = $labels['combo'];
 ?>
@@ -28,20 +32,28 @@
             <div class="block-content content-image" style="background-image: url(<?=$ticketImage['url']?>)">
                 <div class="content-text"><?= get_field('ticket_text'); ?></div>
             </div>
-            <div class="block-content content-infos-container <?=$ticketStatus['promo_active']?'with-one-info':'with-two-infos'?>">
+            <div class="block-content content-infos-container <?=$ticketStatus['promo_active']?'with-one-content':'with-two-contents'?>">
                 <div class="content-infos">
                     <h1><?=$firstBlockLabel?></h1>
-                    <div class="price"><?= do_shortcode('[current_price]')?></div>
-                    <span class="per-ticket-label"></span>
-                    <span class="tax-label">+<?=__('taxes', 'immersiveproductions')?></span>
-                    <div class="asterisk"><?= do_shortcode(get_field('promo_asterisk')); ?></div>
+                    <div class="price-container">
+                        <div class="price"><?= do_shortcode('[current_price]')?></div>
+                        <div class="price-details">
+                            <div class="per-ticket-label"></div>
+                            <div class="tax-label">+<?=__('taxes', 'immersiveproductions')?></div>
+                        </div>
+                    </div>
+                    <div class="asterisk"><?= do_shortcode($firstBlockAsterisk); ?></div>
                 </div>
                 <?php if (!$ticketStatus['promo_active']): ?>
                     <div class="content-infos">
                         <h1><?=$secondBlockLabel?></h1>
-                        <div class="price"><?= do_shortcode('[combo_price]')?></div>
-                        <span class="per-ticket-label">/<?=__('ticket', 'immersiveproductions')?></span>
-                        <span class="tax-label">+<?=__('taxes', 'immersiveproductions')?></span>
+                        <div class="price-container">
+                            <div class="price"><?= do_shortcode('[combo_price]')?></div>
+                            <div class="price-details">
+                                <div class="per-ticket-label">/&nbsp;<?=__('ticket', 'immersiveproductions')?></div>
+                                <div class="tax-label">+<?=__('taxes', 'immersiveproductions')?></div>
+                            </div>
+                        </div>
                         <div class="asterisk"><?= do_shortcode(get_field('combo_asterisk')); ?></div>
                     </div>
                 <?php endif;?>

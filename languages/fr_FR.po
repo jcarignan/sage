@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: Immersive Productions\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: Thu Mar 17 2016 01:39:11 GMT-0400 (Eastern Daylight Time)\n"
-"PO-Revision-Date: Sun May 29 2016 02:32:15 GMT-0400 (Eastern Daylight Time)\n"
+"PO-Revision-Date: Sun May 29 2016 23:55:14 GMT-0400 (Eastern Daylight Time)\n"
 "Last-Translator: julien <carignan.julien@gmail.com>\n"
 "Language-Team: \n"
 "Language: French (France)\n"
@@ -22,13 +22,9 @@ msgstr ""
 "esc_html_x:1,2c;comments_number_link:2,3;t:1;st:1;trans:1;transChoice:1,2\n"
 "X-Loco-Target-Locale: fr_FR"
 
-#: ../templates/page-tickets.php:73 ../templates/page-tickets.php:73
-msgid "Ticket"
-msgstr "Billet"
-
-#: ../templates/page-tickets.php:73
-msgid "of"
-msgstr "de"
+#: ../lib/extras.php:195
+msgid "Your ticket for ACCRO 2016"
+msgstr "Votre billet pour ACCRO 2016"
 
 #: ../404.php:4
 msgid "Sorry, but the page you were trying to view does not exist."
@@ -153,39 +149,47 @@ msgstr "Merci"
 msgid "Tickets"
 msgstr "Billets"
 
-#: ../templates/page-tickets.php:36 ../templates/page-tickets.php:44
+#: ../templates/page-tickets.php:42 ../templates/page-tickets.php:54
 msgid "taxes"
 msgstr "taxes"
 
-#: ../templates/page-tickets.php:43
+#: ../templates/page-tickets.php:53
 msgid "ticket"
 msgstr "billet"
 
-#: ../templates/page-tickets.php:79
+#: ../templates/page-tickets.php:85 ../templates/page-tickets.php:85
+msgid "Ticket"
+msgstr "Billet"
+
+#: ../templates/page-tickets.php:85
+msgid "of"
+msgstr "de"
+
+#: ../templates/page-tickets.php:91
 msgid "Remove"
 msgstr "Enlever"
 
-#: ../templates/page-tickets.php:86
+#: ../templates/page-tickets.php:98
 msgid "Add ticket"
 msgstr "Ajouter un billet"
 
-#: ../templates/page-tickets.php:91
+#: ../templates/page-tickets.php:103
 msgid "Subtotal"
 msgstr "Sous-total"
 
-#: ../templates/page-tickets.php:95
+#: ../templates/page-tickets.php:107
 msgid "PST"
 msgstr "TPS"
 
-#: ../templates/page-tickets.php:99
+#: ../templates/page-tickets.php:111
 msgid "QST"
 msgstr "TVQ"
 
-#: ../templates/page-tickets.php:103
+#: ../templates/page-tickets.php:115
 msgid "Total"
 msgstr "Total"
 
-#: ../templates/page-tickets.php:109
+#: ../templates/page-tickets.php:121
 msgid "Pay with"
 msgstr "Payer avec"
 
