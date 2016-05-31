@@ -239,13 +239,13 @@ function on_paypal_payment_completed($posted) {
         $qrCodeUrl = 'http://chart.googleapis.com/chart?chs=90x90&amp;cht=qr&amp;chl='.home_url().'/scan/?billet='.$ticket['qr_code'].'&amp;choe=UTF-8';
         if($qrCodeUrl)
         {
-            $url = "http://www.google.com";
+            /*
             $ch = curl_init();
             curl_setopt($ch, CURLOPT_URL, $qrCodeUrl);
             curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
             $data = curl_exec($ch);
-            curl_close($ch);
-            $attachments = array( $data );
+            curl_close($ch);*/
+            //$attachments = array( file_get_contents($qrCodeUrl) );
         }
         wp_mail($ticket['email'], $subject, $message, $headers, $attachments);
     }
