@@ -331,6 +331,7 @@ function create_ticket_and_pay() {
             'notify_url' => home_url().'/?AngellEYE_Paypal_Ipn_For_Wordpress&action=ipn_handler',
             'return' =>  home_url().'/merci/?invoice='.$invoice,
             'cancel_return' =>  home_url().'/billeterie/',
+            'cbt' => $quantity <= 1 ? __('See my ticket', 'immersiveproductions') : __('See my tickets', 'immersiveproductions'),
             'rm' =>  2,
             'undefined_ quantity' =>  1,
             'cmd' =>  '_s-xclick',

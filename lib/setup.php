@@ -271,6 +271,12 @@ function set_mail_from_name($old) {
  */
 
 function add_ticket_settings() {
+    $subtheme = get_option( 'immersiveproductions_theme_options')['subtheme'];
+    if ($subtheme === 'default')
+    {
+        return;
+    }
+    
     add_settings_section(
         'ticket_settings',
         'Tickets Settings',
@@ -529,6 +535,7 @@ function number_callback($args) {
     $option = get_option($args[0]);
     echo '<input type="number" id="'. $args[0] .'" name="'. $args[0] .'" value="' . $option . '" />';
 }
+
 
 add_action('admin_init',  __NAMESPACE__ . '\\add_seo_settings' );
 add_action('admin_init',  __NAMESPACE__ . '\\add_mail_settings' );
