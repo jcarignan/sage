@@ -45,6 +45,18 @@ body.page-template-page-tickets {
                 padding: 0 8%;
                 box-sizing: border-box;
 
+                &.with-one-content {
+                    .content-infos {
+                        .price {
+                            font-size: 3.4em;
+                        }
+
+                        .price-details {
+                            padding-bottom: 8px;
+                        }
+                    }
+                }
+
                 &.with-two-contents {
                     .content-infos {
                         height: 50%;
@@ -274,9 +286,17 @@ body.page-template-page-tickets {
     }
 
     @media screen and (max-width: $small-width) {
-
-        .block.block-main .content-image {
-            font-size: 0.9em;
+        .block-main-container {
+            .block.block-main.block-main-content {
+                .content-description {
+                    font-size: 0.82em;
+                    padding-left: 6.7%;
+                    padding-right: 6.7%;
+                }
+                .content-image {
+                    font-size: 0.9em;
+                }
+            }
         }
 
         .buttons-container {

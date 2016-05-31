@@ -150,12 +150,11 @@ header.banner {
                 a {
                     width:100%;
                     height: 100%;
-                    text-indent: 100%;
-                	white-space: nowrap;
-                	overflow: hidden;
+                    text-indent: 99999px;
                     background-size: contain;
                     background-repeat: no-repeat;
                     background-position: center;
+                    display:inline-block;
                 }
 
                 &.facebook a {

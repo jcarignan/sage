@@ -235,8 +235,19 @@ function on_paypal_payment_completed($posted) {
     </center>
 </body>
 </html>';
-
-        wp_mail($ticket['email'], $subject, $message, $headers);
+        $attachments = array();
+        $qrCodeUrl = 'http://chart.googleapis.com/chart?chs=90x90&amp;cht=qr&amp;chl='.home_url().'/scan/?billet='.$ticket['qr_code'].'&amp;choe=UTF-8';
+        if($qrCodeUrl)
+        {
+            $url = "http://www.google.com";
+            $ch = curl_init();
+            curl_setopt($ch, CURLOPT_URL, $qrCodeUrl);
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+            $data = curl_exec($ch);
+            curl_close($ch);
+            $attachments = array( $data );
+        }
+        wp_mail($ticket['email'], $subject, $message, $headers, $attachments);
     }
 
 }
@@ -337,15 +348,16 @@ function generate_ticket_html($ticket)
     $imgPath = get_template_directory_uri().'/dist/images/ticket/';
     $imgLogoUrl = $imgPath.'accro-logo-'.(function_exists('qtrans_getLanguage') && qtrans_getLanguage() === 'en' ? 'en':'fr').'.png';
     $imgEventInfosUrl = $imgPath.'event-infos-'.(function_exists('qtrans_getLanguage') && qtrans_getLanguage() === 'en' ? 'en':'fr').'.png';
-    $imgSpacerUrl = $imgPath.'spacer.png';
+    $imgSpacerUrl = $imgPath.'vspacer.png';
     $eventInfosAlt = (function_exists('qtrans_getLanguage') && qtrans_getLanguage() === 'en' ? 'At the TOHU - September 29th, 2016 - from 5pm to 10pm':'À la TOHU le 29 septembre 2016 de 17h à 22h');
     $price = function_exists('qtrans_getLanguage') && qtrans_getLanguage() === 'en' ? '$'.$ticket['price']: $ticket['price'].'$';
+    $qrCodeUrl = 'https://chart.googleapis.com/chart?chs=90x90&amp;cht=qr&amp;chl='.home_url().'/scan/?billet='.$ticket['qr_code'].'&amp;choe=UTF-8';
     return '<tr>
                 <td class="ticket" style="padding: 0;text-align: center;font-size: 0;">
                     <!--[if (gte mso 9)|(IE)]>
                     <table width="100%" style="border-spacing: 0;">
                     <tr>
-                    <td width="50%" valign="top" style="padding: 0;">
+                    <td width="400px" valign="top" style="padding: 0;">
                     <![endif]-->
                     <div style="max-width: 400px;display: inline-block;vertical-align: top;">
                         <table width="100%" style="border-spacing: 0;">
@@ -368,7 +380,7 @@ function generate_ticket_html($ticket)
                         </table>
                     </div>
                     <!--[if (gte mso 9)|(IE)]>
-                        </td><td width="50%" valign="top" style="padding: 0;">
+                        </td><td width="200px" valign="top" style="padding: 0;">
                         <![endif]-->
                         <div class="ticket-infos" style="max-width: 200px;width: 100%;display: inline-block;vertical-align: top;">
                             <table width="100%" style="border-spacing: 0;">
@@ -378,7 +390,7 @@ function generate_ticket_html($ticket)
                                             <tr>
                                                  <td style="font-size: 14px;padding:0 10px 0 10px;">'.$ticket['first_name'].' '.$ticket['last_name'].'</td>
                                                 <td style="padding: 0;visibility:hidden;opacity:0;">
-                                                     <img style="border: 0; width: 1px;height:92px;visibility:hidden;opacity:0;background:none;" src="'.$imgSpacerUrl.'" width="1" height="92" alt="" />
+                                                     <img style="border: 0; width: 1px;height:92px;visibility:hidden;opacity:0;" src="'.$imgSpacerUrl.'" width="1" height="92" alt="" />
                                                 </td>
                                             </tr>
                                             <tr>
@@ -396,7 +408,7 @@ function generate_ticket_html($ticket)
                                                                 </table>
                                                             </td>
                                                         	<td style="padding: 0;">
-                                                                <img style="border: 0; width:90px;height:90px;"src="https://chart.googleapis.com/chart?chs=100x100&amp;cht=qr&amp;chl='.home_url().'/scan/?billet='.$ticket['qr_code'].'&amp;choe=UTF-8'.'" alt="QR code" width="90" height="90" alt="" />
+                                                                <img style="border: 0; width:90px;height:90px;"src="'.$qrCodeUrl.'" alt="QR code" width="90" height="90" alt="" />
                                                             </td>
                                                         </tr>
                                                     </table>
