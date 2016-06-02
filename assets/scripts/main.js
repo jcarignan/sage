@@ -14,6 +14,24 @@
 
   // Use this variable to set up the common and page specific functions. If you
   // rename this variable, you will also need to rename the namespace below.
+  var getIEVersion = function() {
+      var sAgent = window.navigator.userAgent;
+      var Idx = sAgent.indexOf("MSIE");
+
+      if (Idx > 0)
+      {
+          return parseInt(sAgent.substring(Idx+ 5, sAgent.indexOf(".", Idx)));
+      } else if (!!navigator.userAgent.match(/Trident\/7\./)) {
+          return 11;
+      } else{
+          return 0;
+      }
+  };
+
+  var isTouchEnabled = function() {
+      return 'ontouchstart' in document.documentElement || navigator.maxTouchPoints;
+  };
+
   var Sage = {
     // All pages
     'common': {
@@ -26,6 +44,16 @@
         });
 
         $('body .content').removeClass('hidden');
+
+
+
+        if (getIEVersion() === 0 && !isTouchEnabled())
+        {
+            Ps.initialize($('.main')[0]);
+        } else {
+            $('.main').css('overflow-x', 'hidden');
+            $('.main').css('overflow-y', 'auto');
+        }
 
         $('a').click(function(e){
             if ($('.banner').is('.opened'))
@@ -143,6 +171,10 @@
                 onComplete: function(){
                     $(this.target).remove();
                     updateForm($form);
+                    if (getIEVersion() === 0 && !isTouchEnabled())
+                    {
+                        Ps.update($('.main')[0]);
+                    }
                 }
             });
         };
@@ -159,10 +191,17 @@
             $title.text($title.data('label-first')+' #'+($(repeatableSet).index()+1));
             $(repeatableSet).find('input[type="text"]').each(addInputChangeEvents);
             $(repeatableSet).find('input[type!="hidden"]').each(function(i,input){
-                $(input).val('');
+                $(input).unbind('focus.placeholder').unbind('blur.placeholder').removeData('placeholder-enabled').removeClass('placeholder').val('').placeholder();
             });
             var repeatableSetHeight = repeatableSet.offsetHeight;
-            var timeline = new TimelineMax();
+            var timeline = new TimelineMax({
+                onComplete: function(){
+                    if (getIEVersion() === 0 && !isTouchEnabled())
+                    {
+                        Ps.update($('.main')[0]);
+                    }
+                }
+            });
             timeline.set(repeatableSet, {
                 height: 0,
                 opacity: 0
@@ -176,62 +215,71 @@
             });
         };
 
+        var createTicket = function(arr, $form, options)
+        {
+            var valid = true;
+            $form.find('input[type!="hidden"]').each(function(i, el){
+                $(el).trigger('submit.placeholder');
+                if (!$(el).attr('value').length)
+                {
+                    valid = false;
+                    $(el).parent('span').addClass('error');
+                } else {
+                    $(el).parent('span').removeClass('error');
+                }
+            });
+            if (!valid){
+                console.log('Errors in form.');
+                $form.find('.wpcf7-validation-errors').css('visibility', 'visible');
+                return false;
+            }
+
+            arr.push({
+                name: 'nonce',
+                value: ticketsData.nonce
+            },{
+                name: 'action',
+                value: 'create_ticket_and_pay'
+            });
+            $form.find('button, input[type!="hidden"]').attr('disabled', true);
+            $form.find('.ajax-loader').css('visibility', 'visible');
+            $form.find('.wpcf7-validation-errors').css('visibility', 'hidden');
+            console.log('Creating ticket...');
+        };
+
+        var onTicketCreated = function(data)
+        {
+            console.log('Ticket created! To paypal we go...');
+
+            var $paypalForm = $('.paypal-hidden');
+
+            var paypalFields = data.paypal_fields;
+
+            for (var key in paypalFields)
+            {
+                $paypalForm.append($('<input>', {
+                    'name': key,
+                    'value': paypalFields[key],
+                    'type': 'hidden'
+                }));
+            }
+
+            $paypalForm.attr('action', data.paypal_url);
+
+            $paypalForm[0].submit();
+        };
+
         $('.add-ticket-button').click(onAddTicketButton);
         $('.remove-ticket-button').click(onRemoveTicketButton);
         updateForm($('.create-event-ticket'));
+        $('.create-event-ticket').find('input[type!="hidden"]').placeholder();
         $('.create-event-ticket input[type="text"]').each(addInputChangeEvents);
         $('.create-event-ticket').ajaxForm({
             url: ticketsData.ajaxUrl,
             type: 'post',
             dataType: 'json',
-            success: function(data) {
-                console.log('Ticket created! To paypal we go...');
-
-                var $paypalForm = $('<form>', {
-                    'action': data.paypal_url,
-                    'target': '_top'
-                });
-
-                for (var key in data.fields)
-                {
-                    $paypalForm.append($('<input>', {
-                        'name': key,
-                        'value': data.fields[key],
-                        'type': 'hidden'
-                    }));
-                }
-
-                $paypalForm.submit();
-            },
-            beforeSubmit : function(arr, $form, options){
-                var valid = true;
-                $form.find('input[type!="hidden"]').each(function(i, el){
-                    if (!$(el).attr('value').length)
-                    {
-                        valid = false;
-                        $(el).parent('span').addClass('error');
-                    } else {
-                        $(el).parent('span').removeClass('error');
-                    }
-                });
-                if (!valid){
-                    console.log('Errors in form.');
-                    $form.find('.wpcf7-validation-errors').css('visibility', 'visible');
-                    return false;
-                }
-
-                arr.push({
-                    name: 'nonce',
-                    value: ticketsData.nonce
-                },{
-                    name: 'action',
-                    value: 'create_ticket_and_pay'
-                });
-                $form.find('button, input[type!="hidden"]').attr('disabled', true);
-                $form.find('.ajax-loader').css('visibility', 'visible');
-                $form.find('.wpcf7-validation-errors').css('visibility', 'hidden');
-                console.log('Creating ticket...');
-            }
+            success: onTicketCreated,
+            beforeSubmit : createTicket
         });
       }
     }

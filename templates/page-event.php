@@ -56,7 +56,7 @@
                     <?= $layoutContent ?>
                 </section>
                 <?php if ($layoutImage):?>
-                    <section class="block-content content-image" style="background-image: url(<?php echo $layoutImage['url']?>);"></section>
+                    <section class="block-content content-image" style="background-image: url(<?php echo $layoutImage['sizes']['large']?>);"></section>
                 <?php endif; ?>
             </div>
 <?php                           break; ?>
@@ -67,10 +67,12 @@
 ?>
             <div class="block block-about">
                 <section class="block-content content-description">
-                    <div class="page-header"><h1><?= $layoutTitle; ?></h1></div>
-                    <article class="page-content"><?= $layoutContent ?></article>
+                    <div class="content-description-inner">
+                        <div class="page-header"><h1><?= $layoutTitle; ?></h1></div>
+                        <article class="page-content"><?= $layoutContent ?></article>
+                    </div>
                 </section>
-                <section class="block-content content-image" style="background-image: url(<?php echo $layoutImage['url']?>);"></section>
+                <section class="block-content content-image" style="background-image: url(<?php echo $layoutImage['sizes']['large']?>);"></section>
             </div>
 <?php                           break; ?>
 <?php                           case 'contact_form': // ----------------------------------------------------------
@@ -140,7 +142,7 @@
     					                   $itemContent = get_sub_field('content');
                                            $image = get_sub_field('image');
                                            $slideUrl = get_sub_field('link');
-                                           $imgStyle = 'background-image:url('.$image['url'].');  background-size:'.$backgroundSize.'; width:'.$imgWidth.';';
+                                           $imgStyle = 'background-image:url('.$image['sizes']['medium'].');  background-size:'.$backgroundSize.'; width:'.$imgWidth.';';
                                            $liClass = $image ? 'with-image':'without-image';
     					                   ?>
 	                <li class="list-item <?= $liClass?>" <?=$liAttrs?> >
@@ -203,7 +205,7 @@
                                                 <a href="<?=$elementLink?>" target="_blank">
 <?php                                       endif; ?>
                                                     <div class="item-content"><?=$elementTitle?></div>
-                                                    <div class="item-image" style="background-image: url(<?=$elementImage['url']?>);"></div>
+                                                    <div class="item-image" style="background-image: url(<?=$elementImage['sizes']['medium']?>);"></div>
 <?php                                       if ($hasLink): ?>
                                                 </a>
 <?php                                       endif; ?>

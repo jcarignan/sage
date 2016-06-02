@@ -36,25 +36,41 @@
                 <div class="content-infos">
                     <h1><?=$firstBlockLabel?></h1>
                     <div class="price-container">
-                        <div class="price"><?= do_shortcode('[current_price]')?></div>
-                        <div class="price-details">
-                            <div class="per-ticket-label"></div>
-                            <div class="tax-label">+<?=__('taxes', 'immersiveproductions')?></div>
+                        <div class="price-content">
+                            <div class="price-content-inner">
+                                <div class="price"><?= do_shortcode('[current_price]')?></div>
+                                <div class="price-details">
+                                    <div class="per-ticket-label"></div>
+                                    <div class="tax-label">+<?=__('taxes', 'immersiveproductions')?></div>
+                                </div>
+                            </div>
                         </div>
                     </div>
-                    <div class="asterisk"><?= do_shortcode($firstBlockAsterisk); ?></div>
+                    <div class="asterisk">
+                        <div class="asterisk-content">
+                            <?= do_shortcode($firstBlockAsterisk); ?>
+                        </div>
+                    </div>
                 </div>
                 <?php if (!$ticketStatus['promo_active']): ?>
                     <div class="content-infos">
                         <h1><?=$secondBlockLabel?></h1>
                         <div class="price-container">
-                            <div class="price"><?= do_shortcode('[combo_price]')?></div>
-                            <div class="price-details">
-                                <div class="per-ticket-label">/&nbsp;<?=__('ticket', 'immersiveproductions')?></div>
-                                <div class="tax-label">+<?=__('taxes', 'immersiveproductions')?></div>
+                            <div class="price-content">
+                                <div class="price-content-inner">
+                                    <div class="price"><?= do_shortcode('[combo_price]')?></div>
+                                    <div class="price-details">
+                                        <div class="per-ticket-label">/&nbsp;<?=__('ticket', 'immersiveproductions')?></div>
+                                        <div class="tax-label">+<?=__('taxes', 'immersiveproductions')?></div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
-                        <div class="asterisk"><?= do_shortcode(get_field('combo_asterisk')); ?></div>
+                        <div class="asterisk">
+                            <div class="asterisk-content">
+                                <?= do_shortcode(get_field('combo_asterisk')); ?>
+                            </div>
+                        </div>
                     </div>
                 <?php endif;?>
             </div>
@@ -120,7 +136,10 @@
                 </div>
                 <button class="wpcf7-form-control wpcf7-submit" type="submit" border="0"><?=__('Pay with', 'immersiveproductions')?><img src="<?=get_template_directory_uri()?>/dist/images/icons/paypal.svg" alt="Paypal"></button>
                 <img class="ajax-loader" src="<?=get_template_directory_uri()?>/dist/images/icons/ajax-loader.gif" alt="Envoi en cours ..." style="visibility: hidden;">
-                <div class="wpcf7-response-output wpcf7-validation-errors" role="alert" style="visibility: hidden;">Un ou plusieurs champs sont vides. Veuillez vérifier et réessayer.</div>
+                <div class="wpcf7-response-output wpcf7-validation-errors" role="alert" style="visibility: hidden;"><?=__('One or more fields have an error. Please check and try again.', 'immersiveproductions');?></div>
+            </form>
+            <form class="paypal-hidden" action="https://www.paypal.com/cgi-bin/webscr" target="_top" style="visibility:hidden;width:0;height:0;">
+                <input type="submit" name="btnSubmit">
             </form>
         </section>
     </div>

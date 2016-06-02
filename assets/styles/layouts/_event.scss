@@ -2,7 +2,7 @@ body.page-template-page-event {
     .block-main-container {
 
         .block.block-main {
-
+            overflow:hidden;
             margin-top: 30px;
             margin-bottom: 10px;
 
@@ -87,9 +87,10 @@ body.page-template-page-event {
 
             .block-gallery {
                 position: relative;
-
+                padding-bottom:16px;
                 &.gallery-interactive {
                     .list-items {
+
                         .list-item {
                             box-sizing: border-box;
                             &:hover {
@@ -101,9 +102,6 @@ body.page-template-page-event {
 
                             .item-content {
                                 z-index: 1;
-                                display: flex;
-                                flex-direction: column;
-                                justify-content: center;
                                 position: relative;
                                 width: 100%;
                                 height: 100%;
@@ -112,6 +110,19 @@ body.page-template-page-event {
                                 background-color: rgba(0,0,0,0.7);
                                 padding: 10px;
                                 box-sizing: border-box;
+
+                                .item-content-inner {
+                                    display: inline-block;
+                                    vertical-align: middle;
+                                    white-space: normal;
+                                }
+
+                                &:before {
+                                    content:'';
+                                    display: inline-block;
+                                    vertical-align: middle;
+                                    height: 100%;
+                                }
 
                                 div {
                                     vertical-align: middle;
@@ -176,12 +187,22 @@ body.page-template-page-event {
                     }
 
                     .item-content {
-                        display: flex;
-                        flex-direction: column;
-                        justify-content: center;
                         height: 100%;
                         box-sizing: border-box;
                         font-size: 0.8em;
+
+                        .item-content-inner {
+                            display: inline-block;
+                            vertical-align: middle;
+                            white-space: normal;
+                        }
+
+                        &:after {
+                            content:'';
+                            display: inline-block;
+                            vertical-align: middle;
+                            height: 100%;
+                        }
                     }
                 }
 
@@ -210,6 +231,7 @@ body.page-template-page-event {
                                 text-align: left;
                                 height: 100%;
                                 overflow: auto;
+                                white-space:normal;
 
                                 .item-title {
                                     font-size: 1em;
@@ -282,22 +304,34 @@ body.page-template-page-event {
 
                 &.gallery-two-tiles {
                     .list-items {
-                        flex-wrap: wrap;
 
                         .list-item {
                             width: 50%;
-                            display: flex;
 
                             .item-image {
                                 position: relative;
+                                display: inline-block;
                             }
 
                             .item-content {
-                                display: flex;
-                                flex-direction: column;
-                                justify-content: center;
+                                display: inline-block;
+                                vertical-align: top;
+                                height: 100%;
                                 padding: 10px;
                                 box-sizing: border-box;
+
+                                .item-content-inner {
+                                    display: inline-block;
+                                    vertical-align: middle;
+                                    white-space: normal;
+                                }
+
+                                &:after {
+                                    content:'';
+                                    display: inline-block;
+                                    vertical-align: middle;
+                                    height: 100%;
+                                }
 
                                 h1, div {
                                     display: block;
@@ -311,7 +345,12 @@ body.page-template-page-event {
                             &:nth-child(4n+3), &:nth-child(4n+4)
                             {
                                 .item-content {
-                                    order: -1;
+                                    position:relative;
+                                    left: -50%;
+                                }
+                                .item-image {
+                                    position:relative;
+                                    left: 50%;
                                 }
                             }
                         }
@@ -327,14 +366,24 @@ body.page-template-page-event {
                                 &:nth-child(4n+3), &:nth-child(4n+4)
                                 {
                                     .item-content {
-                                        order: 0
+                                        position:relative;
+                                        left: 0;
+                                    }
+                                    .item-image {
+                                        position:relative;
+                                        left: 0;
                                     }
                                 }
 
                                 &:nth-child(even)
                                 {
                                     .item-content {
-                                        order: -1;
+                                        position:relative;
+                                        left: -50%;
+                                    }
+                                    .item-image {
+                                        position:relative;
+                                        left: 50%;
                                     }
                                 }
                             }
@@ -365,12 +414,12 @@ body.page-template-page-event {
 
                 &.full-width {
                     .list-items {
-                        display: flex;
-                        flex-wrap: wrap;
-                        justify-content: center;
+
                         .list-item {
                             margin: 0;
                             padding: 0;
+                            white-space: nowrap;
+                            vertical-align: top;
                         }
                     }
                 }
@@ -447,27 +496,33 @@ body.page-template-page-event {
 
             &.block-main-about {
                 .block-about {
-                    display: flex;
                     .block-content {
-                        display: block;
                         &.content-description {
-                            display: flex;
-                            ul {
-                                li {
-                                    position: relative;
-                                    padding-left: 1.4em;
-                                    &:before {
-                                        content:'';
-                                        display: block;
-                                        position: absolute;
-                                        top: 0.1em;
-                                        left: 0;
-                                        width: 0.6em;
-                                        height: 0.6em;
-                                        border-radius: 50%;
-                                        border: 3px solid $brand-secondary;
+                            .content-description-inner {
+                                display: table;
+                                .page-header, .page-content {
+                                    display: table-cell;
+                                    vertical-align: top;
+                                }
+                                .page-content {
+                                    ul {
+                                        li {
+                                            position: relative;
+                                            padding-left: 1.4em;
+                                            &:before {
+                                                content:'';
+                                                display: block;
+                                                position: absolute;
+                                                top: 0.1em;
+                                                left: 0;
+                                                width: 0.6em;
+                                                height: 0.6em;
+                                                border-radius: 50%;
+                                                border: 3px solid $brand-secondary;
+                                            }
+                                            padding-bottom: 10px;
+                                        }
                                     }
-                                    padding-bottom: 10px;
                                 }
                             }
                         }
@@ -476,12 +531,25 @@ body.page-template-page-event {
 
 
                 &.block-align-right {
-                    &.block-main-about {
-                        .block-about {
-                            .block-content {
-                                &.content-description {
-                                    order: 1;
-                                }
+                    .block-about {
+                        .block-content {
+                            &.content-description {
+                                position: relative;
+                                left: 30%;
+                            }
+                            &.content-image {
+                                position: relative;
+                                left: -70%;
+                            }
+                        }
+                    }
+                }
+
+                @media screen and (max-width: $medium-width) {
+                    .block-about {
+                        .block-content {
+                            &.content-image {
+                                width: 30% !important;
                             }
                         }
                     }
@@ -490,10 +558,21 @@ body.page-template-page-event {
                 @media screen and (max-width: $small-width) {
                     &.block-main-about {
                         .block-about {
-                            display: block;
-
-                            .content-description {
-                                display: block;
+                            .block-content {
+                                &.content-description, &.content-image {
+                                    left: 0;
+                                }
+                                &.content-description {
+                                    .page-header, .page-content {
+                                        display: block;
+                                    }
+                                    .content-description-inner {
+                                        display: block;
+                                    }
+                                }
+                                &.content-image {
+                                    width: 100% !important;
+                                }
                             }
                         }
                     }

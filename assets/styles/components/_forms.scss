@@ -102,6 +102,17 @@
         resize: vertical;
     }
 
+    input:-ms-input-placeholder, textarea:-ms-input-placeholder {
+        color: rgba(0,0,0,0.4);
+    }
+
+    input, textarea {
+        &.placeholder {
+            color: rgba(0,0,0,0.4);
+        }
+    }
+
+
     @media screen and (max-width: $medium-width) {
         .wpcf7-form-control-wrap:not(.your-message) {
             &:nth-of-type(even) {

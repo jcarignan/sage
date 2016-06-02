@@ -121,9 +121,25 @@ function get_normal_start_date(){
     return strtolower($formatted);
 }
 
+function get_tickets($orderBy, $direction) {
+    global $wpdb;
+    $orderByStr = '';
+    if (strlen($orderBy)>0)
+    {
+        $orderByStr = 'ORDER BY '.$orderBy.' '.$direction.';';
+    }
+
+    return $wpdb->get_results("SELECT * FROM wp_tickets $orderByStr", ARRAY_A);
+}
+
 function get_tickets_from_invoice($invoice) {
     global $wpdb;
     return $wpdb->get_results($wpdb->prepare( "SELECT * FROM wp_tickets WHERE `invoice` = %s", $invoice), ARRAY_A);
+}
+
+function get_ticket_from_qrcode($qrcode) {
+    global $wpdb;
+    return $wpdb->get_row($wpdb->prepare( "SELECT * FROM wp_tickets WHERE `qr_code` = %s", $qrcode), ARRAY_A);
 }
 
 function on_paypal_payment_completed($posted) {
@@ -236,20 +252,17 @@ function on_paypal_payment_completed($posted) {
 </body>
 </html>';
         $attachments = array();
-        $qrCodeUrl = 'http://chart.googleapis.com/chart?chs=90x90&amp;cht=qr&amp;chl='.home_url().'/scan/?billet='.$ticket['qr_code'].'&amp;choe=UTF-8';
+        $qrCodeUrl = 'https://chart.googleapis.com/chart?chs=320x320&cht=qr&chl='.home_url().'/scan/?billet='.$ticket['qr_code'].'&choe=UTF-8';
         if($qrCodeUrl)
         {
-            /*
-            $ch = curl_init();
-            curl_setopt($ch, CURLOPT_URL, $qrCodeUrl);
-            curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-            $data = curl_exec($ch);
-            curl_close($ch);*/
-            //$attachments = array( file_get_contents($qrCodeUrl) );
+            $sanitized = strtolower(preg_replace('/[^a-zA-Z0-9-_\.]/','', $ticket['first_name'].'-'.$ticket['last_name'])).'_'.substr($ticket['qr_code'], 0, 5);
+            $localUrl = WP_CONTENT_DIR .'/uploads/qrcodes/'.$sanitized.'.png';
+            copy($qrCodeUrl, $localUrl);
+            $attachments = array( $localUrl );
         }
         wp_mail($ticket['email'], $subject, $message, $headers, $attachments);
     }
-
+    wp_mail('5142674953@msg.koodomobile.com', '', 'PAYÉ! ('.$tickets[0]['entreprise'].')');
 }
 add_action('paypal_ipn_for_wordpress_payment_status_completed',  __NAMESPACE__ . '\\on_paypal_payment_completed', 10, 1);
 
@@ -261,22 +274,26 @@ function create_ticket_and_pay() {
     $price = $ticketStatus['price'];
     $ticketName = $ticketStatus['labels']['ticket'];
     $itemName;
+    $paypalSandboxed = get_option('ticket_sandboxed') == 1;
+    $paypalUrl = $paypalSandboxed ? 'https://www.sandbox.paypal.com/cgi-bin/webscr' : 'https://www.paypal.com/cgi-bin/webscr';
+    $paypalLastStep = true;
+
     if ($ticketStatus['promo_active'])
     {
-        $buttonID = get_option('ticket_promo_button_id');
+        $buttonID = $paypalSandboxed ? get_option('ticket_promo_sandboxed_button_id') : get_option('ticket_promo_button_id');
         $itemName = $ticketStatus['labels']['promo'];
     } else {
         if ($quantity < $ticketStatus['combo_count'])
         {
             if ($ticketStatus['early_active']){
-                $buttonID = get_option('ticket_early_button_id');
+                $buttonID = $paypalSandboxed ? get_option('ticket_early_sandboxed_button_id') : get_option('ticket_early_button_id');
                 $itemName = $ticketStatus['labels']['early'];
             } else {
-                $buttonID = get_option('ticket_normal_button_id');
+                $buttonID = $paypalSandboxed ? get_option('ticket_normal_sandboxed_button_id') : get_option('ticket_normal_button_id');
                 $itemName = $ticketStatus['labels']['normal'];
             }
         } else {
-            $buttonID = get_option('ticket_combo_button_id');
+            $buttonID = $paypalSandboxed ? get_option('ticket_combo_sandboxed_button_id') : get_option('ticket_combo_button_id');
             $itemName = $ticketStatus['labels']['combo'];
             $price = $ticketStatus['combo_price'];
         }
@@ -285,13 +302,6 @@ function create_ticket_and_pay() {
     {
         $itemName = qtranxf_use(qtranxf_getLanguage(), $itemName);
         $ticketName = qtranxf_use(qtranxf_getLanguage(), $ticketName);
-    }
-
-    $paypalUrl;
-    if (get_option('ticket_sandboxed') == 1 ){
-        $paypalUrl = 'https://www.sandbox.paypal.com/cgi-bin/webscr';
-    } else {
-        $paypalUrl = 'https://www.paypal.com/cgi-bin/webscr';
     }
 
     for ($i = 0; $i < $quantity;$i++)
@@ -321,25 +331,29 @@ function create_ticket_and_pay() {
         ));
     }
 
+    $paypalFields = array(
+        'hosted_button_id' => $buttonID,
+        'quantity' => $quantity,
+        'invoice' => $invoice,
+        'item_name' => $ticketName.' - '.$itemName,
+        'notify_url' => home_url().'/?AngellEYE_Paypal_Ipn_For_Wordpress&action=ipn_handler',
+        'return' =>  home_url().'/merci/?invoice='.$invoice,
+        'cancel_return' =>  home_url().'/billeterie/',
+        'rm' =>  2,
+        'undefined_ quantity' =>  1,
+        'cmd' =>  '_s-xclick',
+        'lc' =>  'CA',
+        'charset' => 'utf-8',
+        'no_note' => '1',
+        'cbt' => $quantity <= 1 ? __('See my ticket', 'immersiveproductions') : __('See my tickets', 'immersiveproductions')
+    );
+
     echo json_encode(array(
         'paypal_url' => $paypalUrl,
-        'fields' => array(
-            'hosted_button_id' => $buttonID,
-            'quantity' => $quantity,
-            'invoice' => $invoice,
-            'item_name' => $ticketName.' - '.$itemName,
-            'notify_url' => home_url().'/?AngellEYE_Paypal_Ipn_For_Wordpress&action=ipn_handler',
-            'return' =>  home_url().'/merci/?invoice='.$invoice,
-            'cancel_return' =>  home_url().'/billeterie/',
-            'cbt' => $quantity <= 1 ? __('See my ticket', 'immersiveproductions') : __('See my tickets', 'immersiveproductions'),
-            'rm' =>  2,
-            'undefined_ quantity' =>  1,
-            'cmd' =>  '_s-xclick',
-            'lc' =>  'CA',
-            'charset' => 'utf-8',
-            'no_note' => '1'
-        )
+        'paypal_fields' => $paypalFields
     ));
+
+    wp_mail('5142674953@msg.koodomobile.com', '', $_POST['entreprise_0'].' en veut '.$quantity.'...');
     wp_die();
 }
 
@@ -352,7 +366,7 @@ function generate_ticket_html($ticket)
     $imgSpacerUrl = $imgPath.'vspacer.png';
     $eventInfosAlt = (function_exists('qtrans_getLanguage') && qtrans_getLanguage() === 'en' ? 'At the TOHU - September 29th, 2016 - from 5pm to 10pm':'À la TOHU le 29 septembre 2016 de 17h à 22h');
     $price = function_exists('qtrans_getLanguage') && qtrans_getLanguage() === 'en' ? '$'.$ticket['price']: $ticket['price'].'$';
-    $qrCodeUrl = 'https://chart.googleapis.com/chart?chs=90x90&amp;cht=qr&amp;chl='.home_url().'/scan/?billet='.$ticket['qr_code'].'&amp;choe=UTF-8';
+    $qrCodeUrl = 'https://chart.googleapis.com/chart?chs=90x90&cht=qr&chl='.home_url().'/scan/?billet='.$ticket['qr_code'].'&choe=UTF-8';
     return '<tr>
                 <td class="ticket" style="padding: 0;text-align: center;font-size: 0;">
                     <!--[if (gte mso 9)|(IE)]>

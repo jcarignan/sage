@@ -13,6 +13,8 @@
 @import "components/wp-classes";
 @import "components/gallery";
 @import "components/editor";
+@import "components/perfect-scrollbar";
+
 @import "layouts/header";
 @import "layouts/sidebar";
 @import "layouts/main";
@@ -32,6 +34,8 @@
 @import "layouts/event";
 @import "layouts/tickets";
 @import "layouts/thankyou";
+@import "layouts/scan";
+@import "layouts/guestlist";
 
 /* Subthemes */
 @import "subthemes/default";

@@ -7,7 +7,9 @@
   "license": "MIT",
   "private": true,
   "dependencies": {
-    "gsap": "^1.18.5"
+    "gsap": "^1.18.5",
+    "perfect-scrollbar": "^0.6.11",
+    "jquery-placeholder": "^2.3.1"
   },
   "overrides": {
     "bootstrap-sass": {

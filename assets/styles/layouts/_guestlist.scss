@@ -1,0 +1,71 @@
+body.page-template-page-guestlist {
+    .block-main-container {
+
+        .block.block-main {
+            text-align: center;
+            padding: 0;
+            margin: 0 auto;
+            box-sizing: border-box;
+            padding: 40px 0 30px;
+
+            label {
+                display: block;
+            }
+
+            .tickets-infos {
+                margin-bottom: 20px;
+            }
+
+            .tickets-data {
+                overflow: auto;
+                table {
+                    font-size: 0.7em;
+                    margin: 0 auto;
+                    border-collapse: collapse;
+                    table-layout:fixed;
+
+                    tr {
+                        &.ticket-paid {
+                        }
+
+                        &.ticket-unpaid {
+                            .field.paid
+                            {
+
+                            }
+                            background-color: rgba(255, 0, 0, 0.2);
+                        }
+                    }
+
+                    td {
+                        padding: 10px 4px;
+                    }
+
+                    .column-name {
+                        font-weight: bold;
+                        padding: 10px 4px;
+                    }
+
+                    .id, .first_name, .last_name, .invoice, .qr_code, .item-name {
+                        display: none;
+                    }
+
+                    .field {
+                        &.entreprise, &.title, &.email {
+                            font-size: 0.8em;
+                        }
+                        &.invoice, &.qr_code {
+                            font-size: 0.6em;
+                            word-break: break-all;
+                        }
+                        &.price {
+                            &:after {
+                                content: '$';
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
