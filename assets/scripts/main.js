@@ -40,7 +40,7 @@
 
         $('.hamburger').click(function(e){
             e.preventDefault();
-            $('.banner').toggleClass('opened');
+            $('header.banner').toggleClass('opened');
         });
 
         $('body .content').removeClass('hidden');
@@ -56,9 +56,10 @@
         }
 
         $('a').click(function(e){
-            if ($('.banner').is('.opened'))
+
+            if ($('header.banner').is('.opened'))
             {
-                $('.banner').removeClass('opened');
+                $('header.banner').removeClass('opened');
             }
             var target = e.currentTarget;
             var $target = $(target);
@@ -67,11 +68,26 @@
             var isTargetBlank = $target.attr('target') === '_blank';
             var isSrollableNavItem = $target.parent().is('.scrollable-nav-item');
 
+            if (!$('body').is('.page-template-page-splash') && $target.is('.brand'))
+            {
+                $target.addClass('hidden');
+            }
+            else if ($('body').is('.page-template-page-splash') && isLocalLink && !$target.parent().is('.qtranxs-lang-menu'))
+            {
+                $('header.banner .brand').addClass('show');
+            }
+
             if (isLocalLink && !isLightBox && !isTargetBlank && !isSrollableNavItem)
             {
                 $('body .content').addClass('hidden');
                 $('.current-menu-item').removeClass('current-menu-item');
                 $(e.currentTarget).parent().addClass('current-menu-item');
+
+                e.preventDefault();
+                var href = $(this).attr('href');
+                setTimeout(function(){
+                    window.location.href = href;
+                }, 1);
             }
 
             if (isSrollableNavItem)
@@ -88,6 +104,7 @@
                 $target.parent().addClass('active');
                 $('.'+scrollableClassName).addClass('active');
             }
+
         });
       },
       finalize: function() {
@@ -110,6 +127,19 @@
         ticketsData.comboPrice = parseFloat(ticketsData.comboPrice);
         ticketsData.price = parseFloat(ticketsData.price);
 
+        var updateTicketName = function($repeatableSet)
+        {
+            var $title = $repeatableSet.find('.ticket-title');
+            var ticketLabelFirst = $title.data('label-first');
+            var ticketLabelSecond = $title.data('label-second');
+            var index = $repeatableSet.index();
+            var firstName = $repeatableSet.find('input[name="firstname_'+index+'"]').val();
+            var lastName = $repeatableSet.find('input[name="lastname_'+index+'"]').val();
+
+            var str = ticketLabelFirst + ' ' + (firstName.length || lastName.length ? ticketLabelSecond + ' ' + firstName + ' ' + lastName : '#'+(index+1));
+            $title.text(str);
+        };
+
         var updateForm = function($form)
         {
             var $repeatableSets = $form.find('.repeatable-set');
@@ -123,6 +153,7 @@
                     var nameArray = name.split('_');
                     $(input).attr('name', nameArray[0]+'_'+i);
                 });
+                updateTicketName($(repeatableSet));
                 subtotal += price;
             });
             var tps = subtotal * 0.05;
@@ -135,30 +166,26 @@
             $invoice.find('.row-total .cell-price').text(total.toFixed(2)+'$');
         };
 
-        var updateTicketName = function(e)
-        {
-            var $parent = $(e.currentTarget).parents('.repeatable-set');
-            var $title = $parent.find('.ticket-title');
-            var ticketLabelFirst = $title.data('label-first');
-            var ticketLabelSecond = $title.data('label-second');
-            var index = $parent.index();
-            var firstName = $parent.find('input[name="firstname_'+index+'"]').val();
-            var lastName = $parent.find('input[name="lastname_'+index+'"]').val();
-
-            var str = ticketLabelFirst + ' ' + (firstName.length || lastName.length ? ticketLabelSecond + ' ' + firstName + ' ' + lastName : '#'+(index+1));
-            $title.text(str);
-        };
-
         var addInputChangeEvents = function(i, input){
             var name = $(input).attr('name');
             var nameArray = name.split('_');
             if (nameArray[0] === 'firstname' || nameArray[0] === 'lastname')
             {
-                $(input).on('input', updateTicketName);
+                $(input).on('input', function(e){
+                    updateTicketName($(e.currentTarget).parents('.repeatable-set'));
+                });
             }
         };
 
-        var onRemoveTicketButton = function(e)
+        var updatePS = function()
+        {
+            if (getIEVersion() === 0 && !isTouchEnabled())
+            {
+                Ps.update($('.main')[0]);
+            }
+        };
+
+        var onRemoveTicketClick = function(e)
         {
             var repeatableSet = $(e.currentTarget).parent();
             var $container = $(repeatableSet).parent();
@@ -168,23 +195,20 @@
             });
             TweenMax.to(repeatableSet, 0.4, {
                 height: 0,
+                onUpdate: updatePS,
                 onComplete: function(){
                     $(this.target).remove();
                     updateForm($form);
-                    if (getIEVersion() === 0 && !isTouchEnabled())
-                    {
-                        Ps.update($('.main')[0]);
-                    }
                 }
             });
         };
 
-        var onAddTicketButton = function(e)
+        var onAddTicketClick = function(e)
         {
             var $form = $(e.currentTarget).parents('form');
             var $container = $form.find('.repeatable-sets');
             var repeatableSet = $form.find('.repeatable-set:eq(0)').clone()[0];
-            $(repeatableSet).find('.remove-ticket-button').click(onRemoveTicketButton);
+            $(repeatableSet).find('.remove-ticket-button').click(onRemoveTicketClick);
             $container.append($(repeatableSet));
             updateForm($form);
             $title = $(repeatableSet).find('.ticket-title');
@@ -194,20 +218,14 @@
                 $(input).unbind('focus.placeholder').unbind('blur.placeholder').removeData('placeholder-enabled').removeClass('placeholder').val('').placeholder();
             });
             var repeatableSetHeight = repeatableSet.offsetHeight;
-            var timeline = new TimelineMax({
-                onComplete: function(){
-                    if (getIEVersion() === 0 && !isTouchEnabled())
-                    {
-                        Ps.update($('.main')[0]);
-                    }
-                }
-            });
+            var timeline = new TimelineMax();
             timeline.set(repeatableSet, {
                 height: 0,
                 opacity: 0
             });
             timeline.to(repeatableSet, 0.4, {
-                height: repeatableSetHeight
+                height: repeatableSetHeight,
+                onUpdate: updatePS
             });
             timeline.to(repeatableSet, 0.2, {
                 opacity: 1,
@@ -269,8 +287,8 @@
             $paypalForm[0].submit();
         };
 
-        $('.add-ticket-button').click(onAddTicketButton);
-        $('.remove-ticket-button').click(onRemoveTicketButton);
+        $('.add-ticket-button').click(onAddTicketClick);
+        $('.remove-ticket-button').click(onRemoveTicketClick);
         updateForm($('.create-event-ticket'));
         $('.create-event-ticket').find('input[type!="hidden"]').placeholder();
         $('.create-event-ticket input[type="text"]').each(addInputChangeEvents);

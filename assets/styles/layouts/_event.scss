@@ -48,6 +48,12 @@ body.page-template-page-event {
 
             .block-title {
 
+                a {
+                    font-weight: bold;
+                    text-decoration: underline;
+                    color: $brand-third;
+                }
+
                 &.style-normal {
                     text-transform: uppercase;
                     color: $brand-third;
@@ -88,15 +94,66 @@ body.page-template-page-event {
             .block-gallery {
                 position: relative;
                 padding-bottom:16px;
+
+                &.with-background-color {
+                    .list-item {
+                        background-color: $brand-light-gray;
+                    }
+                }
+
                 &.gallery-interactive {
                     .list-items {
 
                         .list-item {
-                            box-sizing: border-box;
-                            &:hover {
-                                border: 1px solid $brand-dark;
+
+                            &.hide-text {
+                                background-color: transparent;
+                                &:hover {
+                                    box-shadow: none;
+                                }
+                                .item-image {
+                                    position: relative;
+                                    height: 100%;
+                                }
+                                .item-content {
+                                    visibility: hidden;
+                                }
+                            }
+
+                            &.without-image {
+                                background-color: $brand-light-gray;
+                                color: $brand-dark;
+                                box-shadow: 2px 4px 10px rgba(0,0,0,0.3);
                                 .item-content {
                                     opacity: 1;
+                                    background-color: transparent;
+
+                                    .item-title {
+                                        color: $brand-dark;
+                                    }
+
+
+
+                                    @media screen and (max-width: $small-width) {
+                                        height: 100%;
+                                        position: relative;
+                                        left: auto;
+                                        bottom: auto;
+                                    }
+                                }
+                                &:hover {
+                                    animation-name: none;
+                                    animation-duration: 0s;
+                                    transform: none;
+                                }
+                            }
+
+                            &:not(.without-image) {
+                                &:hover {
+                                    .item-content {
+                                        opacity: 1;
+                                        transform:scale(1.02);
+                                    }
                                 }
                             }
 
@@ -148,6 +205,7 @@ body.page-template-page-event {
                                 @media screen and (max-width: $small-width) {
                                     height: 30%;
                                     position: absolute;
+                                    left: 0;
                                     bottom: 0;
                                     opacity: 1;
                                     h1 {
@@ -160,12 +218,6 @@ body.page-template-page-event {
                 }
 
                 &.gallery-normal {
-
-                    &.with-background-color {
-                        .list-item {
-                            background-color: $brand-light-gray;
-                        }
-                    }
 
                     .list-item {
 
@@ -438,20 +490,20 @@ body.page-template-page-event {
 
                 .list-items {
                     font-size: 0;
-                    .list-item {
-                        position: relative;
-                        background-color: $brand-primary;
-                        box-sizing: border-box;
-                        font-size: 18px;
-                        .item-image {
-                            @extend .fullscreen;
-                            z-index: 0;
-                            background-repeat: no-repeat;
-                            background-position: center;
+                }
 
+                .list-item {
+                    position: relative;
+                    background-color: $brand-primary;
+                    box-sizing: border-box;
+                    font-size: 18px;
+                }
 
-                        }
-                    }
+                .item-image {
+                    @extend .fullscreen;
+                    z-index: 0;
+                    background-repeat: no-repeat;
+                    background-position: center;
                 }
 
                 &.gallery-normal:not(.uses-max-width), &.gallery-interactive {

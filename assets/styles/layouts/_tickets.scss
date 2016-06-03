@@ -32,7 +32,7 @@ body.page-template-page-tickets {
             .content-text {
                 display: table-cell;
                 vertical-align: middle;
-                padding: 8%;
+                padding: 30px;
                 font-size: 0.9em;
                 font-weight: bold;
                 box-sizing: border-box;
@@ -314,16 +314,33 @@ body.page-template-page-tickets {
 
     @media screen and (max-width: $small-width) {
         .block-main-container {
-            .block.block-main.block-main-content {
-                .content-description {
-                    font-size: 0.82em;
-                    padding-left: 6.7%;
-                    padding-right: 6.7%;
+            .block.block-main {
+                &.block-main-content {
+                    .content-description {
+                        font-size: 0.82em;
+                        padding-left: 6.7%;
+                        padding-right: 6.7%;
+                    }
+                    .content-image {
+                        font-size: 0.9em;
+                    }
                 }
-                .content-image {
-                    font-size: 0.9em;
+                &.block-main-ticketinfos {
+                    .content-image {
+                        .content-text {
+                            font-size: 0.8em;
+                        }
+                    }
+                    .content-infos-container {
+                        .content-infos {
+                            h1 {
+                                font-size: 1em;
+                            }
+                        }
+                    }
                 }
             }
+
         }
 
         .buttons-container {

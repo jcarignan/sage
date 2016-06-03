@@ -142,8 +142,10 @@
     					                   $itemContent = get_sub_field('content');
                                            $image = get_sub_field('image');
                                            $slideUrl = get_sub_field('link');
+                                           $hideText = get_sub_field('hide_text');
                                            $imgStyle = 'background-image:url('.$image['sizes']['medium'].');  background-size:'.$backgroundSize.'; width:'.$imgWidth.';';
                                            $liClass = $image ? 'with-image':'without-image';
+                                           $liClass .= $hideText ? ' hide-text':' show-text';
     					                   ?>
 	                <li class="list-item <?= $liClass?>" <?=$liAttrs?> >
 <?php                                       if (strlen($slideUrl)>0):?>

@@ -1,7 +1,7 @@
 <?php
 
 namespace Roots\Sage\Extras;
-
+require_once('Browser.php');
 use Roots\Sage\Setup;
 
 /**
@@ -304,6 +304,8 @@ function create_ticket_and_pay() {
         $ticketName = qtranxf_use(qtranxf_getLanguage(), $ticketName);
     }
 
+    $browser = new \Browser();
+
     for ($i = 0; $i < $quantity;$i++)
     {
         $wpdb->insert('wp_tickets', array(
@@ -316,7 +318,9 @@ function create_ticket_and_pay() {
             'price' => $price,
             'item_name' => $itemName,
             'invoice' => $invoice,
-            'qr_code' => md5(uniqid())
+            'qr_code' => md5(uniqid()),
+            'browser' => $browser->getBrowser().' '.$browser->getVersion(),
+            'platform' => $browser->getPlatform()
         ), array(
             '%s',
             '%s',
@@ -325,6 +329,8 @@ function create_ticket_and_pay() {
             '%s',
             '%s',
             '%d',
+            '%s',
+            '%s',
             '%s',
             '%s',
             '%s'

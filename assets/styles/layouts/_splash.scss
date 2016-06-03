@@ -1,7 +1,14 @@
 body.page-template-page-splash {
 
     header.banner .brand {
-        display: none;
+        visibility: hidden;
+        opacity: 0;
+        pointer-events: none;
+
+        &.show {
+            visibility: visible;
+            opacity: 1;
+        }
     }
 
     .block.block-main {
@@ -25,7 +32,6 @@ body.page-template-page-splash {
             top: 62%;
             font-size: 16px;
             font-size: 2.5vmin;
-            width: 100%;
             transform: translateY(-50%);
             text-align: center;
             text-transform: uppercase;

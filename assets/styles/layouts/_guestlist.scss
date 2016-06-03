@@ -14,6 +14,10 @@ body.page-template-page-guestlist {
 
             .tickets-infos {
                 margin-bottom: 20px;
+
+                .scanned {
+                    display: none;
+                }
             }
 
             .tickets-data {
@@ -46,11 +50,15 @@ body.page-template-page-guestlist {
                         padding: 10px 4px;
                     }
 
-                    .id, .first_name, .last_name, .invoice, .qr_code, .item-name {
+                    .id, .first_name, .last_name, .invoice, .qr_code, .browser, .platform {
                         display: none;
                     }
 
                     .field {
+                        &.first_name, &.last_name, &.name {
+                            text-transform: capitalize;
+                        }
+
                         &.entreprise, &.title, &.email {
                             font-size: 0.8em;
                         }

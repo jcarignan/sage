@@ -6,12 +6,15 @@
 <?php while (have_posts()) : the_post();
     $image = get_field('image');
     $tagline = get_field('tagline');
+    $link = get_field('link');
 ?>
     <div class="block-main-container">
         <section class="block block-main">
             <section class="splash-container">
-                <img src="<?= $image['url'] ?>" alt="splash-image" />
-                <div class="splash-tagline"><?=$tagline?></div>
+                <a href="<?=$link?>">
+                    <img src="<?= $image['url'] ?>" alt="splash-image" />
+                    <div class="splash-tagline"><?=$tagline?></div>
+                </a>
             </section>
             <section class="main-content">
                 <div class="main-description"><?php the_content(); ?></div>

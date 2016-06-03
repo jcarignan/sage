@@ -34,8 +34,15 @@ header.banner {
         position: absolute;
         margin-left: 20px;
         height: $logo-height;
+        opacity: 1;
+        transition: opacity .4s;
         img {
             height: 100%;
+        }
+
+        &.hidden {
+            opacity: 0;
+            pointer-events: none;
         }
     }
 
@@ -44,7 +51,7 @@ header.banner {
         cursor: pointer;
     }
 
-    .header-wrapper, .header-content {
+    .header-wrapper-container, .header-wrapper, .header-content {
         position: relative;
         height: 100%;
     }
@@ -196,19 +203,23 @@ header.banner {
             background: url($image-path+'hamburger.svg') no-repeat center;
         }
 
-        .header-wrapper {
-            background-color: $brand-dark;
+        .header-wrapper-container, .header-wrapper {
+            transition: transform .3s ease-in-out;
+        }
+
+        .header-wrapper-container {
             position: absolute;
             width: 100%;
-            height: auto;
-            bottom: 0;
-            padding: $header-mobile-height 0 0;
-            left: 0;
-
             transform: translateY(0%);
-            transition: transform .4s ease-in-out, bottom .4s ease-in-out;
+        }
 
-
+        .header-wrapper {
+            background-color: $brand-dark;
+            height: auto;
+            padding: $header-mobile-height 0 0;
+            position: relative;
+            top: 100%;
+            transform: translateY(-100%);
         }
 
         .header-content {
@@ -331,9 +342,11 @@ header.banner {
         }
 
         &.opened {
+            .header-wrapper-container {
+                transform: translateY(-100%);
+            }
             .header-wrapper {
-                transform: translateY(100%);
-                bottom: 100%;
+                transform: translateY(0%);
             }
 
             .header-content {

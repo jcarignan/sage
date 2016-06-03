@@ -46,13 +46,13 @@
                 <?php wp_login_form(get_permalink()); ?>
             <?php else:?>
                 <div class="tickets-infos">
-                    <div class="paids">
-                        <?= __('Paid', 'immersiveproductions').'s: '.$paidTickets; ?>
+                    <div class="confirmed">
+                        <?= __('Confirmed', 'immersiveproductions').'s: '.$paidTickets; ?>
                     </div>
-                    <div class="potentials">
+                    <div class="potential">
                         <?= __('Potential', 'immersiveproductions').'s: '.(count($tickets) - $paidTickets); ?>
                     </div>
-                    <div class="scanneds">
+                    <div class="scanned">
                         <?= __('Scanned', 'immersiveproductions').'s: '.$scannedTickets; ?>
                     </div>
                 </div>
