@@ -32,6 +32,10 @@ function excerpt_more() {
 }
 add_filter('excerpt_more', __NAMESPACE__ . '\\excerpt_more');
 
+function get_browser_from_useragent($userAgentString) {
+    return new \Browser($userAgentString);
+}
+
 /**
  * TICKETS
  */
@@ -64,6 +68,7 @@ function get_ticket_status() {
     return array(
         'tickets_sold' => $tickets_sold,
         'price'=> $price,
+        'normal_price' => get_option('ticket_normal_price'),
         'promo_active' => $promoActive,
         'early_active' => $earlyActive,
         'combo_price' => $comboPrice,
@@ -86,6 +91,17 @@ function add_currency_to_price($price) {
 function get_current_price(){
     $ticketStatus = get_ticket_status();
     return add_currency_to_price($ticketStatus['price']);
+}
+
+function get_normal_price(){
+    $ticketStatus = get_ticket_status();
+    return add_currency_to_price($ticketStatus['normal_price']);
+}
+
+function get_current_price_difference(){
+    $ticketStatus = get_ticket_status();
+    $priceDifference = $ticketStatus['normal_price'] - $ticketStatus['price'];
+    return add_currency_to_price($priceDifference);
 }
 
 function get_combo_price(){
@@ -112,9 +128,9 @@ function get_normal_start_date(){
         setlocale(LC_ALL,$locale);
         if ($locale == 'fr')
         {
-            $formatted = strftime('%#d %B %Y', $timeStamp);
+            $formatted = ltrim(strftime('%d %B %Y', $timeStamp), '0');
         } else {
-            $formatted = strftime('%B %#dth, %Y', $timeStamp);
+            $formatted = strftime('%B ',$timeStamp).ltrim(strftime('%d',$timeStamp),'0').'th, '.strftime('%Y', $timeStamp);
         }
 
     }
@@ -144,132 +160,43 @@ function get_ticket_from_qrcode($qrcode) {
 
 function on_paypal_payment_completed($posted) {
     $invoice = isset($posted['invoice']) ? $posted['invoice'] : '';
-
-    global $wpdb;
-    $wpdb->update(
-    	'wp_tickets',
-    	array(
-    		'paid' => 1,
-            'paid_date' => current_time('mysql')
-    	),
-    	array('invoice' => $invoice),
-    	array(
-    		'%d',
-    		'%s'
-    	),
-    	array('%s')
-    );
+    $mc_gross = isset($posted['mc_gross']) ? $posted['mc_gross'] : '';
+    $first_name = isset($posted['first_name']) ? $posted['first_name'] : '';
+    $last_name = isset($posted['last_name']) ? $posted['last_name'] : '';
 
     $tickets = get_tickets_from_invoice($invoice);
-    $subject = __('Your ticket for ACCRO 2016', 'immersiveproductions');
-    $headers = "MIME-Version: 1.0" . "\r\n";
-    $headers .= "Content-type:text/html;charset=UTF-8" . "\r\n";
-    $socialImgPath = get_template_directory_uri().'/dist/images/social/';
-    $socialMedias = '<a style="text-decoration: none;" href="http://www.facebook.com/ACCRO-261078524281645/" target="_blank"><img src="'.$socialImgPath.'facebook-small.png" width="50" height="50" alt="Facebook"/> </a>
-                     <a style="text-decoration: none;" href="http://twitter.com/ACCROMTL"><img src="'.$socialImgPath.'twitter-small.png" width="50" height="50" alt="Twitter" /> </a>
-                     <a style="text-decoration: none;" href="http://www.instagram.com/accromtl/"><img src="'.$socialImgPath.'instagram-small.png" width="50" height="50" alt="Instagram" /> </a>
-                     <a style="text-decoration: none;" href="https://www.linkedin.com/company/accro-montr%C3%A9al"><img src="'.$socialImgPath.'linkedin-small.png" width="50" height="50" alt="LinkedIn" /> </a>';
 
-    foreach ($tickets as $ticket) {
-        $message = '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-                        <html xmlns="http://www.w3.org/1999/xhtml">
-                        <head>
-                        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-                            <!--[if !mso]><!-->
-                                <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-                            <!--<![endif]-->
-                            <meta name="viewport" content="width=device-width, initial-scale=1.0">
-                            <title>'.$subject.'</title>
-                            <style type="text/css">
-                                @import url(https://fonts.googleapis.com/css?family=Noto+Sans:400,700);
-                                div[style*="margin: 16px 0"] {
-                                    margin:0 !important;
-                                }
-                                @media only screen and (max-width: 600px){
-                                	.ticket-infos {
-                                		max-width: 400px !important;
-                                	}
-                                }
-                            </style>
-                            <!--[if (gte mso 9)|(IE)]>
-                            <style type="text/css">
-                                table {border-collapse: collapse;}
-                            </style>
-                            <![endif]-->
-                        </head>
-                        <body style="margin: 0 !important;padding: 0;background-color: #ffffff;">
-                            <!--[if mso]>
-                                <style type="text/css">
-                                    td {
-                                        font-family: Arial, sans-serif;
-                                    }
-                                </style>
-                            <![endif]-->
-                            <center class="wrapper" style="width: 100%; table-layout: fixed; -webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%;">
-                                <div class="webkit" style="max-width: 600px;margin: 0 auto;">
-                                    <!--[if (gte mso 9)|(IE)]>
-                                    <table width="600" align="center">
-                                    <tr>
-                                    <td style="padding: 0;">
-                                    <![endif]-->
-                                    <table class="outer" align="center" style="font-family: Noto Sans, Arial, Helvetica, sans-serif !important;border-spacing: 0; margin: 0 auto;width: 100%;max-width: 600px;">
-                                    	<tr>
-                                    		<td style="font-size:14px;padding:10px;">';
-                            if (function_exists('qtrans_getLanguage') && qtrans_getLanguage() == 'en')
-                            {
-                                $message .=    '<p>Hi,</p>
-                                                <p>Thank you for your participation in ACCRO! You will find below your ticket for the event on September 29th at La TOHU , we will be waiting for you starting at 5h PM<br><br>
-                                                Please preserve your ticket until the event and present it at the reception from your smart phone.</p>
-                                                <p>Here are some useful things to know:<br>
-                                                - La TOHU (2345 Jarry E street, Montreal, QC H1Z 4P3)<br>
-                                                - Free parking included, located on Michel-Jurdan street, on the corner of the Regrattiers street.<br>
-                                                - Bixi Station and bus stops nearby<br>
-                                                <p>For more information about the event’s location: <a href="http://www.tohu.ca" target="_blank">www.tohu.ca</a><br>
-                                                Stay informed about ACCRO: <a href="http://www.accromontreal.com" target="_blank">www.accromontreal.com</a></p>
-                                                <p>'.$socialMedias.'</p>
-                                                <p>We look forward to seeing you there!</p><br>';
-                            } else {
-                                $message .=    '<p>Bonjour,</p>
-                                                <p>Merci de votre participation à Accro! Vous trouverez ci-joint votre billet pour l’événement du 29 septembre prochain à La TOHU, nous vous y attendons dès 17h.<br><br>
-                                                Vous n’avez qu’à préserver votre billet jusqu’à l’événement et le présenter à l’accueil simplement à partir de votre téléphone intelligent.</p>
-                                                <p>Voici quelques informations pratiques:<br>
-                                                - La TOHU (2345 Rue Jarry E, Montréal, QC H1Z 4P3)<br>
-                                                - Stationnement gratuit inclus, situé sur la rue Michel-Jurdant, à l’angle de la rue des Regrattiers.<br>
-                                                - Station Bixi et arrêts d’autobus à proximité<br>
-                                                <p>Pour plus d’informations concernant le lieu de l’événement : <a href="http://www.tohu.ca" target="_blank">www.tohu.ca</a><br>
-                                                Restez à l’affût des actualités ACCRO : <a href="http://www.accromontreal.com" target="_blank">www.accromontreal.com</a></p>
-                                                <p>'.$socialMedias.'</p>
-                                                <p>Au plaisir de vous y voir!</p><br>';
-                            }
-        $message .= '</td></tr>'.generate_ticket_html($ticket).'</table>
-            <!--[if (gte mso 9)|(IE)]>
-            </td>
-            </tr>
-            </table>
-            <![endif]-->
-        </div>
-    </center>
-</body>
-</html>';
-        $attachments = array();
-        $qrCodeUrl = 'https://chart.googleapis.com/chart?chs=320x320&cht=qr&chl='.home_url().'/scan/?billet='.$ticket['qr_code'].'&choe=UTF-8';
-        if($qrCodeUrl)
-        {
-            $sanitized = strtolower(preg_replace('/[^a-zA-Z0-9-_\.]/','', $ticket['first_name'].'-'.$ticket['last_name'])).'_'.substr($ticket['qr_code'], 0, 5);
-            $localUrl = WP_CONTENT_DIR .'/uploads/qrcodes/'.$sanitized.'.png';
-            copy($qrCodeUrl, $localUrl);
-            $attachments = array( $localUrl );
+    if (count($tickets))
+    {
+        global $wpdb;
+        $wpdb->update(
+        	'wp_tickets',
+        	array(
+        		'paid' => 1,
+                'paid_date' => current_time('mysql')
+        	),
+        	array('invoice' => $invoice),
+        	array(
+        		'%d',
+        		'%s'
+        	),
+        	array('%s')
+        );
+
+        foreach ($tickets as $ticket) {
+            send_ticket_by_email($ticket);
         }
-        wp_mail($ticket['email'], $subject, $message, $headers, $attachments);
+        $entreprise = $tickets[0]['entreprise'];
+    } else {
+        $entreprise = 'other';
     }
-    wp_mail('5142674953@msg.koodomobile.com', '', 'PAYÉ! ('.$tickets[0]['entreprise'].')');
+    wp_mail('5142674953@msg.koodomobile.com', '', 'PAYÉ! '.$mc_gross.'$ par '.$first_name.' '.$last_name.' ('.$entreprise.')');
 }
-add_action('paypal_ipn_for_wordpress_payment_status_completed',  __NAMESPACE__ . '\\on_paypal_payment_completed', 10, 1);
 
 function create_ticket_and_pay() {
     global $wpdb;
     $invoice = md5(uniqid());
-    $quantity = $_POST['quantity'];
+    $quantity = isset($_POST['quantity']) ? $_POST['quantity']:1;
     $ticketStatus = get_ticket_status();
     $price = $ticketStatus['price'];
     $ticketName = $ticketStatus['labels']['ticket'];
@@ -304,23 +231,20 @@ function create_ticket_and_pay() {
         $ticketName = qtranxf_use(qtranxf_getLanguage(), $ticketName);
     }
 
-    $browser = new \Browser();
-
     for ($i = 0; $i < $quantity;$i++)
     {
         $wpdb->insert('wp_tickets', array(
-            'first_name' => $_POST['firstname_'.$i],
-            'last_name' => $_POST['lastname_'.$i],
-            'entreprise' => $_POST['entreprise_'.$i],
-            'title' => $_POST['title_'.$i],
-            'email' => $_POST['email_'.$i],
-            'telephone' => $_POST['telephone_'.$i],
+            'first_name' => isset($_POST['firstname_'.$i]) ? $_POST['firstname_'.$i]:'',
+            'last_name' => isset($_POST['lastname_'.$i]) ? $_POST['lastname_'.$i]:'',
+            'entreprise' => isset($_POST['entreprise_'.$i]) ? $_POST['entreprise_'.$i]:'',
+            'title' => isset($_POST['title_'.$i]) ? $_POST['title_'.$i]:'',
+            'email' => isset($_POST['email_'.$i]) ? $_POST['email_'.$i]:'',
+            'telephone' => isset($_POST['telephone_'.$i]) ? $_POST['telephone_'.$i]:'',
             'price' => $price,
             'item_name' => $itemName,
             'invoice' => $invoice,
             'qr_code' => md5(uniqid()),
-            'browser' => $browser->getBrowser().' '.$browser->getVersion(),
-            'platform' => $browser->getPlatform()
+            'user_agent' => $_SERVER['HTTP_USER_AGENT']
         ), array(
             '%s',
             '%s',
@@ -450,9 +374,120 @@ function generate_ticket_html($ticket)
                 <tr><td>&nbsp;</td></tr>';
 }
 
+function send_ticket_by_email($ticket) {
+    $socialImgPath = get_template_directory_uri().'/dist/images/social/';
+    $socialMedias = '<a style="text-decoration: none;" href="http://www.facebook.com/ACCRO-261078524281645/" target="_blank"><img src="'.$socialImgPath.'facebook-small.png" width="50" height="50" alt="Facebook"/> </a>
+                     <a style="text-decoration: none;" href="http://twitter.com/ACCROMTL"><img src="'.$socialImgPath.'twitter-small.png" width="50" height="50" alt="Twitter" /> </a>
+                     <a style="text-decoration: none;" href="http://www.instagram.com/accromtl/"><img src="'.$socialImgPath.'instagram-small.png" width="50" height="50" alt="Instagram" /> </a>
+                     <a style="text-decoration: none;" href="https://www.linkedin.com/company/accro-montr%C3%A9al"><img src="'.$socialImgPath.'linkedin-small.png" width="50" height="50" alt="LinkedIn" /> </a>
+    ';
+    if (function_exists('qtrans_getLanguage') && qtrans_getLanguage() == 'en')
+    {
+        $message =    '<p>Hi,</p>
+                        <p>Thank you for your participation in ACCRO! You will find below your ticket for the event on September 29th at La TOHU , we will be waiting for you starting at 5h PM<br><br>
+                        Please preserve your ticket until the event and present it at the reception from your smart phone.</p>
+                        <p>Here are some useful things to know:<br>
+                        - La TOHU (2345 Jarry E street, Montreal, QC H1Z 4P3)<br>
+                        - Free parking included, located on Michel-Jurdan street, on the corner of the Regrattiers street.<br>
+                        - Bixi Station and bus stops nearby<br>
+                        <p>For more information about the event’s location: <a href="http://www.tohu.ca" target="_blank">www.tohu.ca</a><br>
+                        Stay informed about ACCRO: <a href="http://www.accromontreal.com" target="_blank">www.accromontreal.com</a></p>
+                        <p>'.$socialMedias.'</p>
+                        <p>We look forward to seeing you there!</p><br>';
+    } else {
+        $message =    '<p>Bonjour,</p>
+                        <p>Merci de votre participation à Accro! Vous trouverez ci-joint votre billet pour l’événement du 29 septembre prochain à La TOHU, nous vous y attendons dès 17h.<br><br>
+                        Vous n’avez qu’à préserver votre billet jusqu’à l’événement et le présenter à l’accueil simplement à partir de votre téléphone intelligent.</p>
+                        <p>Voici quelques informations pratiques:<br>
+                        - La TOHU (2345 Rue Jarry E, Montréal, QC H1Z 4P3)<br>
+                        - Stationnement gratuit inclus, situé sur la rue Michel-Jurdant, à l’angle de la rue des Regrattiers.<br>
+                        - Station Bixi et arrêts d’autobus à proximité<br>
+                        <p>Pour plus d’informations concernant le lieu de l’événement : <a href="http://www.tohu.ca" target="_blank">www.tohu.ca</a><br>
+                        Restez à l’affût des actualités ACCRO : <a href="http://www.accromontreal.com" target="_blank">www.accromontreal.com</a></p>
+                        <p>'.$socialMedias.'</p>
+                        <p>Au plaisir de vous y voir!</p><br>';
+    }
+
+     $html = '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+              <html xmlns="http://www.w3.org/1999/xhtml">
+                 <head>
+                     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+                     <!--[if !mso]><!-->
+                         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+                     <!--<![endif]-->
+                     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                     <title>'.$subject.'</title>
+                     <style type="text/css">
+                         @import url(https://fonts.googleapis.com/css?family=Noto+Sans:400,700);
+                         div[style*="margin: 16px 0"] {
+                             margin:0 !important;
+                         }
+                         @media only screen and (max-width: 600px){
+                             .ticket-infos {
+                                 max-width: 400px !important;
+                             }
+                         }
+                     </style>
+                     <!--[if (gte mso 9)|(IE)]>
+                     <style type="text/css">
+                         table {border-collapse: collapse;}
+                     </style>
+                     <![endif]-->
+                 </head>
+                 <body style="margin: 0 !important;padding: 0;background-color: #ffffff;">
+                     <!--[if mso]>
+                         <style type="text/css">
+                             td {
+                                 font-family: Arial, sans-serif;
+                             }
+                         </style>
+                     <![endif]-->
+                     <center class="wrapper" style="width: 100%; table-layout: fixed; -webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%;">
+                         <div class="webkit" style="max-width: 600px;margin: 0 auto;">
+                             <!--[if (gte mso 9)|(IE)]>
+                                <table width="600" align="center">
+                                <tr>
+                                <td style="padding: 0;">
+                             <![endif]-->
+                             <table class="outer" align="center" style="font-family: Noto Sans, Arial, Helvetica, sans-serif !important;border-spacing: 0; margin: 0 auto;width: 100%;max-width: 600px;">
+                                 <tr>
+                                     <td style="font-size:14px;padding:10px;">'.$message.'</td>
+                                </tr>
+                                '.generate_ticket_html($ticket).'
+                            </table>
+                            <!--[if (gte mso 9)|(IE)]>
+                                </td>
+                                </tr>
+                                </table>
+                            <![endif]-->
+                         </div>
+                     </center>
+                 </body>
+            </html>';
+
+     $subject = __('Your ticket for ACCRO 2016', 'immersiveproductions');
+     $headers = "MIME-Version: 1.0" . "\r\n";
+     $headers .= "Content-type:text/html;charset=UTF-8" . "\r\n";
+     $attachments = array();
+     $qrCodeUrl = 'https://chart.googleapis.com/chart?chs=320x320&cht=qr&chl='.home_url().'/scan/?billet='.$ticket['qr_code'].'&choe=UTF-8';
+     if($qrCodeUrl)
+     {
+         $sanitized = strtolower(preg_replace('/[^a-zA-Z0-9-_\.]/','', $ticket['first_name'].'-'.$ticket['last_name'])).'_'.substr($ticket['qr_code'], 0, 5);
+         $localUrl = WP_CONTENT_DIR .'/uploads/qrcodes/'.$sanitized.'.png';
+         copy($qrCodeUrl, $localUrl);
+         $attachments = array( $localUrl );
+     }
+
+     wp_mail($ticket['email'], $subject, $html, $headers, $attachments);
+}
+
 add_action('wp_ajax_create_ticket_and_pay', __NAMESPACE__ .'\\create_ticket_and_pay');
 add_action('wp_ajax_nopriv_create_ticket_and_pay', __NAMESPACE__ .'\\create_ticket_and_pay');
+add_action('paypal_ipn_for_wordpress_payment_status_completed',  __NAMESPACE__ . '\\on_paypal_payment_completed', 10, 1);
+
 add_shortcode('current_price', __NAMESPACE__ . '\\get_current_price');
+add_shortcode('current_price_difference', __NAMESPACE__ . '\\get_current_price_difference');
+add_shortcode('normal_price', __NAMESPACE__ . '\\get_normal_price');
 add_shortcode('combo_price', __NAMESPACE__ . '\\get_combo_price');
 add_shortcode('tickets_promo_count', __NAMESPACE__ . '\\get_promo_count');
 add_shortcode('tickets_combo_count', __NAMESPACE__ . '\\get_combo_count');

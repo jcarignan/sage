@@ -61,30 +61,47 @@
             {
                 $('header.banner').removeClass('opened');
             }
-            var target = e.currentTarget;
-            var $target = $(target);
-            var isLocalLink = target.host === window.location.host;
-            var isLightBox = $target.attr('rel') === 'lightbox';
-            var isTargetBlank = $target.attr('target') === '_blank';
-            var isSrollableNavItem = $target.parent().is('.scrollable-nav-item');
+            var href = $(this).attr('href');
 
-            if (!$('body').is('.page-template-page-splash') && $target.is('.brand'))
+            var getHref = document.createElement('a');
+            getHref.href = href;
+            var fullHref = getHref.cloneNode(false).href;
+
+            var isLocalLink = this.host === window.location.host;
+            var isLightBox = $(this).attr('rel') === 'lightbox';
+            var isTargetBlank = $(this).attr('target') === '_blank';
+            var isSrollableNavItem = $(this).parent().is('.scrollable-nav-item');
+
+            if (!$('body').is('.page-template-page-splash') && $(this).is('.brand'))
             {
-                $target.addClass('hidden');
+                $(this).addClass('hidden');
             }
-            else if ($('body').is('.page-template-page-splash') && isLocalLink && !$target.parent().is('.qtranxs-lang-menu'))
+            else if ($('body').is('.page-template-page-splash') && isLocalLink && !$(this).parent().is('.qtranxs-lang-menu'))
             {
                 $('header.banner .brand').addClass('show');
             }
 
             if (isLocalLink && !isLightBox && !isTargetBlank && !isSrollableNavItem)
             {
-                $('body .content').addClass('hidden');
-                $('.current-menu-item').removeClass('current-menu-item');
-                $(e.currentTarget).parent().addClass('current-menu-item');
+                if (window.location.href !== fullHref)
+                {
+                    $('body .content').addClass('hidden');
+                }
 
+                if (!$(this).parent().is('.qtranxs-lang-menu') && $('.current-menu-item a').attr('href') !== fullHref)
+                {
+                    $('.current-menu-item').removeClass('current-menu-item');
+                }
+
+                $('header.banner li').each(function(i, el){
+                    if ($(el).find('a').attr('href') === fullHref)
+                    {
+                        $(el).addClass('current-menu-item');
+                    }
+                });
+
+                //fix css3 animation on ios
                 e.preventDefault();
-                var href = $(this).attr('href');
                 setTimeout(function(){
                     window.location.href = href;
                 }, 1);
@@ -92,16 +109,16 @@
 
             if (isSrollableNavItem)
             {
-                if ($target.parent().is('.active'))
+                if ($(this).parent().is('.active'))
                 {
                     return;
                 }
-                var scrollableClassName = $target.data('scrollable-classname');
+                var scrollableClassName = $(this).data('scrollable-classname');
 
                 $('.scrollable-nav-item').removeClass('active');
                 $('.scrollable-content').removeClass('active');
 
-                $target.parent().addClass('active');
+                $(this).parent().addClass('active');
                 $('.'+scrollableClassName).addClass('active');
             }
 

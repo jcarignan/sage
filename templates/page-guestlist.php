@@ -1,6 +1,7 @@
 <?php /*
     Template Name: Guestlist
     */
+
     use Roots\Sage\Extras;
 ?>
 
@@ -10,6 +11,7 @@
         $orderBy = isset($_GET['orderby']) ? $_GET['orderby'] :'';
         $direction = isset($_GET['direction']) ? $_GET['direction'] :'ASC';
         $orderByToUse = $orderBy === 'name' ? 'first_name':$orderBy;
+
         $ticketsOriginal = Extras\get_tickets($orderByToUse, $direction);
         $tickets = array();
         foreach($ticketsOriginal as $ticketOriginal){
@@ -19,6 +21,12 @@
                 if ($key == 'last_name')
                 {
                     $ticket['name'] = $ticketOriginal['first_name'].' '.$ticketOriginal['last_name'];
+                }
+
+                if ($key == 'user_agent' && strlen($ticket[$key]))
+                {
+                    $browser = Extras\get_browser_from_useragent($ticket[$key]);
+                    $ticket['user_agent'] = $browser->getPlatform().' '.$browser->getBrowser().' '.$browser->getVersion();
                 }
             }
             array_push($tickets, $ticket);

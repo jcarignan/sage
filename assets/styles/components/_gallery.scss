@@ -25,13 +25,13 @@
     animation-name: updateDepthOut;
     animation-duration: .4s;
     box-shadow: 0 0 3px 0px transparent;
+    transform: scale(1);
 
     &:hover {
         z-index: 2;
         animation-name: updateDepthIn;
         animation-duration: .2s;
-        backface-visibility: hidden;
-        transform: translateZ(0) scale(1.1);
+        transform: scale(1.1);
         box-shadow: 0 0 3px 0px #000;
     }
 }
