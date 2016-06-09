@@ -50,6 +50,7 @@ body.page-template-page-splash {
             color: $brand-gray;
             text-transform: uppercase;
 
+
             h1 {
                 font-size: 30px;
                 font-size: 3.15vmin;
@@ -59,7 +60,7 @@ body.page-template-page-splash {
 
             h2 {
                 font-size: 70px;
-                font-size: 7.7vmin;
+                font-size: 7vmin;
             }
 
             h3 {
@@ -67,6 +68,17 @@ body.page-template-page-splash {
                 font-size: 2.5vmin;
                 line-height: 0.5em;
                 display: inline-block;
+                margin-right: 0px;
+            }
+
+            p {
+                display: none;
+            }
+
+            .line-one {
+            }
+
+            .line-two {
             }
         }
 

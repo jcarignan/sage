@@ -32,6 +32,59 @@
       return 'ontouchstart' in document.documentElement || navigator.maxTouchPoints;
   };
 
+  var accroSplashAnim = function() {
+      var duration = 0.4;
+      var ease = Quad.easeInOut;
+      var timeline = new TimelineMax();
+      timeline.from($('.splash-container'), duration, {
+          alpha: 0,
+          ease: ease
+      }, 0.4);
+      timeline.fromTo($('.main-description .line-one'), duration, {
+          alpha: 0,
+          x: '4%'
+      },{
+          alpha: 1,
+          x: '0%'
+      }, '+=0.3');
+      timeline.fromTo($('.main-description .line-two'), duration, {
+          alpha: 0,
+          x: '4%'
+      },{
+          alpha: 1,
+          x: '0%'
+      }, '-=0.3');
+      timeline.staggerFromTo($($('.list-items .list-item').get().reverse()), duration, {
+          alpha: 0,
+          y: '-10%'
+      },{
+          alpha: 1,
+          y: '0%'
+      }, 0.1, '-=0.2');
+      timeline.staggerFromTo($($('.list-items .list-item .label').get().reverse()), duration, {
+          alpha: 0
+      },{
+          alpha: 1
+      }, 0.1, '-=0.3');
+      /*timeline.to($('.splash-container img'), 0.2, {
+          scale: 1.01,
+          yoyo: true,
+          repeat: 1
+      }, '-=0.2');
+      $('main.main').on('mousemove', function(e){
+          var ratioX = e.clientX / window.innerWidth;
+          var ratioY = e.clientY / window.innerHeight;
+          var percentX = (1-ratioX)*100;
+          var percentY = (1-ratioY)*100;
+          var titlePercentX = (1-ratioX)*100/3 + 40;
+          var titlePercentY = (1-ratioY)*100;
+
+          TweenMax.to($('.main-description .line-one, .main-description .line-two, .splash-container, .list-items'), 2, {
+              //perspectiveOrigin: percentX+'% '+percentY+'%'
+          });
+      });*/
+  };
+
   var Sage = {
     // All pages
     'common': {
@@ -138,6 +191,11 @@
     'home': {
       init: function() {
         // JavaScript to be fired on the home page
+
+        if ($('body').is('.subtheme-accro'))
+        {
+            accroSplashAnim();
+        }
       },
       finalize: function() {
         // JavaScript to be fired on the home page, after the init JS
