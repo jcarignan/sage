@@ -119,6 +119,8 @@
                 });
             });
             $(window).on('resize', updatePS);
+            //$('.main').css('overflow-x', 'hidden');
+            $('.main').css('overflow-y', 'hidden');
         } else {
             $('.scrollable-container .scrollable-content').each(function(i, el){
                 $(el).css('overflow-x', 'hidden');
