@@ -36,6 +36,18 @@ body.page-template-page-clients {
                         display: none;
                     }
                 }
+
+                @media screen and (max-width: $medium-width) {
+                    .wp-tiles-byline {
+                        display: none;
+                    }
+                }
+
+                @media screen and (max-width: 1340px) {
+                    .wp-tiles-byline {
+                        font-size: 0.7em;
+                    }
+                }
             }
         }
 

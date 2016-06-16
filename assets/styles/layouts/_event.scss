@@ -48,12 +48,6 @@ body.page-template-page-event {
 
             .block-title {
 
-                a {
-                    font-weight: bold;
-                    text-decoration: underline;
-                    color: $brand-third;
-                }
-
                 &.style-normal {
                     text-transform: uppercase;
                     color: $brand-third;
@@ -553,6 +547,9 @@ body.page-template-page-event {
 
             &.block-main-about {
                 .block-about {
+                    a {
+                        color: $brand-third;
+                    }
                     .block-content {
                         &.content-description {
                             .content-description-inner {
