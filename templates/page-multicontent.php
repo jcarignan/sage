@@ -34,21 +34,23 @@
                             <div class="page-header"><h1><?php echo $title; ?></h1></div>
                             <article class="page-content"><?php echo $content ?></article>
                     <?php endif; ?>
-                            <ul class="list-items">
-                                <?php while( have_rows('list') ): the_row();
-                                    $label = get_sub_field('label');
-                                    $icon = get_sub_field('icon');
-                                ?>
-                                <li class="list-item">
-                                    <?php if( $icon ): ?>
-                        				<img class="icon style-svg" src="<?php echo $icon['url']; ?>" />
-                        			<?php endif; ?>
-                                    <?php if( $label ): ?>
-                        				<div class="label"><?php echo $label; ?></div>
-                        			<?php endif; ?>
-                                </li>
-                                <?php endwhile; ?>
-                            </ul>
+                            <div class="list-items-container">
+                                <ul class="list-items">
+                                    <?php while( have_rows('list') ): the_row();
+                                        $label = get_sub_field('label');
+                                        $icon = get_sub_field('icon');
+                                    ?>
+                                    <li class="list-item">
+                                        <?php if( $icon ): ?>
+                            				<img class="icon style-svg" src="<?php echo $icon['url']; ?>" />
+                            			<?php endif; ?>
+                                        <?php if( $label ): ?>
+                            				<div class="label"><?php echo $label; ?></div>
+                            			<?php endif; ?>
+                                    </li>
+                                    <?php endwhile; ?>
+                                </ul>
+                            </div>
                     <?php if ($withContent): ?>
                         </section>
                         <section class="block-content content-image" style="background-image: url(<?php echo $image['url']?>);"></section>

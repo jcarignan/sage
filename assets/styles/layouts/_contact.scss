@@ -1,7 +1,9 @@
 body.page-template-page-contact {
 
     .main {
-        background-color: $brand-secondary;
+
+        /*min-height: 100%;
+        height: auto;*/
     }
 
     .block-main-container {
@@ -15,7 +17,7 @@ body.page-template-page-contact {
 
         .content-description {
             position: relative;
-            padding: 70px 160px 160px;
+            padding: 80px 140px 120px 160px;
             background-repeat: no-repeat;
             background-position: top center;
             background-size: cover;
@@ -41,8 +43,15 @@ body.page-template-page-contact {
         }
     }
 
-    .block.block-form h2 {
-        padding-top: 30px;
+    .block-form-container {
+        background-color: $brand-secondary;
+    }
+
+    .block.block-form {
+
+        h2 {
+            padding-top: 30px;
+        }
     }
 
     @media screen and (max-width: $medium-width) {

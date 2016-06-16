@@ -4,7 +4,7 @@ html, body {
 
 body {
     font-family: $font-primary;
-    /*overflow: hidden;*/
+    overflow: hidden;
 }
 
 .content {
@@ -24,10 +24,9 @@ body {
 
 .main {
     box-sizing: border-box;
-    position: relative;
     height: 100%;
-    overflow: hidden;
-    -webkit-overflow-scrolling: touch;
+    overflow-x: hidden;
+    overflow-y: auto;
 }
 
 p.qtranxs-available-languages-message {

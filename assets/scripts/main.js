@@ -14,6 +14,7 @@
 
   // Use this variable to set up the common and page specific functions. If you
   // rename this variable, you will also need to rename the namespace below.
+
   var getIEVersion = function() {
       var sAgent = window.navigator.userAgent;
       var Idx = sAgent.indexOf("MSIE");
@@ -30,6 +31,17 @@
 
   var isTouchEnabled = function() {
       return 'ontouchstart' in document.documentElement || navigator.maxTouchPoints;
+  };
+
+  var updatePS = function()
+  {
+      if (getIEVersion() === 0 && !isTouchEnabled())
+      {
+          Ps.update($('.main')[0]);
+          $('.scrollable-container .scrollable-content').each(function(i, el){
+              Ps.update(el);
+          });
+      }
   };
 
   var accroSplashAnim = function() {
@@ -98,14 +110,22 @@
 
         $('body .content').removeClass('hidden');
 
-
-
         if (getIEVersion() === 0 && !isTouchEnabled())
         {
             Ps.initialize($('.main')[0]);
+            $('.scrollable-container .scrollable-content').each(function(i, el){
+                Ps.initialize(el, {
+                    suppressScrollX: true
+                });
+            });
+            $(window).on('resize', updatePS);
         } else {
-            $('.main').css('overflow-x', 'hidden');
-            $('.main').css('overflow-y', 'auto');
+            $('.scrollable-container .scrollable-content').each(function(i, el){
+                $(el).css('overflow-x', 'hidden');
+                $(el).css('overflow-y', 'auto');
+            });
+            //$('.main').css('overflow-x', 'hidden');
+            //$('.main').css('overflow-y', 'auto');
         }
 
         $('a').click(function(e){
@@ -255,14 +275,6 @@
                 $(input).on('input', function(e){
                     updateTicketName($(e.currentTarget).parents('.repeatable-set'));
                 });
-            }
-        };
-
-        var updatePS = function()
-        {
-            if (getIEVersion() === 0 && !isTouchEnabled())
-            {
-                Ps.update($('.main')[0]);
             }
         };
 

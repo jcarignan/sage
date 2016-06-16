@@ -10,7 +10,7 @@
                 $contentDescriptionAttrs = '';
                 if (has_post_thumbnail(get_the_ID()) ){
                     $imageUrl = wp_get_attachment_image_src(get_post_thumbnail_id(get_the_ID()), 'single-post-thumbnail');
-                    $contentDescriptionAttrs = 'style="background-image: url('.$imageUrl[0].'");"';
+                    $contentDescriptionAttrs = 'style="background-image: url(\''.$imageUrl[0].'\');"';
                 }
             ?>
             <section class="block-content content-description" <?=$contentDescriptionAttrs?>>
@@ -19,10 +19,10 @@
                 </article>
                 <article class="page-infos" itemscope itemtype="http://schema.org/Organization">
                     <?php if ($name = get_field('name')): ?>
-                        <h1 itemprop="founder"><?= $name; ?> </h1>
+                        <h1 itemprop="founder"><?= $name; ?></h1>
                     <?php endif; ?>
                     <?php if ($label = get_field('label')): ?>
-                        <div itemprop="jobTitle"><?= $label; ?> </div>
+                        <div itemprop="jobTitle"><?= $label; ?></div>
                     <?php endif; ?>
                     <?php if ($phoneNumber = get_field('phone_number')): ?>
                         <div itemprop="telephone"><a href="tel:+1-<?= preg_replace('/\D/', '-', $phoneNumber); ?>"><?=$phoneNumber;?></a></div>
@@ -37,10 +37,11 @@
     <?php
         $formShortCode = get_field( "form_shortcode");
         if($formShortCode): ?>
-
-    <section class="block block-form">
-        <?= do_shortcode($formShortCode); ?>
-    </section>
+    <div class="block-form-container">
+        <section class="block block-form">
+            <?= do_shortcode($formShortCode); ?>
+        </section>
+    </div>
 
 <?php   endif; ?>
 <?php endwhile; ?>

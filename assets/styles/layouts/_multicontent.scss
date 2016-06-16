@@ -3,4 +3,49 @@ body.page-template-page-multicontent {
     main {
         background-color: $brand-secondary;
     }
+
+
+
+        .block-content.content-description {
+
+            .list-items-container {
+                text-align: center;
+            }
+
+            ul.list-items {
+                li.list-item {
+                    &:last-of-type {
+                        margin-right: 20px !important;
+                    }
+                }
+            }
+
+            .wp-tiles-container {
+                overflow: hidden;
+            }
+
+            @media screen and (min-width: $medium-width+1) {
+
+                /*ul.list-items {
+                    display: inline-block;
+                    li.list-item {
+                        display: block;
+                        float: left;
+
+                        &:nth-child(3n+4) {
+                            clear: left;
+                        }
+
+                    }
+
+                    &:after {
+                        content: '';
+                        display: block;
+                        clear: both;
+                    }
+                }*/
+            }
+
+        }
+
 }
