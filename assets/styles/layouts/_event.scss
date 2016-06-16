@@ -547,9 +547,6 @@ body.page-template-page-event {
 
             &.block-main-about {
                 .block-about {
-                    a {
-                        color: $brand-third;
-                    }
                     .block-content {
                         &.content-description {
                             .content-description-inner {
@@ -575,6 +572,10 @@ body.page-template-page-event {
                                                 border: 3px solid $brand-secondary;
                                             }
                                             padding-bottom: 10px;
+
+                                            a {
+                                                color: $brand-third;
+                                            }
                                         }
                                     }
                                 }
