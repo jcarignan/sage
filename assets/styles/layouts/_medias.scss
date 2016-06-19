@@ -1,7 +1,7 @@
 body.page-template-page-medias {
-    main {
-        overflow: visible;
+    overflow: hidden;
 
+    main {
         header, .page-header {
             color: $brand-secondary;
             padding-left: 20px;
@@ -10,7 +10,6 @@ body.page-template-page-medias {
     }
 
     .scrollable-content {
-        position: absolute;
     }
 
     .press-article {
