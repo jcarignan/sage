@@ -28,6 +28,11 @@
                     $browser = Extras\get_browser_from_useragent($ticket[$key]);
                     $ticket['user_agent'] = $browser->getPlatform().' '.$browser->getBrowser().' '.$browser->getVersion();
                 }
+
+                if ($key == 'qr_code')
+                {
+                    $ticket['send_ticket'] = $ticket['qr_code'];
+                }
             }
             array_push($tickets, $ticket);
         }
@@ -81,6 +86,10 @@
                                     <td class="field <?=$fieldKey?>">
                                     <?php if ($fieldKey === 'paid' || ($fieldKey === 'scanned' && ($fieldValue == 0 || $fieldValue == 1))): ?>
                                         <input type="checkbox" disabled <?php checked( $fieldValue, 1); ?>>
+                                    <?php elseif ($fieldKey === 'send_ticket'): ?>
+                                        <?php if ($ticket['paid'] == 1): ?>
+                                            <button class="email-qr-code" type="button" data-qrcode="<?=$fieldValue?>">Email</button>
+                                        <?php endif; ?>
                                     <?php else: ?>
                                         <?=stripcslashes($fieldValue);?>
                                     <?php endif; ?>

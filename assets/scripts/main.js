@@ -393,7 +393,46 @@
             beforeSubmit : createTicket
         });
       }
-    }
+     },
+     'guestlist': {
+          init: function()
+          {
+              $('.email-qr-code').click(function(e){
+
+                  var confirmBox = confirm('Envoyer le billet par courriel ?');
+                  if (!confirmBox) {
+                      return;
+                  }
+
+                  $(this).attr('disabled', 'disabled');
+                  $(this).text('Envoi...');
+                  $button = $(this);
+                  $.ajax({
+                    url: guestlistData.ajaxUrl,
+                    type: 'post',
+                    data: {
+                        action: 'send_email_ticket',
+                        nonce: guestlistData.nonce,
+                        qrcode: $(this).data('qrcode')
+                    },
+                    dataType: 'json',
+                    success: function(response)
+                    {
+                        if (response.success)
+                        {
+                            $button.text('Envoyé!');
+                        } else {
+                            $button.text('Marche pô :(');
+                        }
+                    },
+                    error: function()
+                    {
+                        $button.text('Marche pô :(');
+                    }
+                  });
+              });
+          }
+     }
   };
 
   // The routing fires all common scripts, followed by the page specific scripts.

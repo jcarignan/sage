@@ -193,6 +193,17 @@ function on_paypal_payment_completed($posted) {
     wp_mail('5142674953@msg.koodomobile.com', '', 'PAYÉ! '.$mc_gross.'$ par '.$first_name.' '.$last_name.' ('.$entreprise.')');
 }
 
+function send_email_ticket() {
+    $qrcode = isset($_POST['qrcode']) ? $_POST['qrcode']:'';
+    $ticket = get_ticket_from_qrcode($qrcode);
+    send_ticket_by_email($ticket);
+
+    echo json_encode(array(
+        'success' => true
+    ));
+    wp_die();
+}
+
 function create_ticket_and_pay() {
     global $wpdb;
     $invoice = md5(uniqid());
@@ -483,6 +494,10 @@ function send_ticket_by_email($ticket) {
 
 add_action('wp_ajax_create_ticket_and_pay', __NAMESPACE__ .'\\create_ticket_and_pay');
 add_action('wp_ajax_nopriv_create_ticket_and_pay', __NAMESPACE__ .'\\create_ticket_and_pay');
+
+add_action('wp_ajax_send_email_ticket', __NAMESPACE__ .'\\send_email_ticket');
+add_action('wp_ajax_nopriv_send_email_ticket', __NAMESPACE__ .'\\send_email_ticket');
+
 add_action('paypal_ipn_for_wordpress_payment_status_completed',  __NAMESPACE__ . '\\on_paypal_payment_completed', 10, 1);
 
 add_shortcode('current_price', __NAMESPACE__ . '\\get_current_price');

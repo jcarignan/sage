@@ -125,6 +125,12 @@ function assets() {
             'comboPrice' => $ticketStatus['combo_price'],
             'comboCount' => $ticketStatus['combo_count']
           ));
+      } else if (is_page('guestlist'))
+      {
+          wp_localize_script('sage/js', 'guestlistData', array(
+            'ajaxUrl' => admin_url( 'admin-ajax.php' ),
+            'nonce' => wp_create_nonce( 'unique_id_nonce' )
+          ));
       }
   }
 }
@@ -306,8 +312,10 @@ function add_ticket_settings() {
         )
     );
 
+    // --- PROMO ---
+
     add_settings_field(
-        'ticket_promo_label',//
+        'ticket_promo_label',
         'Promo label',
         __NAMESPACE__ . '\\textbox_callback_qtranslate',
         'general',
@@ -361,6 +369,8 @@ function add_ticket_settings() {
         )
     );
 
+    // --- EARLY ---
+
     add_settings_field(
         'ticket_early_label',
         'Early label',
@@ -369,6 +379,17 @@ function add_ticket_settings() {
         'ticket_settings',
         array(
             'ticket_early_label'
+        )
+    );
+
+    add_settings_field(
+        'ticket_early_price',
+        'Early price',
+        __NAMESPACE__ . '\\number_callback',
+        'general',
+        'ticket_settings',
+        array(
+            'ticket_early_price'
         )
     );
 
@@ -394,25 +415,27 @@ function add_ticket_settings() {
         )
     );
 
-    add_settings_field(
-        'ticket_early_price',
-        'Early price',
-        __NAMESPACE__ . '\\number_callback',
-        'general',
-        'ticket_settings',
-        array(
-            'ticket_early_price'
-        )
-    );
+    // --- NORMAL ---
 
     add_settings_field(
-        'ticket_normal_label',//
+        'ticket_normal_label',
         'Normal label',
         __NAMESPACE__ . '\\textbox_callback_qtranslate',
         'general',
         'ticket_settings',
         array(
             'ticket_normal_label'
+        )
+    );
+
+    add_settings_field(
+        'ticket_normal_price',
+        'Normal price',
+        __NAMESPACE__ . '\\number_callback',
+        'general',
+        'ticket_settings',
+        array(
+            'ticket_normal_price'
         )
     );
 
@@ -439,17 +462,6 @@ function add_ticket_settings() {
     );
 
     add_settings_field(
-        'ticket_normal_price',
-        'Normal price',
-        __NAMESPACE__ . '\\number_callback',
-        'general',
-        'ticket_settings',
-        array(
-            'ticket_normal_price'
-        )
-    );
-
-    add_settings_field(
         'ticket_normal_price_start_date',
         'Normal price start date',
         __NAMESPACE__ . '\\date_callback',
@@ -457,6 +469,19 @@ function add_ticket_settings() {
         'ticket_settings',
         array(
             'ticket_normal_price_start_date'
+        )
+    );
+
+    // --- COMBO ---
+
+    add_settings_field(
+        'ticket_combo_label',
+        'Combo label',
+        __NAMESPACE__ . '\\textbox_callback_qtranslate',
+        'general',
+        'ticket_settings',
+        array(
+            'ticket_combo_label'
         )
     );
 
@@ -468,17 +493,6 @@ function add_ticket_settings() {
         'ticket_settings',
         array(
             'ticket_combo_price'
-        )
-    );
-
-    add_settings_field(
-        'ticket_combo_label',//
-        'Combo label',
-        __NAMESPACE__ . '\\textbox_callback_qtranslate',
-        'general',
-        'ticket_settings',
-        array(
-            'ticket_combo_label'
         )
     );
 
