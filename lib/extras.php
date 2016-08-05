@@ -190,7 +190,9 @@ function on_paypal_payment_completed($posted) {
     } else {
         $entreprise = 'other';
     }
-    wp_mail('5142674953@msg.koodomobile.com', '', 'PAYÉ! '.$mc_gross.'$ par '.$first_name.' '.$last_name.' ('.$entreprise.')');
+    $smsMessage = 'PAYÉ! '.$mc_gross.'$ par '.$first_name.' '.$last_name.' ('.$entreprise.')';
+    wp_mail('5142674953@msg.koodomobile.com', '', $smsMessage);
+    wp_mail('5146233890@msg.koodomobile.com', '', $smsMessage);
 }
 
 function send_email_ticket() {
@@ -214,7 +216,6 @@ function create_ticket_and_pay() {
     $itemName;
     $paypalSandboxed = get_option('ticket_sandboxed') == 1;
     $paypalUrl = $paypalSandboxed ? 'https://www.sandbox.paypal.com/cgi-bin/webscr' : 'https://www.paypal.com/cgi-bin/webscr';
-    $paypalLastStep = true;
 
     if ($ticketStatus['promo_active'])
     {
@@ -242,20 +243,23 @@ function create_ticket_and_pay() {
         $ticketName = qtranxf_use(qtranxf_getLanguage(), $ticketName);
     }
 
+    $userAgent = substr($_SERVER['HTTP_USER_AGENT'], 0, 2048);
+    $smsMessage = 'Création de '.$quantity.' billet'.($quantity > 1 ? 's':'').':'."\n".'------------------'."\n";
+
     for ($i = 0; $i < $quantity;$i++)
     {
-        $wpdb->insert('wp_tickets', array(
-            'first_name' => isset($_POST['firstname_'.$i]) ? $_POST['firstname_'.$i]:'',
-            'last_name' => isset($_POST['lastname_'.$i]) ? $_POST['lastname_'.$i]:'',
-            'entreprise' => isset($_POST['entreprise_'.$i]) ? $_POST['entreprise_'.$i]:'',
-            'title' => isset($_POST['title_'.$i]) ? $_POST['title_'.$i]:'',
-            'email' => isset($_POST['email_'.$i]) ? $_POST['email_'.$i]:'',
-            'telephone' => isset($_POST['telephone_'.$i]) ? $_POST['telephone_'.$i]:'',
+        $success = $wpdb->insert('wp_tickets', array(
+            'first_name' => isset($_POST['firstname_'.$i]) ? substr($_POST['firstname_'.$i],0,255):'',
+            'last_name' => isset($_POST['lastname_'.$i]) ? substr($_POST['lastname_'.$i],0,255):'',
+            'entreprise' => isset($_POST['entreprise_'.$i]) ? substr($_POST['entreprise_'.$i],0,255):'',
+            'title' => isset($_POST['title_'.$i]) ? substr($_POST['title_'.$i],0,255):'',
+            'email' => isset($_POST['email_'.$i]) ? substr($_POST['email_'.$i],0,255):'',
+            'telephone' => isset($_POST['telephone_'.$i]) ? substr($_POST['telephone_'.$i],0,255):'',
             'price' => $price,
             'item_name' => $itemName,
             'invoice' => $invoice,
             'qr_code' => md5(uniqid()),
-            'user_agent' => $_SERVER['HTTP_USER_AGENT']
+            'user_agent' => $userAgent
         ), array(
             '%s',
             '%s',
@@ -270,6 +274,14 @@ function create_ticket_and_pay() {
             '%s',
             '%s'
         ));
+
+        $smsMessage .= 'Nom: '.$_POST['firstname_'.$i].' '.$_POST['lastname_'.$i]."\n".
+                       'Entreprise: '.$_POST['entreprise_'.$i]."\n".
+                       'Titre: '.$_POST['title_'.$i]."\n".
+                       'Email: '.$_POST['email_'.$i]."\n".
+                       'Téléphone: '.$_POST['telephone_'.$i]."\n".
+                       ($success == 1 ? 'SUCCESS':'FAILED')."\n".
+                       '------------------'."\n";
     }
 
     $paypalFields = array(
@@ -294,7 +306,8 @@ function create_ticket_and_pay() {
         'paypal_fields' => $paypalFields
     ));
 
-    wp_mail('5142674953@msg.koodomobile.com', '', $_POST['entreprise_0'].' en veut '.$quantity.'...');
+    wp_mail('5142674953@msg.koodomobile.com', '', $smsMessage);
+    wp_mail('5146233890@msg.koodomobile.com', '', $smsMessage);
     wp_die();
 }
 

@@ -529,6 +529,30 @@ function add_ticket_settings() {
         )
     );
 
+    // --- PROMO CODES ---4
+
+    add_settings_field(
+        'ticket_promo_65_button_id',
+        'Promo 65 paypal button ID',
+        __NAMESPACE__ . '\\textbox_callback',
+        'general',
+        'ticket_settings',
+        array(
+            'ticket_promo_65_button_id'
+        )
+    );
+
+    add_settings_field(
+        'ticket_promo_65_sandboxed_button_id',
+        'Promo 65 sandboxed paypal button ID',
+        __NAMESPACE__ . '\\textbox_callback',
+        'general',
+        'ticket_settings',
+        array(
+            'ticket_promo_65_sandboxed_button_id'
+        )
+    );
+
     register_setting('general','ticket_sandboxed', 'esc_attr');
     register_setting('general','ticket_name', 'esc_attr');
 
@@ -554,6 +578,9 @@ function add_ticket_settings() {
     register_setting('general','ticket_combo_button_id', 'esc_attr');
     register_setting('general','ticket_combo_sandboxed_button_id', 'esc_attr');
     register_setting('general','ticket_combo_count', 'esc_attr');
+
+    register_setting('general','ticket_promo_65_button_id', 'esc_attr');
+    register_setting('general','ticket_promo_65_sandboxed_button_id', 'esc_attr');
 }
 
 function seo_callback() {

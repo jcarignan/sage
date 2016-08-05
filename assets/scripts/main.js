@@ -215,6 +215,10 @@
         if ($('body').is('.subtheme-accro'))
         {
             accroSplashAnim();
+            if (isTouchEnabled())
+            {
+                $('.video-container').css('pointerEvents', 'auto');
+            }
         }
       },
       finalize: function() {
