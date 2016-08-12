@@ -181,38 +181,26 @@
                                         <div class="block-content block-content-gallery-column">
                                             <h3 class="gallery-title" style="text-align: <?=$align?>;"><?=$columnTitle?></h3>
                                             <ul class="list-items" style="height: <?=$columnsHeight?>">
-<?php                                   $elementsCount = count(get_sub_field('gallery'));
-                                        if ($elementsCount <= 1)
-                                        {
-                                            $elementSize = '100%';
-                                        }
-                                        else if ($elementsCount <= 4)
-                                        {
-                                            $elementSize = '50%';
-                                        }
-                                        else if ($elementsCount <= 9)
-                                        {
-                                            $elementSize = '33.3333%';
-                                        } else {
-                                            $elementSize = '25%';
-                                        }
-                                        while ( have_rows('gallery') ) : the_row();
+<?php
+                                        $mapLinks = array();
+                                        while(have_rows('links')): the_row();
+                                            array_push($mapLinks, array(
+                                                'title' => get_sub_field('title'),
+                                                'link' => get_sub_field('link'),
+                                                'style' => get_sub_field('style')
+                                            ));
+                                        endwhile;
 
-                                            $elementTitle = get_sub_field('title');
-                                            $elementImage = get_sub_field('image');
-                                            $elementLink = get_sub_field('link');
-                                            $hasLink = $elementLink && strlen($elementLink);?>
-                                            <li class="list-item" style="width: <?=$elementSize?>; height: <?=$elementSize?>">
-<?php                                       if ($hasLink): ?>
-                                                <a href="<?=$elementLink?>" target="_blank">
-<?php                                       endif; ?>
-                                                    <div class="item-content"><?=$elementTitle?></div>
-                                                    <div class="item-image" style="background-image: url(<?=$elementImage['sizes']['medium']?>);"></div>
-<?php                                       if ($hasLink): ?>
-                                                </a>
-<?php                                       endif; ?>
+                                        $elementImage = get_sub_field('image');
+
+?>
+                                            <li class="list-item" style="width: 100%; height:100%">
+                                                <div class="item-image" style="background-image: url(<?=$elementImage['sizes']['medium']?>);">
+<?php                                               foreach($mapLinks as $mapLink): ?>
+                                                        <a href="<?=$mapLink['link']?>" alt="<?=$mapLink['title']?>" target="_blank" style="position: absolute; <?=$mapLink['style']?>"></a>
+<?php                                               endforeach; ?>
+                                                </div>
                                             </li>
-<?php                                   endwhile; ?>
                                         </ul>
                                     </div>
 <?php				                endwhile; ?>
