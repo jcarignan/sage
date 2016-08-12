@@ -52,7 +52,7 @@
           alpha: 0,
           ease: ease
       }, 0.4);
-      timeline.fromTo($('.main-description .line-one'), duration, {
+      /*timeline.fromTo($('.main-description .line-one'), duration, {
           alpha: 0,
           x: '4%'
       },{
@@ -65,15 +65,15 @@
       },{
           alpha: 1,
           x: '0%'
-      }, '-=0.3');
-      timeline.staggerFromTo($($('.list-items .list-item').get().reverse()), duration, {
+      }, '-=0.3');*/
+      timeline.staggerFromTo($($('.list-items .list-item').get()), duration, {
           alpha: 0,
           y: '-10%'
       },{
           alpha: 1,
           y: '0%'
-      }, 0.1, '-=0.2');
-      timeline.staggerFromTo($($('.list-items .list-item .label').get().reverse()), duration, {
+      }, 0.1, '+=0.6');
+      timeline.staggerFromTo($($('.list-items .list-item .label').get()), duration, {
           alpha: 0
       },{
           alpha: 1
@@ -146,7 +146,7 @@
             var isSrollableNavItem = $(this).parent().is('.scrollable-nav-item');
 
             // hide logo on splash page
-            if (!$('body').is('.subtheme-default'))
+            /*if (!$('body').is('.subtheme-default'))
             {
                 if (!$('body').is('.page-template-page-splash') && $(this).is('.brand'))
                 {
@@ -156,7 +156,7 @@
                 {
                     $('header.banner .brand').addClass('show');
                 }
-            }
+            }*/
 
             // fade out if local link
             if (isLocalLink && !isLightBox && !isTargetBlank && !isSrollableNavItem)
@@ -215,10 +215,6 @@
         if ($('body').is('.subtheme-accro'))
         {
             accroSplashAnim();
-            if (isTouchEnabled())
-            {
-                $('.video-container').css('pointerEvents', 'auto');
-            }
         }
       },
       finalize: function() {
@@ -355,6 +351,9 @@
             },{
                 name: 'action',
                 value: 'create_ticket_and_pay'
+            }, {
+                name: 'promo',
+                value: ticketsData.couponCode
             });
             $form.find('button, input[type!="hidden"]').attr('disabled', true);
             $form.find('.ajax-loader').css('visibility', 'visible');

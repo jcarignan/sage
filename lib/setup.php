@@ -123,7 +123,8 @@ function assets() {
             'nonce' => wp_create_nonce( 'unique_id_nonce' ),
             'price' => $ticketStatus['price'],
             'comboPrice' => $ticketStatus['combo_price'],
-            'comboCount' => $ticketStatus['combo_count']
+            'comboCount' => $ticketStatus['combo_count'],
+            'couponCode' => $ticketStatus['coupon_code']
           ));
       } else if (is_page('guestlist'))
       {
@@ -276,6 +277,97 @@ function set_mail_from_name($old) {
  * Add Ticket settings
  */
 
+function add_ticket_type($name, $key) {
+
+    add_settings_field(
+        'ticket_'.$key.'_label',
+        $name.' label',
+        __NAMESPACE__ . '\\textbox_callback_qtranslate',
+        'general',
+        'ticket_settings',
+        array(
+            'ticket_'.$key.'_label'
+        )
+    );
+
+    add_settings_field(
+        'ticket_'.$key.'_price',
+        $name.' price',
+        __NAMESPACE__ . '\\number_callback',
+        'general',
+        'ticket_settings',
+        array(
+            'ticket_'.$key.'_price'
+        )
+    );
+
+    add_settings_field(
+        'ticket_'.$key.'_button_id',
+        $name.' paypal ID',
+        __NAMESPACE__ . '\\textbox_callback',
+        'general',
+        'ticket_settings',
+        array(
+            'ticket_'.$key.'_button_id'
+        )
+    );
+
+    add_settings_field(
+        'ticket_'.$key.'_sandboxed_button_id',
+        $name.' sandboxed paypal ID',
+        __NAMESPACE__ . '\\textbox_callback',
+        'general',
+        'ticket_settings',
+        array(
+            'ticket_'.$key.'_sandboxed_button_id'
+        )
+    );
+
+    register_setting('general','ticket_'.$key.'_label', 'esc_attr');
+    register_setting('general','ticket_'.$key.'_price', 'esc_attr');
+    register_setting('general','ticket_'.$key.'_button_id', 'esc_attr');
+    register_setting('general','ticket_'.$key.'_sandboxed_button_id', 'esc_attr');
+}
+
+function add_coupon_code($price)
+{
+    add_settings_field(
+        'ticket_coupon_'.$price.'_code',
+        'Promo '.$price.'$ code',
+        __NAMESPACE__ . '\\textbox_callback',
+        'general',
+        'ticket_settings',
+        array(
+            'ticket_coupon_'.$price.'_code'
+        )
+    );
+
+    add_settings_field(
+        'ticket_coupon_'.$price.'_button_id',
+        'Promo '.$price.'$ paypal ID',
+        __NAMESPACE__ . '\\textbox_callback',
+        'general',
+        'ticket_settings',
+        array(
+            'ticket_coupon_'.$price.'_button_id'
+        )
+    );
+
+    add_settings_field(
+        'ticket_coupon_'.$price.'_sandboxed_button_id',
+        'Promo '.$price.'$ sandboxed paypal ID',
+        __NAMESPACE__ . '\\textbox_callback',
+        'general',
+        'ticket_settings',
+        array(
+            'ticket_coupon_'.$price.'_sandboxed_button_id'
+        )
+    );
+    register_setting('general','ticket_coupon_'.$price.'_code', 'esc_attr');
+    register_setting('general','ticket_coupon_'.$price.'_button_id', 'esc_attr');
+    register_setting('general','ticket_coupon_'.$price.'_sandboxed_button_id', 'esc_attr');
+}
+
 function add_ticket_settings() {
     $subtheme = get_option( 'immersiveproductions_theme_options')['subtheme'];
     if ($subtheme === 'default')
@@ -311,53 +403,12 @@ function add_ticket_settings() {
             'ticket_name'
         )
     );
+    register_setting('general','ticket_sandboxed', 'esc_attr');
+    register_setting('general','ticket_name', 'esc_attr');
 
     // --- PROMO ---
 
-    add_settings_field(
-        'ticket_promo_label',
-        'Promo label',
-        __NAMESPACE__ . '\\textbox_callback_qtranslate',
-        'general',
-        'ticket_settings',
-        array(
-            'ticket_promo_label'
-        )
-    );
-
-    add_settings_field(
-        'ticket_promo_price',
-        'Promo price',
-        __NAMESPACE__ . '\\number_callback',
-        'general',
-        'ticket_settings',
-        array(
-            'ticket_promo_price'
-        )
-    );
-
-    add_settings_field(
-        'ticket_promo_button_id',
-        'Promo paypal button ID',
-        __NAMESPACE__ . '\\textbox_callback',
-        'general',
-        'ticket_settings',
-        array(
-            'ticket_promo_button_id'
-        )
-    );
-
-    add_settings_field(
-        'ticket_promo_sandboxed_button_id',
-        'Promo sandboxed paypal button ID',
-        __NAMESPACE__ . '\\textbox_callback',
-        'general',
-        'ticket_settings',
-        array(
-            'ticket_promo_sandboxed_button_id'
-        )
-    );
-
+    add_ticket_type('Promo', 'promo');
     add_settings_field(
         'ticket_promo_count',
         'Promo tickets count',
@@ -368,98 +419,10 @@ function add_ticket_settings() {
             'ticket_promo_count'
         )
     );
+    register_setting('general','ticket_promo_count', 'esc_attr');
 
-    // --- EARLY ---
-
-    add_settings_field(
-        'ticket_early_label',
-        'Early label',
-        __NAMESPACE__ . '\\textbox_callback_qtranslate',
-        'general',
-        'ticket_settings',
-        array(
-            'ticket_early_label'
-        )
-    );
-
-    add_settings_field(
-        'ticket_early_price',
-        'Early price',
-        __NAMESPACE__ . '\\number_callback',
-        'general',
-        'ticket_settings',
-        array(
-            'ticket_early_price'
-        )
-    );
-
-    add_settings_field(
-        'ticket_early_button_id',
-        'Early paypal button ID',
-        __NAMESPACE__ . '\\textbox_callback',
-        'general',
-        'ticket_settings',
-        array(
-            'ticket_early_button_id'
-        )
-    );
-
-    add_settings_field(
-        'ticket_early_sandboxed_button_id',
-        'Early sandboxed paypal button ID',
-        __NAMESPACE__ . '\\textbox_callback',
-        'general',
-        'ticket_settings',
-        array(
-            'ticket_early_sandboxed_button_id'
-        )
-    );
-
-    // --- NORMAL ---
-
-    add_settings_field(
-        'ticket_normal_label',
-        'Normal label',
-        __NAMESPACE__ . '\\textbox_callback_qtranslate',
-        'general',
-        'ticket_settings',
-        array(
-            'ticket_normal_label'
-        )
-    );
-
-    add_settings_field(
-        'ticket_normal_price',
-        'Normal price',
-        __NAMESPACE__ . '\\number_callback',
-        'general',
-        'ticket_settings',
-        array(
-            'ticket_normal_price'
-        )
-    );
-
-    add_settings_field(
-        'ticket_normal_button_id',
-        'Normal paypal button ID',
-        __NAMESPACE__ . '\\textbox_callback',
-        'general',
-        'ticket_settings',
-        array(
-            'ticket_normal_button_id'
-        )
-    );
-
-    add_settings_field(
-        'ticket_normal_sandboxed_button_id',
-        'Normal sandboxed paypal button ID',
-        __NAMESPACE__ . '\\textbox_callback',
-        'general',
-        'ticket_settings',
-        array(
-            'ticket_normal_sandboxed_button_id'
-        )
-    );
+    add_ticket_type('Early', 'early');
+    add_ticket_type('Normal', 'normal');
 
     add_settings_field(
         'ticket_normal_price_start_date',
@@ -471,53 +434,9 @@ function add_ticket_settings() {
             'ticket_normal_price_start_date'
         )
     );
+    register_setting('general','ticket_normal_price_start_date', 'esc_attr');
 
-    // --- COMBO ---
-
-    add_settings_field(
-        'ticket_combo_label',
-        'Combo label',
-        __NAMESPACE__ . '\\textbox_callback_qtranslate',
-        'general',
-        'ticket_settings',
-        array(
-            'ticket_combo_label'
-        )
-    );
-
-    add_settings_field(
-        'ticket_combo_price',
-        'Combo price',
-        __NAMESPACE__ . '\\number_callback',
-        'general',
-        'ticket_settings',
-        array(
-            'ticket_combo_price'
-        )
-    );
-
-    add_settings_field(
-        'ticket_combo_button_id',
-        'Combo paypal button ID',
-        __NAMESPACE__ . '\\textbox_callback',
-        'general',
-        'ticket_settings',
-        array(
-            'ticket_combo_button_id'
-        )
-    );
-
-    add_settings_field(
-        'ticket_combo_sandboxed_button_id',
-        'Combo sandboxed paypal button ID',
-        __NAMESPACE__ . '\\textbox_callback',
-        'general',
-        'ticket_settings',
-        array(
-            'ticket_combo_sandboxed_button_id'
-        )
-    );
-
+    add_ticket_type('Combo', 'combo');
     add_settings_field(
         'ticket_combo_count',
         'Combo count',
@@ -528,59 +447,12 @@ function add_ticket_settings() {
             'ticket_combo_count'
         )
     );
-
-    // --- PROMO CODES ---4
-
-    add_settings_field(
-        'ticket_promo_65_button_id',
-        'Promo 65 paypal button ID',
-        __NAMESPACE__ . '\\textbox_callback',
-        'general',
-        'ticket_settings',
-        array(
-            'ticket_promo_65_button_id'
-        )
-    );
-
-    add_settings_field(
-        'ticket_promo_65_sandboxed_button_id',
-        'Promo 65 sandboxed paypal button ID',
-        __NAMESPACE__ . '\\textbox_callback',
-        'general',
-        'ticket_settings',
-        array(
-            'ticket_promo_65_sandboxed_button_id'
-        )
-    );
-
-    register_setting('general','ticket_sandboxed', 'esc_attr');
-    register_setting('general','ticket_name', 'esc_attr');
-
-    register_setting('general','ticket_promo_label', 'esc_attr');
-    register_setting('general','ticket_promo_price', 'esc_attr');
-    register_setting('general','ticket_promo_button_id', 'esc_attr');
-    register_setting('general','ticket_promo_sandboxed_button_id', 'esc_attr');
-    register_setting('general','ticket_promo_count', 'esc_attr');
-
-    register_setting('general','ticket_early_label', 'esc_attr');
-    register_setting('general','ticket_early_price', 'esc_attr');
-    register_setting('general','ticket_early_button_id', 'esc_attr');
-    register_setting('general','ticket_early_sandboxed_button_id', 'esc_attr');
-
-    register_setting('general','ticket_normal_label', 'esc_attr');
-    register_setting('general','ticket_normal_price', 'esc_attr');
-    register_setting('general','ticket_normal_button_id', 'esc_attr');
-    register_setting('general','ticket_normal_sandboxed_button_id', 'esc_attr');
-    register_setting('general','ticket_normal_price_start_date', 'esc_attr');
-
-    register_setting('general','ticket_combo_label', 'esc_attr');
-    register_setting('general','ticket_combo_price', 'esc_attr');
-    register_setting('general','ticket_combo_button_id', 'esc_attr');
-    register_setting('general','ticket_combo_sandboxed_button_id', 'esc_attr');
     register_setting('general','ticket_combo_count', 'esc_attr');
 
-    register_setting('general','ticket_promo_65_button_id', 'esc_attr');
-    register_setting('general','ticket_promo_65_sandboxed_button_id', 'esc_attr');
+    for ($i = 65; $i >= 35; $i-=5)
+    {
+        add_coupon_code($i);
+    }
 }
 
 function seo_callback() {

@@ -4,6 +4,23 @@ namespace Roots\Sage\Extras;
 require_once('Browser.php');
 use Roots\Sage\Setup;
 
+if (!session_id()) {
+    session_start();
+}
+
+if (isset($_GET['promo']))
+{
+    $_SESSION['promo'] = $_GET['promo'];
+}
+else if (isset($_POST['promo']))
+{
+    $_SESSION['promo'] = $_POST['promo'];
+}
+else if (isset($_REQUEST['promo']))
+{
+    $_SESSION['promo'] = $_REQUEST['promo'];
+}
+
 /**
  * Add <body> classes
  */
@@ -39,6 +56,31 @@ function get_browser_from_useragent($userAgentString) {
 /**
  * TICKETS
  */
+function get_coupon_from_code($couponCode) {
+    $valid = false;
+    $price = null;
+    $buttonID = null;
+    $buttonSandboxID = null;
+
+    for ($i = 65; $i >= 35; $i-=5)
+    {
+        $code = get_option('ticket_coupon_'.$i.'_code');
+
+        if (strtolower($code) === strtolower($couponCode))
+        {
+            $valid = true;
+            $price = $i;
+            $buttonID = get_option('ticket_coupon_'.$i.'_button_id');
+            $buttonSandboxID = get_option('ticket_coupon_'.$i.'_sandboxed_button_id');
+        }
+    }
+    return array(
+        'valid' => $valid,
+        'price' => $price,
+        'button_id' => $buttonID,
+        'button_sandbox_id' => $buttonSandboxID
+    );
+}
 
 function get_ticket_status() {
     global $wpdb;
@@ -65,21 +107,44 @@ function get_ticket_status() {
         }
         $comboPrice = get_option('ticket_combo_price');
     }
+
+    $coupon;
+    $validCoupon = false;
+    $couponCode = '';
+
+    if (isset($_SESSION['promo'])) {
+        $couponCode = $_SESSION['promo'];
+        $coupon = get_coupon_from_code($couponCode);
+        $validCoupon = $coupon['valid'];
+        if ($validCoupon)
+        {
+            $_SESSION['promo'] = $couponCode;
+            $price = $coupon['price'];
+        }
+    }
+    if ($comboPrice > $price)
+    {
+        $comboPrice = $price;
+    }
+
     return array(
         'tickets_sold' => $tickets_sold,
         'price'=> $price,
         'normal_price' => get_option('ticket_normal_price'),
         'promo_active' => $promoActive,
         'early_active' => $earlyActive,
+        'coupon_active' => $validCoupon,
         'combo_price' => $comboPrice,
         'combo_count' => $comboCount,
         'promo_count' => $promoCount,
+        'coupon_code' => $couponCode,
         'labels' => array(
             'ticket' => get_option('ticket_name'),
             'promo' => get_option('ticket_promo_label'),
             'early' => get_option('ticket_early_label'),
             'normal' => get_option('ticket_normal_label'),
-            'combo' => get_option('ticket_combo_label')
+            'combo' => get_option('ticket_combo_label'),
+            'coupon' => $validCoupon ? 'Promo '.$price:''
         )
     );
 }
@@ -217,7 +282,21 @@ function create_ticket_and_pay() {
     $paypalSandboxed = get_option('ticket_sandboxed') == 1;
     $paypalUrl = $paypalSandboxed ? 'https://www.sandbox.paypal.com/cgi-bin/webscr' : 'https://www.paypal.com/cgi-bin/webscr';
 
-    if ($ticketStatus['promo_active'])
+    if ($ticketStatus['coupon_active'])
+    {
+        $coupon = get_coupon_from_code($ticketStatus['coupon_code']);
+        if ($ticketStatus['price'] > $ticketStatus['combo_price'] && $quantity >= $ticketStatus['combo_count'])
+        {
+            $buttonID = $paypalSandboxed ? get_option('ticket_combo_sandboxed_button_id') : get_option('ticket_combo_button_id');
+            $itemName = $ticketStatus['labels']['combo'];
+            $price = $ticketStatus['combo_price'];
+        } else {
+            $buttonID = $paypalSandboxed ? $coupon['button_sandbox_id'] : $coupon['button_id'];
+            $itemName = $ticketStatus['labels']['coupon'];
+        }
+
+    }
+    else if ($ticketStatus['promo_active'])
     {
         $buttonID = $paypalSandboxed ? get_option('ticket_promo_sandboxed_button_id') : get_option('ticket_promo_button_id');
         $itemName = $ticketStatus['labels']['promo'];

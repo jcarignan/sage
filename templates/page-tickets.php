@@ -8,11 +8,17 @@
     //$image = get_field('image');
     //$tagline = get_field('tagline');
     $ticketStatus = Extras\get_ticket_status();
+    $ticketText = get_field('ticket_text');
     $ticketImage = get_field('ticket_image');
     $labels = $ticketStatus['labels'];
     $firstBlockLabel;
     $firstBlockAsterisk;
-    if ($ticketStatus['promo_active']){
+
+    if ($ticketStatus['coupon_active']){
+        $firstBlockLabel = $labels['coupon'];
+        $firstBlockAsterisk = get_field('coupon_asterisk');
+        $ticketText = get_field('ticket_text_coupon');
+    } else if ($ticketStatus['promo_active']){
         $firstBlockLabel = $labels['promo'];
         $firstBlockAsterisk = get_field('promo_asterisk');
     } else if ($ticketStatus['early_active']){
@@ -21,8 +27,10 @@
     } else {
         $firstBlockLabel = $labels['normal'];
         $firstBlockAsterisk = get_field('normal_asterisk');
+        $ticketText = get_field('ticket_text_normal');
     }
     $secondBlockLabel = $labels['combo'];
+    $showTwoContents = !$ticketStatus['promo_active'] && (!$ticketStatus['coupon_active'] || $ticketStatus['price'] > $ticketStatus['combo_price']);
 ?>
     <div class="block-main-container">
         <section class="block block-main block-main-content">
@@ -30,9 +38,9 @@
         </section>
         <section class="block block-main block-main-ticketinfos">
             <div class="block-content content-image" style="background-image: url(<?=$ticketImage['url']?>)">
-                <div class="content-text"><?= get_field('ticket_text'); ?></div>
+                <div class="content-text"><?= $ticketText ?></div>
             </div>
-            <div class="block-content content-infos-container <?=$ticketStatus['promo_active']?'with-one-content':'with-two-contents'?>">
+            <div class="block-content content-infos-container <?=!$showTwoContents?'with-one-content':'with-two-contents'?>">
                 <div class="content-infos">
                     <h1><?=$firstBlockLabel?></h1>
                     <div class="price-container">
@@ -52,7 +60,7 @@
                         </div>
                     </div>
                 </div>
-                <?php if (!$ticketStatus['promo_active']): ?>
+                <?php if ($showTwoContents): ?>
                     <div class="content-infos">
                         <h1><?=$secondBlockLabel?></h1>
                         <div class="price-container">
@@ -82,14 +90,17 @@
                 <?php while( have_rows('list') ): the_row();
                     $label = get_sub_field('label');
                     $icon = get_sub_field('icon');
+                    $link = get_sub_field('link');
                 ?>
                 <li class="list-item">
-                    <?php if( $icon ): ?>
-                        <img class="icon style-svg" src="<?php echo $icon['url']; ?>" />
-                    <?php endif; ?>
-                    <?php if( $label ): ?>
-                        <div class="label"><?php echo do_shortcode($label); ?></div>
-                    <?php endif; ?>
+                    <?php if ($link): ?><a href="<?=$link?>"><?php endif; ?>
+                        <?php if( $icon ): ?>
+                            <img class="icon style-svg" src="<?=$icon['url'];?>" />
+                        <?php endif; ?>
+                        <?php if( $label ): ?>
+                            <div class="label"><?=do_shortcode($label);?></div>
+                        <?php endif; ?>
+                    <?php if ($link): ?></a><?php endif; ?>
                 </li>
                 <?php endwhile; ?>
             </ul>
