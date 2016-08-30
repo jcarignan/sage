@@ -17,7 +17,7 @@
             <section class="splash-container">
                 <?php if( $youtubeId ): ?>
                     <div class="video-container">
-                        <iframe name="youtubeFrame" width="640" height="360" src="http://www.youtube.com/embed/<?=$youtubeId?>?playlist=<?=$youtubeId?>&autoplay=1&loop=1&controls=1&modestbranding=1&rel=0&showinfo=0" frameborder="0" allowfullscreen></iframe>
+                        <iframe name="youtubeFrame" width="640" height="360" src="http://www.youtube.com/embed/<?=$youtubeId?>?playlist=<?=$youtubeId?>&autoplay=1&loop=1&controls=1&modestbranding=1&rel=0&showinfo=0&enablejsapi=1" frameborder="0" allowfullscreen></iframe>
                     </div>
                 <?php endif; ?>
                 <img src="<?= $image['url'] ?>" alt="splash-image" width="<?=$image['width']?>" height="<?=$image['height']?>" />

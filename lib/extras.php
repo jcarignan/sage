@@ -253,7 +253,7 @@ function on_paypal_payment_completed($posted) {
         }
         $entreprise = $tickets[0]['entreprise'];
     } else {
-        $entreprise = 'other';
+        $entreprise = 'tickets not found';
     }
     $smsMessage = 'PAYÉ! '.$mc_gross.'$ par '.$first_name.' '.$last_name.' ('.$entreprise.')';
     wp_mail('5142674953@msg.koodomobile.com', '', $smsMessage);
@@ -590,7 +590,7 @@ add_action('wp_ajax_nopriv_create_ticket_and_pay', __NAMESPACE__ .'\\create_tick
 add_action('wp_ajax_send_email_ticket', __NAMESPACE__ .'\\send_email_ticket');
 add_action('wp_ajax_nopriv_send_email_ticket', __NAMESPACE__ .'\\send_email_ticket');
 
-add_action('paypal_ipn_for_wordpress_payment_status_completed',  __NAMESPACE__ . '\\on_paypal_payment_completed', 10, 1);
+add_action('paypal_ipn_for_wordpress_txn_type_web_accept',  __NAMESPACE__ . '\\on_paypal_payment_completed', 10, 1);
 
 add_shortcode('current_price', __NAMESPACE__ . '\\get_current_price');
 add_shortcode('current_price_difference', __NAMESPACE__ . '\\get_current_price_difference');

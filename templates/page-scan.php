@@ -15,6 +15,11 @@
         <section class="block block-main block-main-content">
             <div class="content-description"><?php the_content(); ?></div>
         </section>
+        <section class="block block-main block-main-content">
+            <div class="content-scanner">
+                <video class="qr-scanner" autoplay></video>
+            </div>
+        </section>
         <section class="block block-main block-main-tickets">
             <center class="wrapper" style="width: 100%; table-layout: fixed; -webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%;">
                 <div class="webkit" style="max-width: 600px;margin: 0 auto;">

@@ -9,9 +9,16 @@
   "dependencies": {
     "gsap": "^1.18.5",
     "perfect-scrollbar": "^0.6.11",
-    "jquery-placeholder": "^2.3.1"
+    "jquery-placeholder": "^2.3.1",
+    "qcode-decoder": "^0.1.0",
+    "getusermedia": "^1.0.0"
   },
   "overrides": {
+    "qcode-decoder": {
+      "main": [
+        "./build/qcode-decoder.min.js"
+      ]
+    },
     "bootstrap-sass": {
       "main": [
         "./assets/stylesheets/_bootstrap.scss",

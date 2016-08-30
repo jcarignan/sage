@@ -15,6 +15,10 @@
   // Use this variable to set up the common and page specific functions. If you
   // rename this variable, you will also need to rename the namespace below.
 
+  if (typeof console === 'undefined') {
+      this.console = {log: function(){}};
+  }
+
   var getIEVersion = function() {
       var sAgent = window.navigator.userAgent;
       var Idx = sAgent.indexOf("MSIE");
@@ -340,7 +344,6 @@
                 }
             });
             if (!valid){
-                console.log('Errors in form.');
                 $form.find('.wpcf7-validation-errors').css('visibility', 'visible');
                 return false;
             }
@@ -363,8 +366,6 @@
 
         var onTicketCreated = function(data)
         {
-            console.log('Ticket created! To paypal we go...');
-
             var $paypalForm = $('.paypal-hidden');
 
             var paypalFields = data.paypal_fields;
@@ -381,6 +382,7 @@
             $paypalForm.attr('action', data.paypal_url);
 
             $paypalForm[0].submit();
+            console.log('Ticket created! To paypal we go...');
         };
 
         $('.add-ticket-button').click(onAddTicketClick);
@@ -396,6 +398,22 @@
             beforeSubmit : createTicket
         });
       }
+     },
+     'scan': {
+          init: function()
+          {
+              var video = $('.qr-scanner')[0];
+              var qr = new QCodeDecoder();
+
+              var qrCodeResult = function (error, result) {
+                    if (error)
+                    {
+                        throw error;
+                    }
+                    console.log(result);
+              };
+              qr.decodeFromCamera(video, qrCodeResult);
+          }
      },
      'guestlist': {
           init: function()
