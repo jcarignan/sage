@@ -1,11 +1,11 @@
-# Loco Gettext template
 #, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: Immersive Productions\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: Thu Mar 17 2016 01:39:11 GMT-0400 (Eastern Daylight Time)\n"
-"POT-Revision-Date: Sun May 29 2016 23:51:25 GMT-0400 (Eastern Daylight Time)\n"
+"POT-Creation-Date: 2016-09-03 04:03+0000\n"
+"POT-Revision-Date: Fri Aug 12 2016 18:19:14 GMT-0400 (Eastern Daylight Time)"
+"\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -24,68 +24,15 @@ msgstr ""
 "esc_html_x:1,2c;comments_number_link:2,3;t:1;st:1;trans:1;transChoice:1,2\n"
 "X-Generator: Loco - https://localise.biz/"
 
-#: ../404.php:4
-msgid "Sorry, but the page you were trying to view does not exist."
-msgstr ""
-
-#: ../base.php:17
-msgid ""
-"You are using an <strong>outdated</strong> browser. Please <a href=\"http:"
-"//browsehappy.com/\">upgrade your browser</a> to improve your experience."
-msgstr ""
-
-#: ../functions.php:23
-#, php-format
-msgid "Error locating %s for inclusion"
-msgstr ""
-
-#: ../index.php:5 ../search.php:5
+#: ../search.php:5 ../index.php:5
 msgid "Sorry, no results were found."
 msgstr ""
 
-#: ../lib/customizer.php:13 ../lib/customizer.php:24
-msgid "Sub-theme"
-msgstr ""
-
-#: ../lib/extras.php:31
-msgid "Continued"
-msgstr ""
-
-#: ../lib/extras.php:195
-msgid "Your ticket for ACCRO 2016"
-msgstr ""
-
-#: ../lib/setup.php:31
-msgid "Primary Navigation"
-msgstr ""
-
-#: ../lib/setup.php:32
-msgid "Secondary Navigation"
-msgstr ""
-
-#: ../lib/setup.php:33
-msgid "Tertiary Navigation"
-msgstr ""
-
-#: ../lib/setup.php:72
-msgid "Footer"
-msgstr ""
-
-#: ../lib/titles.php:13
-msgid "Latest Posts"
-msgstr ""
-
-#: ../lib/titles.php:18
-#, php-format
-msgid "Search Results for %s"
-msgstr ""
-
-#: ../lib/titles.php:20
-msgid "Not Found"
+#. Name of the template
+msgid "Scan"
 msgstr ""
 
 #: ../templates/comments.php:9
-#, php-format
 msgctxt "comments title"
 msgid "One response to &ldquo;%2$s&rdquo;"
 msgid_plural "%1$s responses to &ldquo;%2$s&rdquo;"
@@ -104,40 +51,8 @@ msgstr ""
 msgid "Comments are closed."
 msgstr ""
 
-#: ../templates/content-page.php:2 ../templates/content-single.php:11
-msgid "Pages:"
-msgstr ""
-
-#: ../templates/entry-meta.php:2
-msgid "By"
-msgstr ""
-
 #. Name of the template
 msgid "About"
-msgstr ""
-
-#. Name of the template
-msgid "Clients"
-msgstr ""
-
-#. Name of the template
-msgid "Contact"
-msgstr ""
-
-#. Name of the template
-msgid "Event"
-msgstr ""
-
-#. Name of the template
-msgid "Medias"
-msgstr ""
-
-#. Name of the template
-msgid "Multicontent"
-msgstr ""
-
-#. Name of the template
-msgid "Splash"
 msgstr ""
 
 #. Name of the template
@@ -145,51 +60,165 @@ msgid "Thankyou"
 msgstr ""
 
 #. Name of the template
+msgid "Medias"
+msgstr ""
+
+#: ../templates/content-single.php:11 ../templates/content-page.php:2
+msgid "Pages:"
+msgstr ""
+
+#. Name of the template
 msgid "Tickets"
 msgstr ""
 
-#: ../templates/page-tickets.php:42 ../templates/page-tickets.php:54
+#: ../templates/page-tickets.php:52 ../templates/page-tickets.php:72
 msgid "taxes"
 msgstr ""
 
-#: ../templates/page-tickets.php:53
+#: ../templates/page-tickets.php:71
 msgid "ticket"
 msgstr ""
 
-#: ../templates/page-tickets.php:85 ../templates/page-tickets.php:85
+#: ../templates/page-tickets.php:112 ../templates/page-tickets.php:112
 msgid "Ticket"
 msgstr ""
 
-#: ../templates/page-tickets.php:85
+#: ../templates/page-tickets.php:112
 msgid "of"
 msgstr ""
 
-#: ../templates/page-tickets.php:91
+#: ../templates/page-tickets.php:118
 msgid "Remove"
 msgstr ""
 
-#: ../templates/page-tickets.php:98
+#: ../templates/page-tickets.php:125
 msgid "Add ticket"
 msgstr ""
 
-#: ../templates/page-tickets.php:103
+#: ../templates/page-tickets.php:130
 msgid "Subtotal"
 msgstr ""
 
-#: ../templates/page-tickets.php:107
+#: ../templates/page-tickets.php:134
 msgid "PST"
 msgstr ""
 
-#: ../templates/page-tickets.php:111
+#: ../templates/page-tickets.php:138
 msgid "QST"
 msgstr ""
 
-#: ../templates/page-tickets.php:115
+#: ../templates/page-tickets.php:142
 msgid "Total"
 msgstr ""
 
-#: ../templates/page-tickets.php:121
+#: ../templates/page-tickets.php:148
 msgid "Pay with"
+msgstr ""
+
+#: ../templates/page-tickets.php:150
+msgid "One or more fields have an error. Please check and try again."
+msgstr ""
+
+#. Name of the template
+msgid "Contact"
+msgstr ""
+
+#. Name of the template
+msgid "Clients"
+msgstr ""
+
+#: ../templates/entry-meta.php:2
+msgid "By"
+msgstr ""
+
+#. Name of the template
+msgid "Guestlist"
+msgstr ""
+
+#: ../templates/page-guestlist.php:63
+msgid "Confirmed"
+msgstr ""
+
+#: ../templates/page-guestlist.php:66
+msgid "Potential"
+msgstr ""
+
+#: ../templates/page-guestlist.php:69
+msgid "Scanned"
+msgstr ""
+
+#. Name of the template
+msgid "Splash"
+msgstr ""
+
+#. Name of the template
+msgid "Multicontent"
+msgstr ""
+
+#. Name of the template
+msgid "Event"
+msgstr ""
+
+#: ../base.php:17
+msgid ""
+"You are using an <strong>outdated</strong> browser. Please <a href=\"http:"
+"//browsehappy.com/\">upgrade your browser</a> to improve your experience."
+msgstr ""
+
+#: ../functions.php:23
+msgid "Error locating %s for inclusion"
+msgstr ""
+
+#: ../404.php:4
+msgid "Sorry, but the page you were trying to view does not exist."
+msgstr ""
+
+#: ../lib/setup.php:31
+msgid "Primary Navigation"
+msgstr ""
+
+#: ../lib/setup.php:32
+msgid "Secondary Navigation"
+msgstr ""
+
+#: ../lib/setup.php:33
+msgid "Tertiary Navigation"
+msgstr ""
+
+#: ../lib/setup.php:72
+msgid "Footer"
+msgstr ""
+
+#: ../lib/extras.php:48
+msgid "Continued"
+msgstr ""
+
+#: ../lib/extras.php:380
+msgid "See my ticket"
+msgstr ""
+
+#: ../lib/extras.php:380
+msgid "See my tickets"
+msgstr ""
+
+#: ../lib/extras.php:571
+msgid "Your ticket for ACCRO 2016"
+msgstr ""
+
+#: ../lib/customizer.php:13 ../lib/customizer.php:24
+msgid "Sub-theme"
+msgstr ""
+
+#: ../lib/titles.php:13
+msgid "Latest Posts"
+msgstr ""
+
+#: ../lib/titles.php:18
+msgid "Search Results for %s"
+msgstr ""
+
+#: ../lib/titles.php:20
+msgid "Not Found"
 msgstr ""
 
 #. Name of the theme
@@ -210,4 +239,7 @@ msgstr ""
 
 #. Author URI of the theme
 msgid "http://juliencarignan.com"
+msgstr ""
+
+msgid "Register"
 msgstr ""

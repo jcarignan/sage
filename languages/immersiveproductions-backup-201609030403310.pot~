@@ -1,18 +1,20 @@
+# Loco Gettext template
+#, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: Immersive Productions\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-09-03 04:03+0000\n"
-"PO-Revision-Date: 2016-09-03 04:04+0000\n"
-"Last-Translator: Julien Carignan <carignan.julien@gmail.com>\n"
-"Language-Team: French (France)\n"
-"Language: fr-FR\n"
-"Plural-Forms: nplurals=2; plural=n > 1\n"
+"POT-Creation-Date: Thu Mar 17 2016 01:39:11 GMT-0400 (Eastern Daylight Time)\n"
+"POT-Revision-Date: Fri Aug 12 2016 18:19:14 GMT-0400 (Eastern Daylight Time)\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Language: \n"
+"Plural-Forms: nplurals=INTEGER; plural=EXPRESSION\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Poedit-SourceCharset: UTF-8\n"
-"X-Generator: Loco - https://localise.biz/\n"
 "X-Poedit-Basepath: .\n"
 "X-Poedit-SearchPath-0: ..\n"
 "X-Poedit-KeywordsList: _:1;gettext:1;dgettext:2;ngettext:1,2;dngettext:2,3;"
@@ -20,227 +22,224 @@ msgstr ""
 "_x:1,2c;_ex:1,2c;_nx:1,2,4c;_nx_noop:1,2,3c;_n_js:1,2;_nx_js:1,2,3c;"
 "esc_attr__:1;esc_html__:1;esc_attr_e:1;esc_html_e:1;esc_attr_x:1,2c;"
 "esc_html_x:1,2c;comments_number_link:2,3;t:1;st:1;trans:1;transChoice:1,2\n"
-"X-Loco-Target-Locale: fr_FR"
-
-msgid "Register"
-msgstr "S'inscrire"
+"X-Generator: Loco - https://localise.biz/"
 
 #: ../search.php:5 ../index.php:5
 msgid "Sorry, no results were found."
-msgstr "Désolé, rien n'a été trouvé."
+msgstr ""
 
 #. Name of the template
 msgid "Scan"
-msgstr "Scan"
+msgstr ""
 
 #: ../templates/comments.php:9
+#, php-format
 msgctxt "comments title"
 msgid "One response to &ldquo;%2$s&rdquo;"
 msgid_plural "%1$s responses to &ldquo;%2$s&rdquo;"
-msgstr[0] "Une réponse à &ldquo;%2$s&rdquo;"
-msgstr[1] "%1$s réponses à &ldquo;%2$s&rdquo;"
+msgstr[0] ""
+msgstr[1] ""
 
 #: ../templates/comments.php:19
 msgid "&larr; Older comments"
-msgstr "&larr; Commentaires anciens"
+msgstr ""
 
 #: ../templates/comments.php:22
 msgid "Newer comments &rarr;"
-msgstr "Commentaires récents &rarr;"
+msgstr ""
 
 #: ../templates/comments.php:31
 msgid "Comments are closed."
-msgstr "Commentaires fermés."
+msgstr ""
 
 #. Name of the template
 msgid "About"
-msgstr "À propos"
+msgstr ""
 
 #. Name of the template
 msgid "Thankyou"
-msgstr "Merci"
+msgstr ""
 
 #. Name of the template
 msgid "Medias"
-msgstr "Médias"
+msgstr ""
 
 #: ../templates/content-single.php:11 ../templates/content-page.php:2
 msgid "Pages:"
-msgstr "Pages:"
+msgstr ""
 
 #. Name of the template
 msgid "Tickets"
-msgstr "Billets"
+msgstr ""
 
 #: ../templates/page-tickets.php:52 ../templates/page-tickets.php:72
 msgid "taxes"
-msgstr "taxes"
+msgstr ""
 
 #: ../templates/page-tickets.php:71
 msgid "ticket"
-msgstr "billet"
+msgstr ""
 
 #: ../templates/page-tickets.php:112 ../templates/page-tickets.php:112
 msgid "Ticket"
-msgstr "Billet"
+msgstr ""
 
 #: ../templates/page-tickets.php:112
 msgid "of"
-msgstr "de"
+msgstr ""
 
 #: ../templates/page-tickets.php:118
 msgid "Remove"
-msgstr "Enlever"
+msgstr ""
 
 #: ../templates/page-tickets.php:125
 msgid "Add ticket"
-msgstr "Ajouter un billet"
+msgstr ""
 
 #: ../templates/page-tickets.php:130
 msgid "Subtotal"
-msgstr "Sous-total"
+msgstr ""
 
 #: ../templates/page-tickets.php:134
 msgid "PST"
-msgstr "TPS"
+msgstr ""
 
 #: ../templates/page-tickets.php:138
 msgid "QST"
-msgstr "TVQ"
+msgstr ""
 
 #: ../templates/page-tickets.php:142
 msgid "Total"
-msgstr "Total"
+msgstr ""
 
 #: ../templates/page-tickets.php:148
 msgid "Pay with"
-msgstr "Payer avec"
+msgstr ""
 
 #: ../templates/page-tickets.php:150
 msgid "One or more fields have an error. Please check and try again."
-msgstr "Un ou plusieurs champs sont vides. Veuillez réessayer de nouveau."
+msgstr ""
 
 #. Name of the template
 msgid "Contact"
-msgstr "Contact"
+msgstr ""
 
 #. Name of the template
 msgid "Clients"
-msgstr "Clients"
+msgstr ""
 
 #: ../templates/entry-meta.php:2
 msgid "By"
-msgstr "Par"
+msgstr ""
 
 #. Name of the template
 msgid "Guestlist"
-msgstr "Guestlist"
+msgstr ""
 
 #: ../templates/page-guestlist.php:63
 msgid "Confirmed"
-msgstr "Confirmé"
+msgstr ""
 
 #: ../templates/page-guestlist.php:66
 msgid "Potential"
-msgstr "Potentiel"
+msgstr ""
 
 #: ../templates/page-guestlist.php:69
 msgid "Scanned"
-msgstr "Scanné"
+msgstr ""
 
 #. Name of the template
 msgid "Splash"
-msgstr "Splash"
+msgstr ""
 
 #. Name of the template
 msgid "Multicontent"
-msgstr "Multicontenu"
+msgstr ""
 
 #. Name of the template
 msgid "Event"
-msgstr "Événement"
+msgstr ""
 
 #: ../base.php:17
 msgid ""
 "You are using an <strong>outdated</strong> browser. Please <a href=\"http:"
 "//browsehappy.com/\">upgrade your browser</a> to improve your experience."
 msgstr ""
-"Vous utilisez une version obsolète de votre navigateur. Veuillez le  <a "
-"href=\"http://browsehappy.com/\">mettre à jour</a> pour visionner votre site "
-"correctement."
 
 #: ../functions.php:23
+#, php-format
 msgid "Error locating %s for inclusion"
-msgstr "Erreurr localiser %s pour inclusion"
+msgstr ""
 
 #: ../404.php:4
 msgid "Sorry, but the page you were trying to view does not exist."
-msgstr "Désolé, cette page est introuvable."
+msgstr ""
 
 #: ../lib/setup.php:31
 msgid "Primary Navigation"
-msgstr "Navigation Primaire"
+msgstr ""
 
 #: ../lib/setup.php:32
 msgid "Secondary Navigation"
-msgstr "Navigation secondaire"
+msgstr ""
 
 #: ../lib/setup.php:33
 msgid "Tertiary Navigation"
-msgstr "Navigation tertiaire"
+msgstr ""
 
 #: ../lib/setup.php:72
 msgid "Footer"
-msgstr "Pied de page"
+msgstr ""
 
 #: ../lib/extras.php:48
 msgid "Continued"
-msgstr "Suite"
+msgstr ""
 
 #: ../lib/extras.php:380
 msgid "See my ticket"
-msgstr "Voir mon billet"
+msgstr ""
 
 #: ../lib/extras.php:380
 msgid "See my tickets"
-msgstr "Voir mes billets"
+msgstr ""
 
 #: ../lib/extras.php:571
 msgid "Your ticket for ACCRO 2016"
-msgstr "Votre billet pour ACCRO 2016"
+msgstr ""
 
 #: ../lib/customizer.php:13 ../lib/customizer.php:24
 msgid "Sub-theme"
-msgstr "Sous-thème"
+msgstr ""
 
 #: ../lib/titles.php:13
 msgid "Latest Posts"
-msgstr "Articles Récents"
+msgstr ""
 
 #: ../lib/titles.php:18
+#, php-format
 msgid "Search Results for %s"
-msgstr "Résultats pour %s"
+msgstr ""
 
 #: ../lib/titles.php:20
 msgid "Not Found"
-msgstr "Non Trouvé"
+msgstr ""
 
 #. Name of the theme
 msgid "Immersive Productions"
-msgstr "Immersive Productions"
+msgstr ""
 
 #. Theme URI of the theme
 msgid "http://immersiveproductions.ca"
-msgstr "http://immersiveproductions.ca"
+msgstr ""
 
 #. Description of the theme
 msgid "Immersive productions' Wordpress theme - Sage boilerplate"
-msgstr "Thème Wordpress d'Immersive productions"
+msgstr ""
 
 #. Author of the theme
 msgid "Julien Carignan"
-msgstr "Julien Carignan"
+msgstr ""
 
 #. Author URI of the theme
 msgid "http://juliencarignan.com"
-msgstr "http://juliencarignan.com"
+msgstr ""

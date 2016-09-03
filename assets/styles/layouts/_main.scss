@@ -29,6 +29,11 @@ body {
     overflow-x: hidden;
     overflow-y: hidden;
     -webkit-overflow-scrolling: touch;
+
+    .site-name, .page-title {
+        position: absolute;
+        text-indent: -99999999px;
+    }
 }
 
 p.qtranxs-available-languages-message {

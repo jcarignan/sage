@@ -333,7 +333,7 @@
         var createTicket = function(arr, $form, options)
         {
             var valid = true;
-            $form.find('input[type!="hidden"]').each(function(i, el){
+            $form.find('input[type!="hidden"][type!=tel]').each(function(i, el){
                 $(el).trigger('submit.placeholder');
                 if (!$(el).attr('value').length)
                 {
@@ -385,6 +385,13 @@
             console.log('Ticket created! To paypal we go...');
         };
 
+        var onTicketCreationError = function(XMLHttpRequest, textStatus, errorThrown)
+        {
+            $('.create-event-ticket').find('button, input[type!="hidden"]').attr('disabled', true);
+            console.log('Ticket creation error: ', textStatus);
+            console.log(errorThrown);
+        };
+
         $('.add-ticket-button').click(onAddTicketClick);
         $('.remove-ticket-button').click(onRemoveTicketClick);
         updateForm($('.create-event-ticket'));
@@ -395,6 +402,7 @@
             type: 'post',
             dataType: 'json',
             success: onTicketCreated,
+            error: onTicketCreationError,
             beforeSubmit : createTicket
         });
       }
@@ -403,6 +411,11 @@
           init: function()
           {
               var video = $('.qr-scanner')[0];
+              if (!video)
+              {
+                  return;
+              }
+
               var qr = new QCodeDecoder();
 
               var qrCodeResult = function (error, result) {

@@ -223,6 +223,31 @@ function get_ticket_from_qrcode($qrcode) {
     return $wpdb->get_row($wpdb->prepare( "SELECT * FROM wp_tickets WHERE `qr_code` = %s", $qrcode), ARRAY_A);
 }
 
+function scan_ticket($qrcode) {
+    global $wpdb;
+    $ticket = get_ticket_from_qrcode($qrcode);
+
+    $wpdb->update(
+        'wp_tickets',
+        array(
+            'scanned' =>intval($ticket['scanned']) + 1,
+            'scanned_date' => current_time('mysql'),
+            'scanned_author' => wp_get_current_user()->display_name
+        ),
+        array(
+            'qr_code' => $qrcode
+        ),
+        array(
+            '%d',
+            '%s',
+            '%s'
+        ),
+        array('%s')
+    );
+
+    return $ticket;
+}
+
 function on_paypal_payment_completed($posted) {
     $invoice = isset($posted['invoice']) ? $posted['invoice'] : '';
     $mc_gross = isset($posted['mc_gross']) ? $posted['mc_gross'] : '';

@@ -91,6 +91,7 @@
                     $label = get_sub_field('label');
                     $icon = get_sub_field('icon');
                     $link = get_sub_field('link');
+                    $metadata = get_sub_field('metadata');
                 ?>
                 <li class="list-item">
                     <?php if ($link): ?><a href="<?=$link?>"><?php endif; ?>
@@ -101,6 +102,9 @@
                             <div class="label"><?=do_shortcode($label);?></div>
                         <?php endif; ?>
                     <?php if ($link): ?></a><?php endif; ?>
+                    <?php if( $metadata ): ?>
+                        <div class="metadata"><?=do_shortcode($metadata);?></div>
+                    <?php endif; ?>
                 </li>
                 <?php endwhile; ?>
             </ul>
@@ -121,9 +125,6 @@
                 </div>
                 <input type="hidden" name="quantity" value="1">
                 <div class="tickets-controls">
-                    <div class="buttons-container">
-                        <button class="add-ticket-button" type="button"><?=__('Add ticket', 'immersiveproductions')?></button>
-                    </div>
                     <div class="tickets-invoice-container">
                         <div class="tickets-invoice">
                             <div class="invoice-row row-subtotal">
@@ -145,9 +146,24 @@
                         </div>
                     </div>
                 </div>
-                <button class="wpcf7-form-control wpcf7-submit" type="submit" border="0"><?=__('Pay with', 'immersiveproductions')?><img src="<?=get_template_directory_uri()?>/dist/images/icons/paypal.svg" alt="Paypal"></button>
-                <img class="ajax-loader" src="<?=get_template_directory_uri()?>/dist/images/icons/ajax-loader.gif" alt="Envoi en cours ..." style="visibility: hidden;">
-                <div class="wpcf7-response-output wpcf7-validation-errors" role="alert" style="visibility: hidden;"><?=__('One or more fields have an error. Please check and try again.', 'immersiveproductions');?></div>
+                <div class="buttons-container">
+                    <span class="wpcf7-form-control-wrap">
+                        <button class="add-ticket-button" type="button">+ <?=__('Add ticket', 'immersiveproductions')?></button>
+                    </span>
+                    <span class="wpcf7-form-control-wrap">
+                        <button class="wpcf7-form-control wpcf7-submit" type="submit" border="0"><?=__('Register', 'immersiveproductions')?></button>
+                    </span>
+                </div>
+                <div class="loading-gif">
+                    <img class="ajax-loader" src="<?=get_template_directory_uri()?>/dist/images/icons/ajax-loader.gif" alt="Envoi en cours ..." style="visibility: hidden;">
+                </div>
+                <div class="wpcf7-response-output wpcf7-validation-errors" role="alert" style="visibility: hidden;">
+                    <?=__('One or more fields have an error. Please check and try again.', 'immersiveproductions');?>
+                </div>
+                <div class="payment-methods-container">
+                    <img class="payment-methods" src="<?=get_template_directory_uri()?>/dist/images/paypal-payment-methods.png" alt="Paypal Payment methods">
+                </div>
+
             </form>
             <form class="paypal-hidden" action="https://www.paypal.com/cgi-bin/webscr" target="_top" style="visibility:hidden;width:0;height:0;">
                 <input type="submit" name="btnSubmit">

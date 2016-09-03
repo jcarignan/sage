@@ -8,31 +8,50 @@
     $ticket = null;
     if (isset($_REQUEST['billet']))
     {
-        $ticket = Extras\get_ticket_from_qrcode($_REQUEST['billet']);
+        $ticket = Extras\scan_ticket($_REQUEST['billet']);
     }
+
+    $loggedIn = is_user_logged_in();
+
+    if ($loggedIn && $ticket) {
+        $name = ucfirst($ticket['first_name']).' '.ucfirst($ticket['last_name']);
+        $title = ucfirst($ticket['title']);
+        $entreprise = ucfirst($ticket['entreprise']);
+        $message = '';
+        if ($ticket['scanned'] == 0)
+        {
+            $message = 'Bienvenue!';
+        } else {
+            $message = 'Déjà scanné à ';
+            $timeStamp = strtotime($ticket['scanned_date']);
+            if (function_exists('qtrans_getLanguage'))
+            {
+                $locale = qtrans_getLanguage();
+                setlocale(LC_ALL,$locale);
+            }
+            $message .= strftime('%H:%M:%S', $timeStamp);
+            $message .= '<br/>par '.$ticket['scanned_author'].'.';
+            $message .= '<br/>('.$ticket['scanned'].' fois)';
+        }
+
+    }
+
 ?>
     <div class="block-main-container">
         <section class="block block-main block-main-content">
-            <div class="content-description"><?php the_content(); ?></div>
-        </section>
-        <section class="block block-main block-main-content">
-            <div class="content-scanner">
-                <video class="qr-scanner" autoplay></video>
-            </div>
-        </section>
-        <section class="block block-main block-main-tickets">
-            <center class="wrapper" style="width: 100%; table-layout: fixed; -webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%;">
-                <div class="webkit" style="max-width: 600px;margin: 0 auto;">
-                    <!--[if (gte mso 9)|(IE)]>
-                    <table width="600" align="center">
-                    <tr>
-                    <td style="padding: 0;">
-                    <![endif]-->
-                    <table class="outer" align="center" style="font-family: Noto Sans, Arial, Helvetica, sans-serif !important;border-spacing: 0; margin: 0 auto;width: 100%;max-width: 600px;">
-                        <?= $ticket ? Extras\generate_ticket_html($ticket):'';?>
-                    </table>
+            <?php if (!$loggedIn):?>
+                <?php wp_login_form(get_permalink()); ?>
+            <?php elseif (!$ticket):?>
+                <div class="content-scanner">
+                    <div class="qr-result">Scanning...</div>
+                    <video class="qr-scanner" autoplay></video>
                 </div>
-            </center>
+            <?php else:?>
+                <h1 class="message"><?=$message?></h1>
+                <h4 class="name"><?=$name?></h4>
+                <h5 class="title"><?=$title?></h5>
+                <h6 class="entreprise"><?=$entreprise?></h6>
+            <?php endif;?>
         </section>
     </div>
 <?php endwhile; ?>

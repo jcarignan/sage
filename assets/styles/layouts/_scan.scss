@@ -6,8 +6,10 @@ body.page-template-page-scan {
             padding: 0;
             margin: 0 auto;
             box-sizing: border-box;
-            &.block-main-content .content-description {
-                padding: 40px 8% 30px;
+            padding: 40px 0 30px;
+
+            label {
+                display: block;
             }
         }
 
@@ -16,6 +18,23 @@ body.page-template-page-scan {
                 margin:0 !important;
             }
         }
+    }
+
+    .block-main-content {
+        .message {
+            padding-bottom: 30px;
+        }
+    }
+
+    .content-scanner {
+        video {
+            width: 100%;
+            background: black;
+        }
+    }
+
+    footer {
+        display: none;
     }
 
     @media only screen and (max-width: 600px){
