@@ -281,7 +281,11 @@ function on_paypal_payment_completed($posted) {
         $entreprise = 'tickets not found';
     }
     $smsMessage = 'PAYÉ! '.$mc_gross.'$ par '.$first_name.' '.$last_name.' ('.$entreprise.')';
-    wp_mail(array('5142674953@msg.koodomobile.com','5146233890@msg.koodomobile.com'), '', $smsMessage);
+    $phones = array('5142674953@msg.koodomobile.com','5146233890@msg.koodomobile.com');
+    foreach ($phones as $phone)
+    {
+        wp_mail($phone, '', $smsMessage);
+    }
 }
 
 function send_email_ticket() {
@@ -409,7 +413,11 @@ function create_ticket_and_pay() {
         'paypal_fields' => $paypalFields
     ));
 
-    wp_mail(array('5142674953@msg.koodomobile.com','5146233890@msg.koodomobile.com'), '', $smsMessage);
+    $phones = array('5142674953@msg.koodomobile.com','5146233890@msg.koodomobile.com');
+    foreach ($phones as $phone)
+    {
+        wp_mail($phone, '', $smsMessage);
+    }
     wp_die();
 }
 

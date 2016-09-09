@@ -19,6 +19,21 @@
       this.console = {log: function(){}};
   }
 
+
+  var getIEVersion = function() {
+        var sAgent = window.navigator.userAgent;
+        var Idx = sAgent.indexOf("MSIE");
+
+        if (Idx > 0)
+        {
+            return parseInt(sAgent.substring(Idx+ 5, sAgent.indexOf(".", Idx)));
+        } else if (!!navigator.userAgent.match(/Trident\/7\./)) {
+            return 11;
+        } else{
+            return 0;
+        }
+};
+
   var accroSplashAnim = function() {
       var duration = 0.4;
       var ease = Quad.easeInOut;
@@ -91,9 +106,12 @@
 
         $('body .content').removeClass('hidden');
 
-        $('.main').scrollbar({
-            ignoreMobile: true
-        });
+        if (getIEVersion() === 0)
+        {
+            $('.main').scrollbar({
+                ignoreMobile: true
+            });
+        }
 
         $('a').click(function(e){
 
@@ -371,7 +389,7 @@
      'scan': {
           init: function()
           {
-              var video = $('.qr-scanner')[0];
+             /* var video = $('.qr-scanner')[0];
               if (!video)
               {
                   return;
@@ -386,7 +404,7 @@
                     }
                     console.log(result);
               };
-              qr.decodeFromCamera(video, qrCodeResult);
+              qr.decodeFromCamera(video, qrCodeResult);*/
           }
      },
      'guestlist': {
