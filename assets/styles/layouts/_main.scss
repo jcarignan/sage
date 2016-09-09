@@ -23,11 +23,9 @@ body {
 }
 
 .main {
-    box-sizing: border-box;
     position: relative;
     height: 100%;
-    overflow-x: hidden;
-    overflow-y: hidden;
+    overflow: auto;
     -webkit-overflow-scrolling: touch;
 
     .site-name, .page-title {

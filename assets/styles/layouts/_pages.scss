@@ -281,8 +281,7 @@ body.page {
             position: absolute;
             width: 50%;
             height: 100%;
-            overflow-x: hidden;
-            overflow-y: hidden;
+            overflow: auto;
             -webkit-overflow-scrolling: touch;
 
             &.content-gallery {

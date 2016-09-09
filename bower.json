@@ -8,10 +8,10 @@
   "private": true,
   "dependencies": {
     "gsap": "^1.18.5",
-    "perfect-scrollbar": "^0.6.11",
     "jquery-placeholder": "^2.3.1",
     "qcode-decoder": "^0.1.0",
-    "getusermedia": "^1.0.0"
+    "getusermedia": "^1.0.0",
+    "jquery.scrollbar": "^0.2.10"
   },
   "overrides": {
     "qcode-decoder": {

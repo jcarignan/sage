@@ -19,35 +19,6 @@
       this.console = {log: function(){}};
   }
 
-  var getIEVersion = function() {
-      var sAgent = window.navigator.userAgent;
-      var Idx = sAgent.indexOf("MSIE");
-
-      if (Idx > 0)
-      {
-          return parseInt(sAgent.substring(Idx+ 5, sAgent.indexOf(".", Idx)));
-      } else if (!!navigator.userAgent.match(/Trident\/7\./)) {
-          return 11;
-      } else{
-          return 0;
-      }
-  };
-
-  var isTouchEnabled = function() {
-      return 'ontouchstart' in document.documentElement || navigator.maxTouchPoints;
-  };
-
-  var updatePS = function()
-  {
-      if (getIEVersion() === 0 && !isTouchEnabled())
-      {
-          Ps.update($('.main')[0]);
-          $('.scrollable-container .scrollable-content').each(function(i, el){
-              Ps.update(el);
-          });
-      }
-  };
-
   var accroSplashAnim = function() {
       var duration = 0.4;
       var ease = Quad.easeInOut;
@@ -120,23 +91,9 @@
 
         $('body .content').removeClass('hidden');
 
-        if (getIEVersion() === 0 && !isTouchEnabled())
-        {
-            Ps.initialize($('.main')[0]);
-            $('.scrollable-container .scrollable-content').each(function(i, el){
-                Ps.initialize(el, {
-                    suppressScrollX: true
-                });
-            });
-            $(window).on('resize', updatePS);
-        } else {
-            $('.scrollable-container .scrollable-content').each(function(i, el){
-                $(el).css('overflow-x', 'hidden');
-                $(el).css('overflow-y', 'auto');
-            });
-            $('.main').css('overflow-x', 'hidden');
-            $('.main').css('overflow-y', 'auto');
-        }
+        $('.main').scrollbar({
+            ignoreMobile: true
+        });
 
         $('a').click(function(e){
 
@@ -298,7 +255,6 @@
             });
             TweenMax.to(repeatableSet, 0.4, {
                 height: 0,
-                onUpdate: updatePS,
                 onComplete: function(){
                     $(this.target).remove();
                     updateForm($form);
@@ -327,8 +283,7 @@
                 opacity: 0
             });
             timeline.to(repeatableSet, 0.4, {
-                height: repeatableSetHeight,
-                onUpdate: updatePS
+                height: repeatableSetHeight
             });
             timeline.to(repeatableSet, 0.2, {
                 opacity: 1,

@@ -14,10 +14,10 @@
             <?php endif; ?>
         </ul>
         <div class="scrollable-container">
-            <div class="scrollable-content content-gallery active">
+            <div class="scrollable-content scrollbar-dynamic content-gallery active">
                 <?php echo do_shortcode('[wp-tiles grids="clients" small_screen_grid="clients-mobile" breakpoint="493" padding="10" byline_height_auto="true" post_type="client" order="asc" orderby="menu_order"]'); ?>
             </div>
-            <div class="scrollable-content content-list">
+            <div class="scrollable-content scrollbar-dynamic content-list">
                 <?php if($feedbackLabel = get_field( "feedback_label" )): ?>
                     <div class="page-header"><h1><?= $feedbackLabel ?></h1></div>
                 <?php endif; ?>

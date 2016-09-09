@@ -15,7 +15,7 @@
         </ul>
         <div class="scrollable-container">
             <?php if ($images = get_field('gallery')): ?>
-            <div class="scrollable-content content-gallery active">
+            <div class="scrollable-content scrollbar-dynamic content-gallery active">
                 <ul>
                     <?php foreach( $images as $image ): ?>
                         <li>
@@ -28,7 +28,7 @@
                 </ul>
             </div>
             <?php endif; ?>
-            <div class="scrollable-content content-press">
+            <div class="scrollable-content scrollbar-dynamic content-press">
                 <?php if($pressLabel = get_field( "press_label" )): ?>
                     <div class="page-header"><h1><?= $pressLabel ?></h1></div>
                 <?php endif; ?>
