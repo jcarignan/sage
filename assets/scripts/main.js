@@ -70,13 +70,19 @@
           alpha: 1,
           x: '0%'
       }, '-=0.3');*/
+
+      timeline.fromTo($('.main-description'), duration, {
+          alpha: 0
+      }, {
+          alpha: 1
+      });
       timeline.staggerFromTo($($('.list-items .list-item').get()), duration, {
           alpha: 0,
           y: '-10%'
       },{
           alpha: 1,
           y: '0%'
-      }, 0.1, '+=0.6');
+      }, 0.1, '+=0.2');
       timeline.staggerFromTo($($('.list-items .list-item .label').get()), duration, {
           alpha: 0
       },{

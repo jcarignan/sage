@@ -35,6 +35,7 @@
                 <div class="splash-tagline"><?=$tagline?></div>
             </section>
             <section class="main-content">
+                <div class="main-description"><?php the_content(); ?></div>
                 <ul class="list-items">
                     <?php while( have_rows('list') ): the_row();
                         $label = get_sub_field('label');
@@ -57,7 +58,6 @@
                         </li>
                     <?php endwhile; ?>
                 </ul>
-                <div class="main-description"><?php the_content(); ?></div>
             </section>
         </section>
     </div>

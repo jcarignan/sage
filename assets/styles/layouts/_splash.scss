@@ -82,11 +82,19 @@ body.page-template-page-splash {
     }
 
     .main-content {
-        padding: 0 160px 77px;
+        padding: 0 160px 20px;
 
         .main-description {
-            margin-top: 20px;
-            color: $brand-gray;
+          margin-top: 30px;
+          color: #262626 ;
+          width: 78%;
+          margin: 30px auto;
+          font-size: 1.1em !important;
+
+          @media screen and (max-width: $medium-width) {
+              width: auto;
+              font-size: 0.8em !important;
+          }
 
             /*h1 {
                 font-size: 30px;
