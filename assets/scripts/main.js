@@ -387,8 +387,60 @@
       }
      },
      'scan': {
-          init: function()
-          {
+         init: function()
+            {
+                var options = {
+                    'audio': true,
+                    'video': true,
+
+                    // the element (by id) you wish to use for
+                    // displaying the stream from a camera
+                    el: 'qr-scanner',
+
+                    extern: null,
+                    append: true,
+
+                    // height and width of the output stream
+                    // container
+
+                    width: 320,
+                    height: 240,
+
+                    // the recommended mode to be used is
+                    // 'callback ' where a callback is executed
+                    // once data is available
+                    mode: 'callback',
+
+                    // the flash fallback Url
+                    swffile: 'fallback/jscam_canvas_only.swf',
+
+                    // quality of the fallback stream
+                    quality: 85,
+
+                    // a debugger callback is available if needed
+                    debug: function () {},
+
+                    // callback for capturing the fallback stream
+                    onCapture: function () {
+                    window.webcam.save();
+                    },
+
+                    // callback for saving the stream, useful for
+                    // relaying data further.
+                    onSave: function (data) {},
+                    onLoad: function () {}
+              };
+
+              var onUserMediaSuccess = function(e)
+              {
+
+              };
+
+              var onUserMediaError = function(e)
+              {
+
+              };
+              getUserMedia(options, onUserMediaSuccess, onUserMediaError);
              /* var video = $('.qr-scanner')[0];
               if (!video)
               {

@@ -9,15 +9,10 @@
   "dependencies": {
     "gsap": "^1.18.5",
     "jquery-placeholder": "^2.3.1",
-    "getusermedia": "^1.0.0",
-    "jquery.scrollbar": "^0.2.10"
+    "jquery.scrollbar": "^0.2.10",
+    "jsqrcode": "git://github.com/umbrella-web/qrcode-decoder-js"
   },
   "overrides": {
-    "qcode-decoder": {
-      "main": [
-        "./build/qcode-decoder.min.js"
-      ]
-    },
     "bootstrap-sass": {
       "main": [
         "./assets/stylesheets/_bootstrap.scss",

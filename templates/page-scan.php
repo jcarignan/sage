@@ -44,7 +44,7 @@
             <?php elseif (!$ticket):?>
                 <div class="content-scanner">
                     <div class="qr-result">Scanning...</div>
-                    <video class="qr-scanner" autoplay></video>
+                    <video id="qr-scanner" autoplay></video>
                 </div>
             <?php else:?>
                 <h1 class="message"><?=$message?></h1>
