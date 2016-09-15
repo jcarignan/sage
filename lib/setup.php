@@ -453,6 +453,18 @@ function add_ticket_settings() {
     {
         add_coupon_code($i);
     }
+
+    add_settings_field(
+        'ticket_sms_addresses',
+        'SMS Addresses',
+        __NAMESPACE__ . '\\textbox_callback',
+        'general',
+        'ticket_settings',
+        array(
+            'ticket_sms_addresses'
+        )
+    );
+    register_setting('general', 'ticket_sms_addresses', 'esc_attr');
 }
 
 function seo_callback() {

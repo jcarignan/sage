@@ -153,6 +153,10 @@ function add_currency_to_price($price) {
     return function_exists('qtrans_getLanguage') && qtrans_getLanguage() == 'fr' ? $price.'$':'$'.$price;
 }
 
+function get_phone_addresses(){
+    return explode(',',get_option('ticket_sms_addresses'));
+}
+
 function get_current_price(){
     $ticketStatus = get_ticket_status();
     return add_currency_to_price($ticketStatus['price']);
@@ -281,7 +285,7 @@ function on_paypal_payment_completed($posted) {
         $entreprise = 'tickets not found';
     }
     $smsMessage = 'PAYÉ! '.$mc_gross.'$ par '.$first_name.' '.$last_name.' ('.$entreprise.')';
-    $phones = array('5142674953@msg.koodomobile.com','5146233890@msg.koodomobile.com');
+    $phones = get_phone_addresses();
     foreach ($phones as $phone)
     {
         wp_mail($phone, '', $smsMessage);
@@ -413,14 +417,13 @@ function create_ticket_and_pay() {
         'paypal_fields' => $paypalFields
     ));
 
-    $phones = array('5142674953@msg.koodomobile.com','5146233890@msg.koodomobile.com');
+    $phones = get_phone_addresses();
     foreach ($phones as $phone)
     {
         wp_mail($phone, '', $smsMessage);
     }
     wp_die();
 }
-
 
 function generate_ticket_html($ticket)
 {
