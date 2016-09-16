@@ -8,7 +8,7 @@
     $ticket = null;
     if (isset($_REQUEST['billet']))
     {
-        $ticket = Extras\scan_ticket($_REQUEST['billet']);
+        $ticket = Extras\scan_ticket_php($_REQUEST['billet']);
     }
 
     $loggedIn = is_user_logged_in();
@@ -44,7 +44,11 @@
             <?php elseif (!$ticket):?>
                 <div class="content-scanner">
                     <div class="qr-result">Scanning...</div>
-                    <video id="qr-scanner" autoplay></video>
+                    <div class="scanner-container">
+                        <canvas id="qr-canvas"></canvas>
+                        <video class="qr-scanner" autoplay></video>
+                        <button class="device-switcher" type="button"></button>
+                    </div>
                 </div>
             <?php else:?>
                 <h1 class="message"><?=$message?></h1>

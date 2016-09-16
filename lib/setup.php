@@ -126,9 +126,9 @@ function assets() {
             'comboCount' => $ticketStatus['combo_count'],
             'couponCode' => $ticketStatus['coupon_code']
           ));
-      } else if (is_page('guestlist'))
+      } else if (is_page('guestlist') || is_page('scan'))
       {
-          wp_localize_script('sage/js', 'guestlistData', array(
+          wp_localize_script('sage/js', 'ajaxData', array(
             'ajaxUrl' => admin_url( 'admin-ajax.php' ),
             'nonce' => wp_create_nonce( 'unique_id_nonce' )
           ));

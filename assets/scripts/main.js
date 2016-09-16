@@ -387,78 +387,156 @@
       }
      },
      'scan': {
-         init: function()
-            {
-                var options = {
-                    'audio': true,
-                    'video': true,
+            init: function(){
+                var video = $('.qr-scanner')[0];
+                if (typeof video === 'undefined')
+                {
+                    return;
+                }
 
-                    // the element (by id) you wish to use for
-                    // displaying the stream from a camera
-                    el: 'qr-scanner',
+                // init canvas
+                var canvas = $('#qr-canvas')[0];
+                var videoWidth = video.offsetWidth;
+                var videoHeight = video.offsetHeight;
+                var canvasContext = canvas.getContext('2d');
 
-                    extern: null,
-                    append: true,
+                canvas.style.width = videoWidth + 'px';
+                canvas.style.height = videoHeight + 'px';
+                canvas.width = videoWidth;
+                canvas.height = videoHeight;
+                canvasContext.clearRect(0, 0, videoWidth, videoHeight);
 
-                    // height and width of the output stream
-                    // container
+                var $results = $('.qr-result');
 
-                    width: 320,
-                    height: 240,
+                var videoDeviceIndex = 0;
+                var videoDeviceIds = [];
+                var checkInterval;
+                var checkingQR = false;
 
-                    // the recommended mode to be used is
-                    // 'callback ' where a callback is executed
-                    // once data is available
-                    mode: 'callback',
+                var checkForQR = function()
+                {
+                     try{
+                         canvasContext.drawImage(video,0,0);
+                         try {
+                             qrcode.decode();
+                         }
+                         catch(e){
+                             //console.log(e);
+                         }
+                     }
+                     catch(e){
+                         //console.log(e);
+                     }
+                };
 
-                    // the flash fallback Url
-                    swffile: 'fallback/jscam_canvas_only.swf',
+                function stopQRCheck()
+                {
+                    checkingQR = false;
+                    clearInterval(checkInterval);
+                }
 
-                    // quality of the fallback stream
-                    quality: 85,
+                function startQRCheck()
+                {
+                    checkingQR = true;
+                    $results.text('Scanning...');
+                    stopQRCheck();
+                    checkInterval = setInterval(checkForQR, 500);
+                }
 
-                    // a debugger callback is available if needed
-                    debug: function () {},
+                qrcode.callback = function(data)
+                {
+                    stopQRCheck();
 
-                    // callback for capturing the fallback stream
-                    onCapture: function () {
-                    window.webcam.save();
-                    },
+                    var codeStartKey = 'billet=';
+                    var codeStart = data.indexOf(codeStartKey) + codeStartKey.length;
+                    var code = data.substr(codeStart);
+                    console.log('data', data);
+                    console.log('code', code);
+                    $results.text('Recherche en cours...');
+                    $.ajax({
+                      url: ajaxData.ajaxUrl,
+                      type: 'post',
+                      data: {
+                          action: 'scan_ticket',
+                          nonce: ajaxData.nonce,
+                          qrcode: code
+                      },
+                      dataType: 'json',
+                      success: function(response)
+                      {
+                          $results.text('Bienvenue '+response.first_name+' '+response.last_name+'!');
+                      },
+                      error: function()
+                      {
+                          $results.text('Wtf :/');
+                      }
+                    });
+                };
 
-                    // callback for saving the stream, useful for
-                    // relaying data further.
-                    onSave: function (data) {},
-                    onLoad: function () {}
-              };
+                function getStream()
+                {
 
-              var onUserMediaSuccess = function(e)
-              {
-
-              };
-
-              var onUserMediaError = function(e)
-              {
-
-              };
-              getUserMedia(options, onUserMediaSuccess, onUserMediaError);
-             /* var video = $('.qr-scanner')[0];
-              if (!video)
-              {
-                  return;
-              }
-
-              var qr = new QCodeDecoder();
-
-              var qrCodeResult = function (error, result) {
-                    if (error)
-                    {
-                        throw error;
+                    if (window.stream) {
+                        window.stream.getTracks().forEach(function(track) {
+                            track.stop();
+                        });
                     }
-                    console.log(result);
-              };
-              qr.decodeFromCamera(video, qrCodeResult);*/
-          }
-     },
+
+                    var videoDevice = videoDeviceIds[videoDeviceIndex];
+                    console.log('Getting stream from:', videoDevice.label);
+
+                    navigator.mediaDevices.getUserMedia({
+                        audio: undefined,
+                        video: {
+                            deviceId: {
+                                exact: videoDevice.deviceId
+                            }
+                        }
+                    }).then(function(stream){
+                        window.stream = stream;
+                        video.srcObject = stream;
+                        video.onloadedmetadata = function(e)
+                        {
+                            console.log('Got stream !');
+                            startQRCheck();
+                        };
+                    }).catch(function(err){
+                        console.log(err.name);
+                    });
+                }
+
+                function gotDevices(deviceInfos) {
+                    videoDeviceIds = deviceInfos.filter(function(deviceInfo){
+                        return deviceInfo.kind === 'videoinput';
+                    });
+                    console.log('videos inputs:', videoDeviceIds.length);
+                    getStream();
+                }
+
+                function handleError(error)
+                {
+                    console.log('navigator.getUserMedia error:', error);
+                }
+
+                navigator.mediaDevices.enumerateDevices().then(gotDevices).catch(handleError);
+
+                $('.device-switcher').click(function(e){
+                    videoDeviceIndex++;
+                    if (videoDeviceIndex >= videoDeviceIds.length)
+                    {
+                        videoDeviceIndex = 0;
+                    }
+                    getStream();
+                });
+
+                $('.qr-scanner').click(function(e){
+                    if (!checkingQR)
+                    {
+                        startQRCheck();
+                    }
+                });
+            }
+        },
      'guestlist': {
           init: function()
           {
@@ -473,11 +551,11 @@
                   $(this).text('Envoi...');
                   $button = $(this);
                   $.ajax({
-                    url: guestlistData.ajaxUrl,
+                    url: ajaxData.ajaxUrl,
                     type: 'post',
                     data: {
                         action: 'send_email_ticket',
-                        nonce: guestlistData.nonce,
+                        nonce: ajaxData.nonce,
                         qrcode: $(this).data('qrcode')
                     },
                     dataType: 'json',

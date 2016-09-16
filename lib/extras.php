@@ -227,7 +227,7 @@ function get_ticket_from_qrcode($qrcode) {
     return $wpdb->get_row($wpdb->prepare( "SELECT * FROM wp_tickets WHERE `qr_code` = %s", $qrcode), ARRAY_A);
 }
 
-function scan_ticket($qrcode) {
+function scan_ticket_php($qrcode) {
     global $wpdb;
     $ticket = get_ticket_from_qrcode($qrcode);
 
@@ -250,6 +250,14 @@ function scan_ticket($qrcode) {
     );
 
     return $ticket;
+}
+
+function scan_ticket() {
+    $qrcode = isset($_POST['qrcode']) ? $_POST['qrcode']:'';
+    $ticket = scan_ticket_php($qrcode);
+
+    echo json_encode($ticket);
+    wp_die();
 }
 
 function on_paypal_payment_completed($posted) {
@@ -623,6 +631,9 @@ add_action('wp_ajax_nopriv_create_ticket_and_pay', __NAMESPACE__ .'\\create_tick
 
 add_action('wp_ajax_send_email_ticket', __NAMESPACE__ .'\\send_email_ticket');
 add_action('wp_ajax_nopriv_send_email_ticket', __NAMESPACE__ .'\\send_email_ticket');
+
+add_action('wp_ajax_scan_ticket', __NAMESPACE__ .'\\scan_ticket');
+add_action('wp_ajax_nopriv_scan_ticket', __NAMESPACE__ .'\\scan_ticket');
 
 add_action('paypal_ipn_for_wordpress_txn_type_web_accept',  __NAMESPACE__ . '\\on_paypal_payment_completed', 10, 1);
 
