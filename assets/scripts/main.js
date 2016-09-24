@@ -115,7 +115,10 @@
                 ignoreMobile: true
             });
         } else {
-            $('html, body').css('height', 'auto');
+            if (!$('body').is('body.page-template-page-scan'))
+            {
+                $('html, body').css('height', 'auto');
+            }            
         }
 
         $('a').click(function(e){
