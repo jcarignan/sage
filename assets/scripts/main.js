@@ -118,7 +118,7 @@
             if (!$('body').is('body.page-template-page-scan'))
             {
                 $('html, body').css('height', 'auto');
-            }            
+            }
         }
 
         $('a').click(function(e){
@@ -580,6 +580,7 @@
                         };
                     }).catch(function(err){
                         console.log(err.name);
+                        alert('Le navigateur ne supporte pas la capture vidéo...');
                     });
                 }
 
