@@ -1,12 +1,19 @@
 body.page-template-page-scan {
+
+    header.banner {
+        display: none;
+    }
+
+    .content {
+        padding: 0 !important;
+    }
+
     .block-main-container {
 
         .block.block-main {
             text-align: center;
             padding: 0;
             margin: 0 auto;
-            box-sizing: border-box;
-            padding: 40px 0 30px;
 
             label {
                 display: block;
@@ -27,14 +34,26 @@ body.page-template-page-scan {
     }
 
     .content-scanner {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+    }
 
+    .app-logo {
+        position: absolute;
+        top: 6px;
+        left: 6px;
+        width: 100px;
+        height: 50px;
+        background: url($image-path+'/accro/logo-full.png') no-repeat center;
+        background-size: contain;
     }
 
     .scanner-container {
-        position: relative;
+        position: absolute;
         width: 100%;
-        height: 0;
-        padding-bottom: 100%;
+        height: 100%;
         background: #000;
 
         canvas {
@@ -49,6 +68,7 @@ body.page-template-page-scan {
             top: 50%;
             -webkit-transform: translate(-50%,-50%);
             transform: translate(-50%,-50%);
+            object-fit: cover;
         }
 
         .device-switcher {
@@ -57,8 +77,69 @@ body.page-template-page-scan {
             right: 10px;
             width: 40px;
             height: 40px;
-            background-image: url($image-path+'/icons/camera-switcher.svg');
+            background: #FFF url($image-path+'/icons/camera-switcher.svg') no-repeat center;
             background-size: contain;
+            box-shadow: 0 0 5px rgba(0,0,0,0.8);
+            border-radius: 10px;
+        }
+    }
+
+    .qr-result {
+        position: absolute;
+        transform: translateY(100%);
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0,0,0,0.95);
+        opacity: 0;
+        transition: transform 0.4s ease-in-out, opacity 0.4s ease-in-out;
+
+        &.opened {
+            opacity: 1;
+            transform: translateY(0%);
+        }
+    }
+
+    .qr-status-container {
+        pointer-events: none;
+        position: absolute;
+        left: 10px;
+        bottom: 10px;
+        width: 100px;
+        height: 100px;
+        box-sizing: border-box;
+        padding: 10px;
+        color: #FFF;
+        background: rgba(255,255,255,0.2);
+        box-shadow: 0 0 5px rgba(0,0,0,0.8);
+        border-radius: 10px;
+
+        .qr-status {
+            position: relative;
+            height: 100%;
+
+            &:before {
+                content: '';
+                display: inline-block;
+                height: 100%;
+                vertical-align: middle;
+            }
+        }
+
+        .qr-label {
+            position: relative;
+            z-index: 1;
+            font-size: 60px;
+            display: inline-block;
+            vertical-align: middle;
+        }
+
+        .qr-image {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100% !important;
+            height: 100% !important;
+            opacity: 0.5;
         }
     }
 

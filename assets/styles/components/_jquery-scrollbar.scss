@@ -74,8 +74,8 @@
 
 /*************** SIMPLE INNER SCROLLBAR ***************/
 
-.main > .scroll-element,
-.main > .scroll-element div
+.scrollable-content > .scroll-element,
+.scrollable-content > .scroll-element div
 {
     border: none;
     margin: 0;
@@ -84,7 +84,7 @@
     z-index: 10;
 }
 
-.main > .scroll-element div {
+.scrollable-content > .scroll-element div {
     display: block;
     height: 100%;
     left: 0;
@@ -92,50 +92,59 @@
     width: 100%;
 }
 
-.main > .scroll-element.scroll-x {
+.scrollable-content > .scroll-element.scroll-x {
     bottom: 2px;
     height: 8px;
     left: 0;
     width: 100%;
 }
 
-.main > .scroll-element.scroll-y {
+.scrollable-content > .scroll-element.scroll-y {
     height: 100%;
     right: 2px;
     top: 0;
     width: 8px;
 }
 
-.main > .scroll-element .scroll-element_outer {
+.scrollable-content > .scroll-element .scroll-element_outer {
     overflow: hidden;
 }
 
-.main > .scroll-element .scroll-element_outer,
-.main > .scroll-element .scroll-element_track,
-.main > .scroll-element .scroll-bar {
+.scrollable-content > .scroll-element .scroll-element_outer,
+.scrollable-content > .scroll-element .scroll-element_track,
+.scrollable-content > .scroll-element .scroll-bar {
     -webkit-border-radius: 8px;
     -moz-border-radius: 8px;
     border-radius: 8px;
 }
 
-.main > .scroll-element .scroll-element_track,
-.main > .scroll-element .scroll-bar {
+.scrollable-content > .scroll-element .scroll-element_track,
+.scrollable-content > .scroll-element .scroll-bar {
     -ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=40)";
     filter: alpha(opacity=40);
     opacity: 0.4;
 }
 
-.main > .scroll-element .scroll-element_track { background-color: rgba(12,128,165, 0.3) }
-.main > .scroll-element .scroll-bar { background-color: #468ea5; }
-.main > .scroll-element:hover .scroll-bar { background-color: #2d88a5; }
-.main > .scroll-element.scroll-draggable .scroll-bar { background-color: #2d88a5; }
+.scrollable-content > .scroll-element .scroll-element_track { background-color: rgba(12,128,165, 0.3) }
+.scrollable-content > .scroll-element .scroll-bar { background-color: #468ea5; }
+.scrollable-content > .scroll-element:hover .scroll-bar { background-color: #2d88a5; }
+.scrollable-content > .scroll-element.scroll-draggable .scroll-bar { background-color: #2d88a5; }
 
 
 /* update scrollbar offset if both scrolls are visible */
 
-.main > .scroll-element.scroll-x.scroll-scrolly_visible .scroll-element_track { left: -12px; }
-.main > .scroll-element.scroll-y.scroll-scrollx_visible .scroll-element_track { top: -12px; }
+.scrollable-content > .scroll-element.scroll-x.scroll-scrolly_visible .scroll-element_track { left: -12px; }
+.scrollable-content > .scroll-element.scroll-y.scroll-scrollx_visible .scroll-element_track { top: -12px; }
 
 
-.main > .scroll-element.scroll-x.scroll-scrolly_visible .scroll-element_size { left: -12px; }
-.main > .scroll-element.scroll-y.scroll-scrollx_visible .scroll-element_size { top: -12px; }
+.scrollable-content > .scroll-element.scroll-x.scroll-scrolly_visible .scroll-element_size { left: -12px; }
+.scrollable-content > .scroll-element.scroll-y.scroll-scrollx_visible .scroll-element_size { top: -12px; }
+
+.scrollbar-dynamic > .scroll-element.scroll-x:hover .scroll-element_outer,
+.scrollbar-dynamic > .scroll-element.scroll-x.scroll-draggable .scroll-element_outer {
+    height: 7px;
+}
+.scrollbar-dynamic > .scroll-element.scroll-y:hover .scroll-element_outer,
+.scrollbar-dynamic > .scroll-element.scroll-y.scroll-draggable .scroll-element_outer {
+    width: 7px;
+}

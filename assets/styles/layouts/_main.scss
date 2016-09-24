@@ -4,7 +4,6 @@ html, body {
 
 body {
     font-family: $font-primary;
-    /*overflow: hidden;*/
 }
 
 .content {
@@ -25,8 +24,11 @@ body {
 .main {
     position: relative;
     height: 100%;
-    overflow: auto;
-    -webkit-overflow-scrolling: touch;
+
+    &.scrollable-content {
+        overflow: auto;
+        -webkit-overflow-scrolling: touch;
+    }
 
     .site-name, .page-title {
         font-size: 0;

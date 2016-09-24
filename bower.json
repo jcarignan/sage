@@ -10,7 +10,9 @@
     "gsap": "^1.18.5",
     "jquery-placeholder": "^2.3.1",
     "jquery.scrollbar": "^0.2.10",
-    "jsqrcode": "git://github.com/jcarignan/qrcode-decoder-js"
+    "jsqrcode": "git://github.com/jcarignan/qrcode-decoder-js",
+    "kjua": "lrsjng/kjua#^0.1.1",
+    "qrious": "^2.0.2"
   },
   "overrides": {
     "bootstrap-sass": {

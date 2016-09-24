@@ -22,7 +22,7 @@ $subtheme = $theme_options['subtheme'];
       get_template_part('templates/header');
     ?>
     <div class="content hidden" role="document">
-        <main class="main">
+        <main class="main scrollable-content">
             <h1 class="site-name"><?=get_bloginfo();?></h1>
             <h2 class="page-title"><?=get_the_title();?></h2>
           <?php include Wrapper\template_path(); ?>

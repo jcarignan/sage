@@ -15,7 +15,16 @@
     $imageStyle = '';
     $blockMainClasses = 'block block-main'.($youtubeId ? ' block-main-with-video':'');
 
-    $youtubeUrl = "http://www.youtube.com/embed/".$youtubeId.'?autoplay=1&controls=1&modestbranding=1&rel=0&showinfo=0&enablejsapi=1';
+    $isSecure = false;
+    if (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on') {
+        $isSecure = true;
+    }
+    elseif (!empty($_SERVER['HTTP_X_FORWARDED_PROTO']) && $_SERVER['HTTP_X_FORWARDED_PROTO'] == 'https' || !empty($_SERVER['HTTP_X_FORWARDED_SSL']) && $_SERVER['HTTP_X_FORWARDED_SSL'] == 'on') {
+        $isSecure = true;
+    }
+    $REQUEST_PROTOCOL = $isSecure ? 'https' : 'http';
+
+    $youtubeUrl = $REQUEST_PROTOCOL."://www.youtube.com/embed/".$youtubeId.'?autoplay=1&controls=1&modestbranding=1&rel=0&showinfo=0&enablejsapi=1';
     if ($youtubeLoop == 1)
     {
         $youtubeUrl .= "&loop=1&playlist=".$youtubeId;

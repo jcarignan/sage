@@ -37,11 +37,19 @@
             array_push($tickets, $ticket);
         }
         $paidTickets = 0;
+        $soldTickets = 0;
         $scannedTickets = 0;
+        $amountPaid = 0;
+
         foreach($tickets as $ticket) {
             if ($ticket['paid'] == 1)
             {
                 $paidTickets++;
+                $amountPaid += $ticket['price'];
+                if ($ticket['price'] > 0)
+                {
+                    $soldTickets++;
+                }
             }
             if ($ticket['scanned'] == 1)
             {
@@ -62,11 +70,17 @@
                     <div class="confirmed">
                         <?= __('Confirmed', 'immersiveproductions').'s: '.$paidTickets; ?>
                     </div>
+                    <div class="sold">
+                        <?= __('Sold', 'immersiveproductions').'s: '.$soldTickets; ?>
+                    </div>
                     <div class="potential">
                         <?= __('Potential', 'immersiveproductions').'s: '.(count($tickets) - $paidTickets); ?>
                     </div>
                     <div class="scanned">
                         <?= __('Scanned', 'immersiveproductions').'s: '.$scannedTickets; ?>
+                    </div>
+                    <div class="amount-paid">
+                        <?= __('Amount paid', 'immersiveproductions').': '.$amountPaid; ?>$
                     </div>
                 </div>
                 <div class="tickets-data">
@@ -81,7 +95,7 @@
                                     <?php endforeach;?>
                                 </tr>
                             <?php endif;?>
-                            <tr class="<?=$ticket['paid'] == 0 ? 'ticket-unpaid':'ticket-paid'?>" style="border-top: <?=$lastInvoice === $ticket['invoice']?'0':'4px solid black;'?>">
+                            <tr class="<?=$ticket['paid'] == 0 ? 'ticket-unpaid':($ticket['price']==0?'ticket-free':'ticket-paid')?>" style="border-top: <?=$lastInvoice === $ticket['invoice']?'0':'4px solid black;'?>">
                                 <?php foreach ($ticket as $fieldKey => $fieldValue): ?>
                                     <td class="field <?=$fieldKey?>">
                                     <?php if ($fieldKey === 'paid' || ($fieldKey === 'scanned' && ($fieldValue == 0 || $fieldValue == 1))): ?>

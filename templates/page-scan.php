@@ -22,16 +22,8 @@
         {
             $message = 'Bienvenue!';
         } else {
-            $message = 'Déjà scanné à ';
-            $timeStamp = strtotime($ticket['scanned_date']);
-            if (function_exists('qtrans_getLanguage'))
-            {
-                $locale = qtrans_getLanguage();
-                setlocale(LC_ALL,$locale);
-            }
-            $message .= strftime('%H:%M:%S', $timeStamp);
-            $message .= '<br/>par '.$ticket['scanned_author'].'.';
-            $message .= '<br/>('.$ticket['scanned'].' fois)';
+            $message = 'Déjà scanné à '.$ticket['scanned_date_formatted'];
+            $message .= '<br/>par '.$ticket['scanned_author'].'. ('.$ticket['scanned'].' fois)';
         }
 
     }
@@ -43,11 +35,22 @@
                 <?php wp_login_form(get_permalink()); ?>
             <?php elseif (!$ticket):?>
                 <div class="content-scanner">
-                    <div class="qr-result">Scanning...</div>
                     <div class="scanner-container">
                         <canvas id="qr-canvas"></canvas>
                         <video class="qr-scanner" autoplay></video>
                         <button class="device-switcher" type="button"></button>
+                    </div>
+                    <div class="app-logo"></div>
+                    <div class="qr-result">
+                        <div class="user-info name"></div>
+                        <div class="user-info title"></div>
+                        <div class="user-info entreprise"></div>
+                    </div>
+                    <div class="qr-status-container">
+                        <div class="qr-status">
+                            <canvas class="qr-image"></canvas>
+                            <div class="qr-label"></div>
+                        </div>
                     </div>
                 </div>
             <?php else:?>

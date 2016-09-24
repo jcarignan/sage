@@ -282,10 +282,10 @@ body.page {
             width: 50%;
             height: 100%;
             overflow: auto;
-            -webkit-overflow-scrolling: touch;
 
             &.content-gallery {
                 ul {
+                    overflow-x: hidden;
                     li {
                         width: 33.33333%;
                         height: 0;
