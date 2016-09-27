@@ -13,6 +13,49 @@
 
 }
 
+#loginform {
+    position: absolute;
+    width: 100%;
+    box-sizing: border-box;
+    top: 50%;
+    transform: translateY(-50%);
+    padding: 20px;
+
+    label {
+        font-size: 0.8em;
+        font-weight: bold;
+        margin-bottom: 4px;
+    }
+
+    input {
+        min-height: 40px;
+    }
+
+    p {
+        margin-bottom: 10px;
+        &:last-of-type {
+            margin-bottom: 0;
+        }
+    }
+
+    input[type="text"], input[type="password"] {
+        font-size: 1.6em;
+        padding: 4px;
+        box-sizing: border-box;
+        text-align: center;
+        width:100%;
+        border: 0;
+        background: rgba(0,0,0,0.2);
+    }
+
+    input[type="submit"]
+    {
+        margin-top: 10px;
+        font-size: 1em;
+        width:100%;
+    }
+}
+
 
 .block.block-form {
     max-width: 980px;

@@ -6,24 +6,38 @@
 
 <?php while (have_posts()) : the_post();
     $ticket = null;
-    if (isset($_REQUEST['billet']))
-    {
-        $ticket = Extras\scan_ticket_php($_REQUEST['billet']);
-    }
-
+    $requestedTicket = isset($_REQUEST['billet']);
     $loggedIn = is_user_logged_in();
 
-    if ($loggedIn && $ticket) {
-        $name = ucfirst($ticket['first_name']).' '.ucfirst($ticket['last_name']);
-        $title = ucfirst($ticket['title']);
-        $entreprise = ucfirst($ticket['entreprise']);
+    if ($loggedIn && $requestedTicket) {
+        $qrCode = $_REQUEST['billet'];
+        $ticket = Extras\scan_ticket_php($qrCode);
+        $qrCodeUrl = 'https://chart.googleapis.com/chart?chs=90x90&cht=qr&chl='.home_url().'/scan/?billet='.$qrCode.'&choe=UTF-8';
+
+        $status = '';
         $message = '';
-        if ($ticket['scanned'] == 0)
+        $name = '';
+        $title = '';
+        $entreprise = '';
+
+        if (!$ticket)
         {
-            $message = 'Bienvenue!';
+            $status = 'failed';
+            $message = 'Billet invalide.';
         } else {
-            $message = 'Déjà scanné à '.$ticket['scanned_date_formatted'];
-            $message .= '<br/>par '.$ticket['scanned_author'].'. ('.$ticket['scanned'].' fois)';
+            $name = ucfirst($ticket['first_name']).' '.ucfirst($ticket['last_name']);
+            $title = ucfirst($ticket['title']);
+            $entreprise = ucfirst($ticket['entreprise']);
+
+            if ($ticket['scanned'] == 0)
+            {
+                $status = 'success';
+                $message = 'Bienvenue!';
+            } else {
+                $status = 'warning';
+                $message = 'Déjà scanné à '.$ticket['scanned_date_formatted'];
+                $message .= ' par '.$ticket['scanned_author'].' ('.$ticket['scanned'].'&nbsp;fois)';
+            }
         }
 
     }
@@ -31,9 +45,35 @@
 ?>
     <div class="block-main-container">
         <section class="block block-main block-main-content">
-            <?php if (!$loggedIn):?>
-                <?php wp_login_form(get_permalink()); ?>
-            <?php elseif (!$ticket):?>
+            <?php if (!$loggedIn):
+                $base_url = ( isset($_SERVER['HTTPS']) && $_SERVER['HTTPS']=='on' ? 'https' : 'http' ) . '://' .  $_SERVER['HTTP_HOST'];
+                $url = $base_url . $_SERVER["REQUEST_URI"];
+                        wp_login_form(array(
+                           'remember' => false,
+                           'redirect' => $url,
+                           'label_username' => __('Username / Email', 'immersiveproductions').':',
+                           'label_password' => __('Password', 'immersiveproductions').':'
+                       ));
+                  elseif ($requestedTicket):?>
+                  <div class="content-scanner-static">
+                      <div class="app-logo"></div>
+                      <div class="qr-result-container">
+                          <div class="qr-result">
+                              <div class="user-info message"><?=$message?></div>
+                              <div class="user-info name"><?=$name?></div>
+                              <div class="user-info title"><?=$title?></div>
+                              <div class="user-info entreprise"><?=$entreprise?></div>
+                          </div>
+                      </div>
+                      <div class="qr-status-container">
+                          <div class="qr-status <?=$status?>">
+                              <canvas class="qr-image" style="background-image:url(<?=$qrCodeUrl?>)"></canvas>
+                              <div class="qr-icon"></div>
+                              <div class="qr-label"></div>
+                          </div>
+                      </div>
+                  </div>
+                <?php else:?>
                 <div class="content-scanner">
                     <div class="scanner-container">
                         <canvas id="qr-canvas"></canvas>
@@ -41,23 +81,22 @@
                         <button class="device-switcher" type="button"></button>
                     </div>
                     <div class="app-logo"></div>
-                    <div class="qr-result">
-                        <div class="user-info name"></div>
-                        <div class="user-info title"></div>
-                        <div class="user-info entreprise"></div>
+                    <div class="qr-result-container">
+                        <div class="qr-result">
+                            <div class="user-info message"></div>
+                            <div class="user-info name"></div>
+                            <div class="user-info title"></div>
+                            <div class="user-info entreprise"></div>
+                        </div>
                     </div>
                     <div class="qr-status-container">
                         <div class="qr-status">
                             <canvas class="qr-image"></canvas>
+                            <div class="qr-icon"></div>
                             <div class="qr-label"></div>
                         </div>
                     </div>
                 </div>
-            <?php else:?>
-                <h1 class="message"><?=$message?></h1>
-                <h4 class="name"><?=$name?></h4>
-                <h5 class="title"><?=$title?></h5>
-                <h6 class="entreprise"><?=$entreprise?></h6>
             <?php endif;?>
         </section>
     </div>

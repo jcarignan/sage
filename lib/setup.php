@@ -115,7 +115,7 @@ function assets() {
   if(!is_admin()){
       wp_enqueue_script('sage/js', Assets\asset_path('scripts/main.js'), ['jquery'], null, true);
 
-      if (is_page('billeterie'))
+      if (is_page_template('templates/page-tickets.php'))
       {
           $ticketStatus = Extras\get_ticket_status();
           wp_localize_script('sage/js', 'ticketsData', array(
@@ -126,7 +126,7 @@ function assets() {
             'comboCount' => $ticketStatus['combo_count'],
             'couponCode' => $ticketStatus['coupon_code']
           ));
-      } else if (is_page('guestlist') || is_page('scan'))
+      } else if (is_page_template('templates/page-guestlist.php') || is_page_template('templates/page-scan.php') || is_page_template('templates/page-newsletter.php'))
       {
           wp_localize_script('sage/js', 'ajaxData', array(
             'ajaxUrl' => admin_url( 'admin-ajax.php' ),

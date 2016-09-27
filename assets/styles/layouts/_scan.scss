@@ -48,6 +48,7 @@ body.page-template-page-scan {
         height: 50px;
         background: url($image-path+'/accro/logo-full.png') no-repeat center;
         background-size: contain;
+        z-index: 1;
     }
 
     .scanner-container {
@@ -84,14 +85,41 @@ body.page-template-page-scan {
         }
     }
 
-    .qr-result {
+    .qr-result-container {
+        pointer-events: none;
         position: absolute;
+        padding: 10px;
+        box-sizing: border-box;
         transform: translateY(100%);
         width: 100%;
         height: 100%;
         background-color: rgba(0,0,0,0.95);
         opacity: 0;
         transition: transform 0.4s ease-in-out, opacity 0.4s ease-in-out;
+        color: #FFF;
+
+        .qr-result {
+            position: absolute;
+            left: 0;
+            width: 100%;
+            top: 46%;
+            transform: translateY(-50%);
+        }
+
+        .user-info {
+            &.message {
+                font-size: 1.8em;
+            }
+            &.name {
+                font-size: 1.4em;
+            }
+            &.title {
+                font-size: 1.2em;
+            }
+            &.entreprise {
+                font-size: 1em;
+            }
+        }
 
         &.opened {
             opacity: 1;
@@ -123,12 +151,53 @@ body.page-template-page-scan {
                 height: 100%;
                 vertical-align: middle;
             }
+
+            &.success {
+                .qr-icon {
+                    background-image: url($image-path+'/icons/success.svg');
+                }
+
+            }
+
+            &.failed {
+                .qr-icon {
+                    background-image: url($image-path+'/icons/failed.svg');
+                }
+            }
+
+            &.warning {
+                .qr-icon {
+                    background-image: url($image-path+'/icons/warning.svg');
+                }
+            }
+
+            &.loading {
+                .qr-icon {
+                    background-image: url($image-path+'/icons/loading.svg');
+                }
+            }
+
+            &.scanning {
+                @keyframes scan {
+                    from {transform: scale(1.25, 1) translateY(-2%)}
+                    to {transform: scale(1.25, 1) translateY(94%)}
+                }
+                .qr-icon {
+                    background-image: url($image-path+'/icons/scanning.svg');
+                    transform: scale(1.25, 1);
+                    opacity: 0.2;
+                    animation: scan 1s infinite ease-in-out;
+                    animation-direction: alternate;
+                }
+            }
         }
 
         .qr-label {
             position: relative;
             z-index: 1;
             font-size: 60px;
+            top: -4px;
+            left: -1px;
             display: inline-block;
             vertical-align: middle;
         }
@@ -139,7 +208,34 @@ body.page-template-page-scan {
             left: 0;
             width: 100% !important;
             height: 100% !important;
+            background-size: contain;
             opacity: 0.5;
+        }
+
+        .qr-icon {
+            opacity: 0.75;
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-size: contain;
+            transform: scale(1.4);
+            background-repeat: no-repeat;
+            background-position: center;
+        }
+    }
+
+    .content-scanner-static {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: #000;
+
+        .qr-result-container {
+            transform: none;
         }
     }
 

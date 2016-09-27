@@ -1,41 +1,4 @@
-HEADER
--Couleur du header plus pâle.  #1c1c1c
--Respirer Blogue | EN et Social
--Élargir la barre du menu
--Grossir le logo et police du menu
--Roll-Over bleu sur les menus
-
-GENERAL
--#2c87a5 -> #1891b9
-
-SECTIONS
--À propos: Titre #1891b9 au lieu de noir
--Services: Bleu Communication jusqu'en bas de page
--Médias: Image a gauche, presse à droite (Test)
--Clients: Logos 3x3 sur fullscreen
--Clients: Témoignages plus espacés
--CLients: Témoignages blanc opacité 20%
--Clients: Témoignages enlever les guillemets, mettre la personne en #1c1c1c
-Services: Baisser le nombre d'icones de services
-
-TODO JULIEN
-Médias: Scroll Bar
-Clients: Scroll-bar
-
-http://immersiveproductions.local
-http://74.57.66.67:33800/
-
-<div class="line-one">
-<h3>Les</h3>
-<h1>univers</h1>
-</div>
-<div class="line-two">
-<h2>connectés</h2>
-</div>
-
-<div class="line-one">
-<h2>Connected</h2>
-</div>
-<div class="line-two">
-<h1>universes</h1>
-</div>
+- updater la guestlist pour scanner
+- updater la billeterie pour les medias
+- merger le courriel mailchimp avec le mien
+- faire le tool pour le mass-mailing

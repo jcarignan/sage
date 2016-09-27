@@ -115,7 +115,7 @@
                 ignoreMobile: true
             });
         } else {
-            if (!$('body').is('body.page-template-page-scan'))
+            if (!$('body').is('body.page-template-page-scan') && !($('body').is('body.page-template-page-guestlist') && !$('body').is('.logged-in')))
             {
                 $('html, body').css('height', 'auto');
             }
@@ -399,6 +399,11 @@
                 var video = $('.qr-scanner')[0];
                 if (typeof video === 'undefined')
                 {
+                    if ($('.content-scanner-static'))
+                    {
+                        $('.qr-result-container').addClass('opened');
+                        window.history.replaceState( {} , 'Scan complete', [location.protocol, '//', location.host, location.pathname].join(''));
+                    }
                     return;
                 }
 
@@ -423,11 +428,12 @@
                 canvas.height = videoHeight;
                 canvasContext.clearRect(0, 0, videoWidth, videoHeight);
 
-                var $results = $('.qr-result');
+                var $results = $('.qr-result-container');
                 var $qrStatus = $('.qr-status');
-                var $qrLabel = $qrStatus.find('.qr-label');
                 var $qrImage = $qrStatus.find('.qr-image');
+                var $qrLabel = $qrStatus.find('.qr-label');
                 var $userInfos = $results.find('.user-info');
+                var $message = $results.find('.message');
                 var $name = $results.find('.name');
                 var $title = $results.find('.title');
                 var $entreprise = $results.find('.entreprise');
@@ -436,7 +442,8 @@
                 var videoDeviceIds = [];
                 var checkInterval;
                 var checkingQR = false;
-                var maxFailedCount = -1;
+                var validatingQR = false;
+                var maxFailedCount = 5;
                 var failedCount = 0;
 
                 var checkForQR = function()
@@ -455,6 +462,11 @@
                      }
                 };
 
+                function clearQRClasses()
+                {
+                    $qrStatus.removeClass('success failed warning loading scanning');
+                }
+
                 function stopQRCheck()
                 {
                     checkingQR = false;
@@ -463,10 +475,10 @@
 
                 function startQRCheck()
                 {
-                    var statusText = '...';
                     checkingQR = true;
-                    $qrLabel.text(statusText);
                     $userInfos.text('');
+                    clearQRClasses();
+                    $qrStatus.addClass('scanning');
                     $results.removeClass('opened');
                     stopQRCheck();
                     checkInterval = setInterval(checkForQR, 500);
@@ -474,26 +486,36 @@
 
                 function onQrFailed()
                 {
-                    //vibrate([10, 10, 10, 10, 10, 10]);
+                    validatingQR = false;
+                    clearQRClasses();
+
+                    vibrate([10]);
                     failedCount++;
                     if (maxFailedCount === -1 || failedCount < maxFailedCount)
                     {
+                        $qrLabel.text('?');
                         startQRCheck();
                     } else {
-                        $qrLabel.text('?');
+                        $qrLabel.text('');
+                        $qrStatus.addClass('failed');
                     }
                 }
 
                 function onQrSuccess(response)
                 {
+                    validatingQR = false;
                     vibrate(200);
                     failedCount = 0;
                     var scannedCount = parseInt(response.scanned);
+                    clearQRClasses();
+                    $qrLabel.text('');
                     if (scannedCount === 0)
                     {
-                         $qrLabel.text('Bienvenue!');
+                        $qrStatus.addClass('success');
+                        $message.text('Bienvenue!');
                     } else {
-                        $qrLabel.html('Déjà scanné à '+response.scanned_date_formatted+'<br/>par '+response.scanned_author+'. ('+response.scanned+' fois)');
+                        $qrStatus.addClass('warning');
+                        $message.html('Déjà scanné à '+response.scanned_date_formatted+'<br/>par '+response.scanned_author+' ('+response.scanned+'&nbsp;fois)');
                     }
                     $name.text(response.first_name+' '+response.last_name);
                     $title.text(response.title);
@@ -503,6 +525,7 @@
 
                 qrcode.callback = function(data)
                 {
+                    validatingQR = true;
                     console.log(data);
                     stopQRCheck();
                     new QRious({
@@ -522,10 +545,11 @@
                     }
 
                     vibrate(20);
+                    clearQRClasses();
+                    $qrStatus.addClass('loading');
 
                     var codeStart = getParamStart + codeStartKey.length;
                     var code = data.substr(codeStart);
-                    $qrLabel.text('!');
                     $.ajax({
                       url: ajaxData.ajaxUrl,
                       type: 'post',
@@ -546,16 +570,17 @@
                       },
                       error: function()
                       {
-                          $qrLabel.text('J\'ai tu de l\'internet?');
+                          console.log('error:', response);
                       }
                     });
                 };
 
                 function getStream()
                 {
-
-                    if (window.stream) {
-                        window.stream.getTracks().forEach(function(track) {
+                    if (window.stream)
+                    {
+                        window.stream.getTracks().forEach(function(track)
+                        {
                             track.stop();
                         });
                     }
@@ -563,14 +588,16 @@
                     var videoDevice = videoDeviceIds[videoDeviceIndex];
                     console.log('Getting stream from:', videoDevice.label);
 
-                    navigator.mediaDevices.getUserMedia({
+                    navigator.mediaDevices.getUserMedia(
+                    {
                         audio: undefined,
                         video: {
                             deviceId: {
                                 exact: videoDevice.deviceId
                             }
                         }
-                    }).then(function(stream){
+                    }).then(function(stream)
+                    {
                         window.stream = stream;
                         video.srcObject = stream;
                         video.onloadedmetadata = function(e)
@@ -578,13 +605,14 @@
                             console.log('Got stream !');
                             startQRCheck();
                         };
-                    }).catch(function(err){
+                    }).catch(function(err)
+                    {
                         console.log(err.name);
-                        alert('Le navigateur ne supporte pas la capture vidéo...');
                     });
                 }
 
-                function gotDevices(deviceInfos) {
+                function gotDevices(deviceInfos)
+                {
                     var videoIndex = 0;
                     videoDeviceIds = deviceInfos.filter(function(deviceInfo){
                         if (deviceInfo.kind === 'videoinput')
@@ -605,36 +633,117 @@
 
                 function handleError(error)
                 {
+                    alert('error'+ error);
                     console.log('navigator.getUserMedia error:', error);
                 }
 
-                navigator.mediaDevices.enumerateDevices().then(gotDevices).catch(handleError);
-
-                $('.device-switcher').click(function(e){
-                    videoDeviceIndex++;
-                    if (videoDeviceIndex >= videoDeviceIds.length)
+                if (typeof navigator.mediaDevices !== 'undefined')
+                {
+                    navigator.mediaDevices.enumerateDevices().then(gotDevices).catch(handleError);
+                    $('.device-switcher').click(function(e)
                     {
-                        videoDeviceIndex = 0;
-                    }
-                    getStream();
-                });
+                        videoDeviceIndex++;
+                        if (videoDeviceIndex >= videoDeviceIds.length)
+                        {
+                            videoDeviceIndex = 0;
+                        }
+                        getStream();
+                    });
 
-                $('.qr-scanner').click(function(e){
-                    var canvas = $qrImage[0];
-                    var ctx = canvas.getContext('2d');
-                    ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-                    if (!checkingQR)
+                    $('.qr-scanner').click(function(e)
                     {
-                        failedCount = 0;
-                        startQRCheck();
-                    }
-                });
+                        if (validatingQR)
+                        {
+                            return;
+                        }
+                        var qrCanvas = $qrImage[0];
+                        var qrCtx = qrCanvas.getContext('2d');
+                        qrCtx.clearRect(0, 0, qrCanvas.width, qrCanvas.height);
+                        $qrLabel.text('');
+                        if (!checkingQR)
+                        {
+                            failedCount = 0;
+                            startQRCheck();
+                        }
+                    });
+                } else {
+                    $message.html('Non supporté sur ce navigateur...<br/>Va vite te chercher une app qui scanne les QR Codes!');
+                    $('.qr-result-container').addClass('opened');
+                }
             }
         },
      'guestlist': {
           init: function()
           {
+              var detailedView = false;
+              $('.toggle-view').click(function(e){
+                 detailedView = !detailedView;
+
+                 if (detailedView){
+                      $('.tickets-data').addClass('detailed');
+                      $('.toggle-view').text('Afficher la vue scan');
+                 } else {
+                      $('.tickets-data').removeClass('detailed');
+                      $('.toggle-view').text('Afficher la vue détaillée');
+                 }
+              });
+
+              $('.ticket').click(function(e){
+                  var $target = $(e.currentTarget);
+                 if (detailedView){
+                     return;
+                 } else {
+                     var name = $.trim($target.find('.field.name').text());
+                     if ($target.is('.ticket-unpaid'))
+                     {
+                         alert(name + ' n\'a pas payé son billet!');
+                         return;
+                     }
+                     var confirmBox = confirm('Scanner le billet de '+name+'?');
+                     if (!confirmBox) {
+                         return;
+                     }
+                     var qrcode = $.trim($target.find('.field.qr_code').text());
+                     $target.addClass('scanning');
+                     $.ajax({
+                       url: ajaxData.ajaxUrl,
+                       type: 'post',
+                       data: {
+                           action: 'scan_ticket',
+                           nonce: ajaxData.nonce,
+                           qrcode: qrcode
+                       },
+                       dataType: 'json',
+                       success: function(response)
+                       {
+                           $target.removeClass('scanning');
+                           if (typeof response === 'undefined' || response === null)
+                           {
+                               alert('Billet invalide.');
+                           } else {
+                               var scannedCount = parseInt(response.scanned);
+                               var name = response.first_name+' '+response.last_name;
+                               $target.find('.field.scanned_author').text(response.current_author);
+                               if (scannedCount === 0)
+                               {
+                                   $target.find('.field.scanned input').prop('checked', true);
+                                   var $scannedCount = $('.tickets-infos .scanned .amount');
+                                   $scannedCount.text(parseInt($scannedCount.text())+1);
+                               } else {
+                                   $target.find('.field.scanned').text(parseInt(response.scanned)+1);
+                                   alert(name + 'a déjà été scanné à '+response.scanned_date_formatted+' par '+response.scanned_author+' ('+response.scanned+' fois)');
+                               }
+                           }
+                       },
+                       error: function()
+                       {
+                           $target.removeClass('scanning');
+                           alert('error:', response);
+                       }
+                     });
+                 }
+              });
+
               $('.email-qr-code').click(function(e){
 
                   var confirmBox = confirm('Envoyer le billet par courriel ?');
@@ -670,6 +779,51 @@
                   });
               });
           }
+     },
+     'infolettre': {
+         init: function()
+         {
+             $('.send-newsletter').click(function(e){
+
+                 var confirmBox = confirm('Envoyer la newsletter à tous les invités ?');
+                 if (!confirmBox) {
+                     return;
+                 }
+
+                 $(this).attr('disabled', 'disabled');
+                 $(this).css('cursor', 'default');
+                 $(this).css('opacity', '0.5');
+                 $(this).text('Envoi...');
+                 $button = $(this);
+                 $.ajax({
+                   url: ajaxData.ajaxUrl,
+                   type: 'post',
+                   data: {
+                       action: 'send_newsletter',
+                       nonce: ajaxData.nonce
+                   },
+                   dataType: 'json',
+                   success: function(response)
+                   {
+                       if (response.success)
+                       {
+                           $button.text('Envoyé '+response.successCount+'/'+response.ticketsCount+'!');
+                           var str = '<h1>Results:</h1>';
+                           response.results.map(function(result){
+                              str += '<div>'+result+'</div>';
+                           });
+                           $('.results').html(str);
+                       } else {
+                           $button.text('Marche pô :(');
+                       }
+                   },
+                   error: function()
+                   {
+                       $button.text('Marche pô :(');
+                   }
+                 });
+             });
+         }
      }
   };
 

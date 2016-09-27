@@ -51,7 +51,7 @@
                     $soldTickets++;
                 }
             }
-            if ($ticket['scanned'] == 1)
+            if ($ticket['scanned'] > 0)
             {
                 $scannedTickets++;
             }
@@ -63,25 +63,33 @@
 ?>
     <div class="block-main-container">
         <section class="block block-main block-main-content">
-            <?php if (!$loggedIn):?>
-                <?php wp_login_form(get_permalink()); ?>
+            <?php if (!$loggedIn):
+                    $base_url = ( isset($_SERVER['HTTPS']) && $_SERVER['HTTPS']=='on' ? 'https' : 'http' ) . '://' .  $_SERVER['HTTP_HOST'];
+                    $url = $base_url . $_SERVER["REQUEST_URI"];
+                    wp_login_form(array(
+                   'remember' => false,
+                   'redirect' => $url,
+                   'label_username' => __('Username / Email', 'immersiveproductions').':',
+                   'label_password' => __('Password', 'immersiveproductions').':'
+               )); ?>
             <?php else:?>
                 <div class="tickets-infos">
                     <div class="confirmed">
-                        <?= __('Confirmed', 'immersiveproductions').'s: '.$paidTickets; ?>
+                        <span class="label"><?= __('Confirmed', 'immersiveproductions').'s:</span> <span class="amount">'.$paidTickets; ?></span>
                     </div>
                     <div class="sold">
-                        <?= __('Sold', 'immersiveproductions').'s: '.$soldTickets; ?>
+                        <span class="label"><?= __('Sold', 'immersiveproductions').'s:</span> <span class="amount">'.$soldTickets; ?></span>
                     </div>
                     <div class="potential">
-                        <?= __('Potential', 'immersiveproductions').'s: '.(count($tickets) - $paidTickets); ?>
+                        <span class="label"><?= __('Potential', 'immersiveproductions').'s:</span> <span class="amount">'.(count($tickets) - $paidTickets); ?></span>
                     </div>
                     <div class="scanned">
-                        <?= __('Scanned', 'immersiveproductions').'s: '.$scannedTickets; ?>
+                        <span class="label"><?= __('Scanned', 'immersiveproductions').'s:</span> <span class="amount">'.$scannedTickets; ?></span>
                     </div>
                     <div class="amount-paid">
-                        <?= __('Amount paid', 'immersiveproductions').': '.$amountPaid; ?>$
+                        <span class="label"><?= __('Amount paid', 'immersiveproductions').':</span> <span class="amount">'.$amountPaid; ?></span>$
                     </div>
+                    <button class="toggle-view" type="button">Afficher la vue détaillée</button>
                 </div>
                 <div class="tickets-data">
                     <table border="1">
@@ -95,7 +103,7 @@
                                     <?php endforeach;?>
                                 </tr>
                             <?php endif;?>
-                            <tr class="<?=$ticket['paid'] == 0 ? 'ticket-unpaid':($ticket['price']==0?'ticket-free':'ticket-paid')?>" style="border-top: <?=$lastInvoice === $ticket['invoice']?'0':'4px solid black;'?>">
+                            <tr class="ticket <?=($ticket['scanned'] > 0 ? 'ticket-scanned ':'').($ticket['paid'] == 0 ? 'ticket-unpaid':($ticket['price']==0?'ticket-free':'ticket-paid'))?>" style="border-top: <?=$lastInvoice === $ticket['invoice']?'0':'4px solid black;'?>">
                                 <?php foreach ($ticket as $fieldKey => $fieldValue): ?>
                                     <td class="field <?=$fieldKey?>">
                                     <?php if ($fieldKey === 'paid' || ($fieldKey === 'scanned' && ($fieldValue == 0 || $fieldValue == 1))): ?>

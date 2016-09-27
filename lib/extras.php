@@ -2,6 +2,9 @@
 
 namespace Roots\Sage\Extras;
 require_once('Browser.php');
+require_once('emails/TicketReceipt.php');
+require_once('emails/TicketReceipt27sept2016.php');
+require_once('emails/Newsletter27sept2016.php');
 use Roots\Sage\Setup;
 
 if (!session_id()) {
@@ -225,6 +228,10 @@ function get_tickets_from_invoice($invoice) {
 function get_ticket_from_qrcode($qrcode) {
     global $wpdb;
     $ticket = $wpdb->get_row($wpdb->prepare( "SELECT * FROM wp_tickets WHERE `qr_code` = %s", $qrcode), ARRAY_A);
+    if (!$ticket)
+    {
+        return $ticket;
+    }
     foreach ($ticket as $key=>$value) {
         $ticket[$key] = stripslashes($value);
     }
@@ -234,6 +241,11 @@ function get_ticket_from_qrcode($qrcode) {
 function scan_ticket_php($qrcode) {
     global $wpdb;
     $ticket = get_ticket_from_qrcode($qrcode);
+    if ($ticket['paid'] == 0)
+    {
+        return null;
+    }
+    $currentAuthor = wp_get_current_user()->display_name;
 
     if (!empty($ticket))
     {
@@ -242,7 +254,7 @@ function scan_ticket_php($qrcode) {
             array(
                 'scanned' =>intval($ticket['scanned']) + 1,
                 'scanned_date' => current_time('mysql'),
-                'scanned_author' => wp_get_current_user()->display_name
+                'scanned_author' => $currentAuthor
             ),
             array(
                 'qr_code' => $qrcode
@@ -264,8 +276,9 @@ function scan_ticket_php($qrcode) {
             $locale = qtrans_getLanguage();
             setlocale(LC_ALL,$locale);
         }
-        $ticket['scanned_date_formatted'] .= strftime('%H:%M:%S', $timeStamp);
+        $ticket['scanned_date_formatted'] = strftime('%H:%M:%S', $timeStamp);
     }
+    $ticket['current_author'] = $currentAuthor;
 
     return $ticket;
 }
@@ -463,15 +476,15 @@ function generate_ticket_html($ticket)
     return '<tr>
                 <td class="ticket" style="padding: 0;text-align: center;font-size: 0;">
                     <!--[if (gte mso 9)|(IE)]>
-                    <table width="100%" style="border-spacing: 0;">
+                    <table width="100%" style="border-spacing: 0;border-collapse:separate;">
                     <tr>
                     <td width="400px" valign="top" style="padding: 0;">
                     <![endif]-->
                     <div style="max-width: 400px;display: inline-block;vertical-align: top;">
-                        <table width="100%" style="border-spacing: 0;">
+                        <table width="100%" style="border-spacing: 0;border-collapse:separate;">
                             <tr>
                                 <td style="padding: 0;">
-                                    <table style="border-spacing: 0; width: 100%;border: 1px solid black;">
+                                    <table style="border-spacing: 0; width: 100%;border: 1px solid black;border-collapse:separate;">
                                         <tr>
                                             <td style="padding: 0;">
                                                 <img src="'.$imgLogoUrl.'" width="400" alt="ACCRO" style="border: 0; width: 100%;height: auto;max-width: 400px;"/>
@@ -491,10 +504,10 @@ function generate_ticket_html($ticket)
                         </td><td width="200px" valign="top" style="padding: 0;">
                         <![endif]-->
                         <div class="ticket-infos" style="max-width: 200px;width: 100%;display: inline-block;vertical-align: top;">
-                            <table width="100%" style="border-spacing: 0;">
+                            <table width="100%" style="border-spacing: 0;border-collapse:separate;">
                                 <tr>
                                     <td style="padding: 0;">
-                                        <table style="border-spacing: 0; color: #000; text-align:center;font-weight: bold;width: 100%;border: 1px solid black;">
+                                        <table style="border-spacing: 0; color: #000; text-align:center;font-weight: bold;width: 100%;border: 1px solid black;border-collapse:separate;">
                                             <tr>
                                                  <td style="font-size: 14px;padding:0 10px 0 10px;">'.$ticket['first_name'].' '.$ticket['last_name'].'</td>
                                                 <td style="padding: 0;visibility:hidden;opacity:0;">
@@ -503,10 +516,10 @@ function generate_ticket_html($ticket)
                                             </tr>
                                             <tr>
                                                 <td>
-                                                    <table width="100%" style="border-spacing: 0;border-top:1px solid black;">
+                                                    <table width="100%" style="border-spacing: 0;border-top:1px solid black;border-collapse:separate;">
                                                         <tr>
                                                             <td style="padding: 0;">
-                                                                <table width="100%" style="border-spacing: 0;">
+                                                                <table width="100%" style="border-spacing: 0;border-collapse:separate;">
                                                                 	<tr>
                                                                         <td style="font-weight: bold;text-align:center;font-size:12px;padding: 0 10px 0 10px;">'.$ticket['item_name'].'</td>
                                                                     </tr>
@@ -537,98 +550,63 @@ function generate_ticket_html($ticket)
                 <tr><td>&nbsp;</td></tr>';
 }
 
-function send_ticket_by_email($ticket) {
-    $socialImgPath = get_template_directory_uri().'/dist/images/social/';
-    $socialMedias = '<a style="text-decoration: none;" href="http://www.facebook.com/ACCRO-261078524281645/" target="_blank"><img src="'.$socialImgPath.'facebook-small.png" width="50" height="50" alt="Facebook"/> </a>
-                     <a style="text-decoration: none;" href="http://twitter.com/ACCROMTL"><img src="'.$socialImgPath.'twitter-small.png" width="50" height="50" alt="Twitter" /> </a>
-                     <a style="text-decoration: none;" href="http://www.instagram.com/accromtl/"><img src="'.$socialImgPath.'instagram-small.png" width="50" height="50" alt="Instagram" /> </a>
-                     <a style="text-decoration: none;" href="https://www.linkedin.com/company/accro-montr%C3%A9al"><img src="'.$socialImgPath.'linkedin-small.png" width="50" height="50" alt="LinkedIn" /> </a>
-    ';
-    if (function_exists('qtrans_getLanguage') && qtrans_getLanguage() == 'en')
+function send_newsletter() {
+    require("sendgrid-php/sendgrid-php.php");
+    global $wpdb;
+
+    $tickets = $wpdb->get_results("SELECT * FROM wp_tickets WHERE paid = 1", ARRAY_A);
+    $ticketsCount = count($tickets);
+    $successCount = 0;
+    $sendgridLogFile = WP_CONTENT_DIR.'/uploads/newsletter-logs/sendgrid.log';
+    $results = array();
+
+    file_put_contents($sendgridLogFile, 'Sending '.$ticketsCount.' emails...'.PHP_EOL, FILE_APPEND);
+
+    foreach($tickets as $ticket)
     {
-        $message =    '<p>Hi,</p>
-                        <p>Thank you for your participation in ACCRO! You will find below your ticket for the event on September 29th at La TOHU , we will be waiting for you starting at 5h PM<br><br>
-                        Please preserve your ticket until the event and present it at the reception from your smart phone.</p>
-                        <p>Here are some useful things to know:<br>
-                        - La TOHU (2345 Jarry E street, Montreal, QC H1Z 4P3)<br>
-                        - Free parking included, located on Michel-Jurdan street, on the corner of the Regrattiers street.<br>
-                        - Bixi Station and bus stops nearby<br>
-                        <p>For more information about the event’s location: <a href="http://www.tohu.ca" target="_blank">www.tohu.ca</a><br>
-                        Stay informed about ACCRO: <a href="http://www.accromontreal.com" target="_blank">www.accromontreal.com</a></p>
-                        <p>'.$socialMedias.'</p>
-                        <p>We look forward to seeing you there!</p><br>';
-    } else {
-        $message =    '<p>Bonjour,</p>
-                        <p>Merci de votre participation à Accro! Vous trouverez ci-joint votre billet pour l’événement du 29 septembre prochain à La TOHU, nous vous y attendons dès 17h.<br><br>
-                        Vous n’avez qu’à préserver votre billet jusqu’à l’événement et le présenter à l’accueil simplement à partir de votre téléphone intelligent.</p>
-                        <p>Voici quelques informations pratiques:<br>
-                        - La TOHU (2345 Rue Jarry E, Montréal, QC H1Z 4P3)<br>
-                        - Stationnement gratuit inclus, situé sur la rue Michel-Jurdant, à l’angle de la rue des Regrattiers.<br>
-                        - Station Bixi et arrêts d’autobus à proximité<br>
-                        <p>Pour plus d’informations concernant le lieu de l’événement : <a href="http://www.tohu.ca" target="_blank">www.tohu.ca</a><br>
-                        Restez à l’affût des actualités ACCRO : <a href="http://www.accromontreal.com" target="_blank">www.accromontreal.com</a></p>
-                        <p>'.$socialMedias.'</p>
-                        <p>Au plaisir de vous y voir!</p><br>';
+        $subject = "Êtes-vous prêts pour ACCRO?";
+        $html = \Jcarignan\tickets\Newsletter27sept2016\get_html($subject, $ticket);
+        $from = new \SendGrid\Email(get_option('from_name'), get_option('from_email'));
+        $to = new \SendGrid\Email($ticket['first_name'].' '.$ticket['last_name'], $ticket['email']);
+        $content = new \SendGrid\Content("text/html", $html);
+
+        $filename = strtolower(preg_replace('/[^a-zA-Z0-9-_\.]/','', $ticket['first_name'].'-'.$ticket['last_name'])).'_'.substr($ticket['qr_code'], 0, 5).'.png';
+        $b64image = base64_encode(file_get_contents(WP_CONTENT_DIR .'/uploads/qrcodes/'.$filename));
+        $attachment = new \SendGrid\Attachment();
+        $attachment->setContent($b64image);
+        $attachment->setType("image/png");
+        $attachment->setFilename($filename);
+        $attachment->setDisposition("attachment");
+        $mail = new \SendGrid\Mail($from, $subject, $to, $content);
+        $mail->addAttachment($attachment);
+
+        $sg = new \SendGrid(SENDGRID_API_KEY);
+        $response = $sg->client->mail()->send()->post($mail);
+        $statusCode = $response->_status_code;
+        $result = $statusCode.' - '.$ticket['first_name'].' '.$ticket['last_name'].' -> '.$ticket['email'];
+        if (intval($statusCode) < 400)
+        {
+            $successCount++;
+        }
+        array_push($results, $result);
+        file_put_contents($sendgridLogFile, $result.PHP_EOL, FILE_APPEND);
     }
 
-     $html = '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-              <html xmlns="http://www.w3.org/1999/xhtml">
-                 <head>
-                     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-                     <!--[if !mso]><!-->
-                         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-                     <!--<![endif]-->
-                     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-                     <title>'.$subject.'</title>
-                     <style type="text/css">
-                         @import url(https://fonts.googleapis.com/css?family=Noto+Sans:400,700);
-                         div[style*="margin: 16px 0"] {
-                             margin:0 !important;
-                         }
-                         @media only screen and (max-width: 600px){
-                             .ticket-infos {
-                                 max-width: 400px !important;
-                             }
-                         }
-                     </style>
-                     <!--[if (gte mso 9)|(IE)]>
-                     <style type="text/css">
-                         table {border-collapse: collapse;}
-                     </style>
-                     <![endif]-->
-                 </head>
-                 <body style="margin: 0 !important;padding: 0;background-color: #ffffff;">
-                     <!--[if mso]>
-                         <style type="text/css">
-                             td {
-                                 font-family: Arial, sans-serif;
-                             }
-                         </style>
-                     <![endif]-->
-                     <center class="wrapper" style="width: 100%; table-layout: fixed; -webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%;">
-                         <div class="webkit" style="max-width: 600px;margin: 0 auto;">
-                             <!--[if (gte mso 9)|(IE)]>
-                                <table width="600" align="center">
-                                <tr>
-                                <td style="padding: 0;">
-                             <![endif]-->
-                             <table class="outer" align="center" style="font-family: Noto Sans, Arial, Helvetica, sans-serif !important;border-spacing: 0; margin: 0 auto;width: 100%;max-width: 600px;">
-                                 <tr>
-                                     <td style="font-size:14px;padding:10px;">'.$message.'</td>
-                                </tr>
-                                '.generate_ticket_html($ticket).'
-                            </table>
-                            <!--[if (gte mso 9)|(IE)]>
-                                </td>
-                                </tr>
-                                </table>
-                            <![endif]-->
-                         </div>
-                     </center>
-                 </body>
-            </html>';
+    file_put_contents($sendgridLogFile, $successCount.'/'.$ticketsCount.' emails sent!'.PHP_EOL.'---', FILE_APPEND);
 
+    echo json_encode(array(
+        'success' => true,
+        'successCount' => $successCount,
+        'ticketsCount' => $ticketsCount,
+        'results' => $results
+    ));
+    wp_die();
+}
+
+function send_ticket_by_email($ticket) {
      $subject = __('Your ticket for ACCRO 2016', 'immersiveproductions');
+     $html = \Jcarignan\tickets\TicketReceipt\get_html($subject, $ticket);
+
      $headers = "MIME-Version: 1.0" . "\r\n";
      $headers .= "Content-type:text/html;charset=UTF-8" . "\r\n";
      $attachments = array();
@@ -652,6 +630,9 @@ add_action('wp_ajax_nopriv_send_email_ticket', __NAMESPACE__ .'\\send_email_tick
 
 add_action('wp_ajax_scan_ticket', __NAMESPACE__ .'\\scan_ticket');
 add_action('wp_ajax_nopriv_scan_ticket', __NAMESPACE__ .'\\scan_ticket');
+
+add_action('wp_ajax_send_newsletter', __NAMESPACE__ .'\\send_newsletter');
+add_action('wp_ajax_nopriv_send_newsletter', __NAMESPACE__ .'\\send_newsletter');
 
 add_action('paypal_ipn_for_wordpress_txn_type_web_accept',  __NAMESPACE__ . '\\on_paypal_payment_completed', 10, 1);
 
