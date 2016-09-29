@@ -64,24 +64,35 @@ function get_coupon_from_code($couponCode) {
     $price = null;
     $buttonID = null;
     $buttonSandboxID = null;
+    $label = null;
 
-    for ($i = 65; $i >= 35; $i-=5)
+    if ($couponCode === get_option('ticket_coupon_free_code'))
     {
-        $code = get_option('ticket_coupon_'.$i.'_code');
-
-        if (strtolower($code) === strtolower($couponCode))
+        $valid = true;
+        $price = 0;
+        $label = get_option('ticket_coupon_free_label');
+    } else {
+        for ($i = 65; $i >= 35; $i-=5)
         {
-            $valid = true;
-            $price = $i;
-            $buttonID = get_option('ticket_coupon_'.$i.'_button_id');
-            $buttonSandboxID = get_option('ticket_coupon_'.$i.'_sandboxed_button_id');
+            $code = get_option('ticket_coupon_'.$i.'_code');
+
+            if (strtolower($code) === strtolower($couponCode))
+            {
+                $valid = true;
+                $price = $i;
+                $buttonID = get_option('ticket_coupon_'.$i.'_button_id');
+                $buttonSandboxID = get_option('ticket_coupon_'.$i.'_sandboxed_button_id');
+                $label = 'Promo '.$i;
+            }
         }
     }
+
     return array(
         'valid' => $valid,
         'price' => $price,
         'button_id' => $buttonID,
-        'button_sandbox_id' => $buttonSandboxID
+        'button_sandbox_id' => $buttonSandboxID,
+        'label' => $label
     );
 }
 
@@ -114,6 +125,7 @@ function get_ticket_status() {
     $coupon;
     $validCoupon = false;
     $couponCode = '';
+    $couponLabel = '';
 
     if (isset($_SESSION['promo'])) {
         $couponCode = $_SESSION['promo'];
@@ -123,6 +135,7 @@ function get_ticket_status() {
         {
             $_SESSION['promo'] = $couponCode;
             $price = $coupon['price'];
+            $couponLabel = $coupon['label'];
         }
     }
     if ($comboPrice > $price)
@@ -147,7 +160,7 @@ function get_ticket_status() {
             'early' => get_option('ticket_early_label'),
             'normal' => get_option('ticket_normal_label'),
             'combo' => get_option('ticket_combo_label'),
-            'coupon' => $validCoupon ? 'Promo '.$price:''
+            'coupon' => $validCoupon ? $couponLabel:''
         )
     );
 }
@@ -228,6 +241,19 @@ function get_tickets_from_invoice($invoice) {
 function get_ticket_from_qrcode($qrcode) {
     global $wpdb;
     $ticket = $wpdb->get_row($wpdb->prepare( "SELECT * FROM wp_tickets WHERE `qr_code` = %s", $qrcode), ARRAY_A);
+    if (!$ticket)
+    {
+        return $ticket;
+    }
+    foreach ($ticket as $key=>$value) {
+        $ticket[$key] = stripslashes($value);
+    }
+    return $ticket;
+}
+
+function get_ticket_from_email($email) {
+    global $wpdb;
+    $ticket = $wpdb->get_row($wpdb->prepare( "SELECT * FROM wp_tickets WHERE `email` = %s", $email), ARRAY_A);
     if (!$ticket)
     {
         return $ticket;
@@ -352,6 +378,7 @@ function create_ticket_and_pay() {
     $itemName;
     $paypalSandboxed = get_option('ticket_sandboxed') == 1;
     $paypalUrl = $paypalSandboxed ? 'https://www.sandbox.paypal.com/cgi-bin/webscr' : 'https://www.paypal.com/cgi-bin/webscr';
+    $paypalFields = null;
 
     if ($ticketStatus['coupon_active'])
     {
@@ -409,7 +436,8 @@ function create_ticket_and_pay() {
             'item_name' => $itemName,
             'invoice' => $invoice,
             'qr_code' => md5(uniqid()),
-            'user_agent' => $userAgent
+            'user_agent' => $userAgent,
+            'paid' => $price === 0 ? 1:0
         ), array(
             '%s',
             '%s',
@@ -422,7 +450,8 @@ function create_ticket_and_pay() {
             '%s',
             '%s',
             '%s',
-            '%s'
+            '%s',
+            '%d'
         ));
 
         $smsMessage .= 'Nom: '.$_POST['firstname_'.$i].' '.$_POST['lastname_'.$i]."\n".
@@ -430,30 +459,38 @@ function create_ticket_and_pay() {
                        'Titre: '.$_POST['title_'.$i]."\n".
                        'Email: '.$_POST['email_'.$i]."\n".
                        'Téléphone: '.$_POST['telephone_'.$i]."\n".
+                       'Prix: '.$price."$\n".
                        ($success == 1 ? 'SUCCESS':'FAILED')."\n".
                        '------------------'."\n";
     }
 
-    $paypalFields = array(
-        'hosted_button_id' => $buttonID,
-        'quantity' => $quantity,
-        'invoice' => $invoice,
-        'item_name' => $ticketName.' - '.$itemName,
-        'notify_url' => home_url().'/?AngellEYE_Paypal_Ipn_For_Wordpress&action=ipn_handler',
-        'return' =>  home_url().'/merci/?invoice='.$invoice,
-        'cancel_return' =>  home_url().'/billeterie/',
-        'rm' =>  2,
-        'undefined_ quantity' =>  1,
-        'cmd' =>  '_s-xclick',
-        'lc' =>  'CA',
-        'charset' => 'utf-8',
-        'no_note' => '1',
-        'cbt' => $quantity <= 1 ? __('See my ticket', 'immersiveproductions') : __('See my tickets', 'immersiveproductions')
-    );
+    if ($buttonID && $price)
+    {
+        $paypalFields = array(
+            'hosted_button_id' => $buttonID,
+            'quantity' => $quantity,
+            'invoice' => $invoice,
+            'item_name' => $ticketName.' - '.$itemName,
+            'notify_url' => home_url().'/?AngellEYE_Paypal_Ipn_For_Wordpress&action=ipn_handler',
+            'return' =>  home_url().'/merci/?invoice='.$invoice,
+            'cancel_return' =>  home_url().'/billeterie/',
+            'rm' =>  2,
+            'undefined_ quantity' =>  1,
+            'cmd' =>  '_s-xclick',
+            'lc' =>  'CA',
+            'charset' => 'utf-8',
+            'no_note' => '1',
+            'cbt' => $quantity <= 1 ? __('See my ticket', 'immersiveproductions') : __('See my tickets', 'immersiveproductions')
+        );
+
+    }
+
 
     echo json_encode(array(
         'paypal_url' => $paypalUrl,
-        'paypal_fields' => $paypalFields
+        'paypal_fields' => $paypalFields,
+        'item_name' => $itemName,
+        'quantity' => $quantity
     ));
 
     $phones = get_phone_addresses();
@@ -569,13 +606,18 @@ function send_newsletter() {
         $from = new \SendGrid\Email(get_option('from_name'), get_option('from_email'));
         $to = new \SendGrid\Email($ticket['first_name'].' '.$ticket['last_name'], $ticket['email']);
         $content = new \SendGrid\Content("text/html", $html);
-
-        $filename = strtolower(preg_replace('/[^a-zA-Z0-9-_\.]/','', $ticket['first_name'].'-'.$ticket['last_name'])).'_'.substr($ticket['qr_code'], 0, 5).'.png';
-        $b64image = base64_encode(file_get_contents(WP_CONTENT_DIR .'/uploads/qrcodes/'.$filename));
+        $qrCodeUrl = 'https://chart.googleapis.com/chart?chs=320x320&cht=qr&chl='.home_url().'/scan/?billet='.$ticket['qr_code'].'&choe=UTF-8';
+        $sanitized = strtolower(preg_replace('/[^a-zA-Z0-9-_\.]/','', $ticket['first_name'].'-'.$ticket['last_name'])).'_'.substr($ticket['qr_code'], 0, 5);
+        $localUrl = WP_CONTENT_DIR .'/uploads/qrcodes/'.$sanitized.'.png';
+        if (!file_exists($localUrl))
+        {
+            copy($qrCodeUrl, $localUrl);
+        }
+        $b64image = base64_encode(file_get_contents($localUrl));
         $attachment = new \SendGrid\Attachment();
         $attachment->setContent($b64image);
         $attachment->setType("image/png");
-        $attachment->setFilename($filename);
+        $attachment->setFilename($sanitized.'.png');
         $attachment->setDisposition("attachment");
         $mail = new \SendGrid\Mail($from, $subject, $to, $content);
         $mail->addAttachment($attachment);
@@ -598,14 +640,22 @@ function send_newsletter() {
         'success' => true,
         'successCount' => $successCount,
         'ticketsCount' => $ticketsCount,
-        'results' => $results
+        'results' => $results,
+        'lastResponse' => $response
     ));
     wp_die();
 }
 
 function send_ticket_by_email($ticket) {
      $subject = __('Your ticket for ACCRO 2016', 'immersiveproductions');
-     $html = \Jcarignan\tickets\TicketReceipt\get_html($subject, $ticket);
+
+
+     // ICI THIERRY -----------------------------------------------------------------------------
+
+     //$html = \Jcarignan\tickets\TicketReceipt\get_html($subject, $ticket);
+     $html = \Jcarignan\tickets\TicketReceipt27sept2016\get_html($subject, $ticket);
+
+     // -----------------------------------------------------------------------------------------
 
      $headers = "MIME-Version: 1.0" . "\r\n";
      $headers .= "Content-type:text/html;charset=UTF-8" . "\r\n";
@@ -615,11 +665,43 @@ function send_ticket_by_email($ticket) {
      {
          $sanitized = strtolower(preg_replace('/[^a-zA-Z0-9-_\.]/','', $ticket['first_name'].'-'.$ticket['last_name'])).'_'.substr($ticket['qr_code'], 0, 5);
          $localUrl = WP_CONTENT_DIR .'/uploads/qrcodes/'.$sanitized.'.png';
-         copy($qrCodeUrl, $localUrl);
+         if (!file_exists($localUrl))
+         {
+             copy($qrCodeUrl, $localUrl);
+         }
          $attachments = array( $localUrl );
      }
 
      wp_mail($ticket['email'], $subject, $html, $headers, $attachments);
+}
+
+function send_newsletter_to_email() {
+    $email = isset($_POST['email']) ? $_POST['email']:'';
+    $ticket = get_ticket_from_email($email);
+    $subject = "Êtes-vous prêts pour ACCRO?";
+    $html = \Jcarignan\tickets\Newsletter27sept2016\get_html($subject, $ticket);
+
+    $headers = "MIME-Version: 1.0" . "\r\n";
+    $headers .= "Content-type:text/html;charset=UTF-8" . "\r\n";
+    $attachments = array();
+    $qrCodeUrl = 'https://chart.googleapis.com/chart?chs=320x320&cht=qr&chl='.home_url().'/scan/?billet='.$ticket['qr_code'].'&choe=UTF-8';
+    if($qrCodeUrl)
+    {
+        $sanitized = strtolower(preg_replace('/[^a-zA-Z0-9-_\.]/','', $ticket['first_name'].'-'.$ticket['last_name'])).'_'.substr($ticket['qr_code'], 0, 5);
+        $localUrl = WP_CONTENT_DIR .'/uploads/qrcodes/'.$sanitized.'.png';
+        if (!file_exists($localUrl))
+        {
+            copy($qrCodeUrl, $localUrl);
+        }
+        $attachments = array( $localUrl );
+    }
+
+    wp_mail($email, $subject, $html, $headers, $attachments);
+
+    echo json_encode(array(
+        'success' => true
+    ));
+    wp_die();
 }
 
 add_action('wp_ajax_create_ticket_and_pay', __NAMESPACE__ .'\\create_ticket_and_pay');
@@ -633,6 +715,9 @@ add_action('wp_ajax_nopriv_scan_ticket', __NAMESPACE__ .'\\scan_ticket');
 
 add_action('wp_ajax_send_newsletter', __NAMESPACE__ .'\\send_newsletter');
 add_action('wp_ajax_nopriv_send_newsletter', __NAMESPACE__ .'\\send_newsletter');
+
+add_action('wp_ajax_send_newsletter_to_email', __NAMESPACE__ .'\\send_newsletter_to_email');
+add_action('wp_ajax_nopriv_send_newsletter_to_email', __NAMESPACE__ .'\\send_newsletter_to_email');
 
 add_action('paypal_ipn_for_wordpress_txn_type_web_accept',  __NAMESPACE__ . '\\on_paypal_payment_completed', 10, 1);
 

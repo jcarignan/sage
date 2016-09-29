@@ -455,6 +455,31 @@ function add_ticket_settings() {
     }
 
     add_settings_field(
+        'ticket_coupon_free_code',
+        'Promo free code',
+        __NAMESPACE__ . '\\textbox_callback',
+        'general',
+        'ticket_settings',
+        array(
+            'ticket_coupon_free_code'
+        )
+    );
+
+    add_settings_field(
+        'ticket_coupon_free_label',
+        'Promo free label',
+        __NAMESPACE__ . '\\textbox_callback',
+        'general',
+        'ticket_settings',
+        array(
+            'ticket_coupon_free_label'
+        )
+    );
+
+    register_setting('general', 'ticket_coupon_free_code', 'esc_attr');
+    register_setting('general', 'ticket_coupon_free_label', 'esc_attr');
+
+    add_settings_field(
         'ticket_sms_addresses',
         'SMS Addresses',
         __NAMESPACE__ . '\\textbox_callback',

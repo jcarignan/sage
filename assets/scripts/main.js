@@ -351,11 +351,23 @@
             console.log('Creating ticket...');
         };
 
-        var onTicketCreated = function(data)
+        var onTicketCreated = function(data, statusText, xhr, $form)
         {
             var $paypalForm = $('.paypal-hidden');
 
+            var paypalUrl = data.paypal_url;
             var paypalFields = data.paypal_fields;
+            var quantity = data.quantity;
+            var itemName = data.item_name;
+
+            if (paypalFields === null)
+            {
+                $form.find('button, input[type!="hidden"]').removeAttr('disabled');
+                $form.find('.ajax-loader').css('visibility', 'hidden');
+                alert(quantity+' '+itemName+' ajouté'+(quantity>1?'s':'')+'!');
+                location.reload();
+                return;
+            }
 
             for (var key in paypalFields)
             {
@@ -366,7 +378,7 @@
                 }));
             }
 
-            $paypalForm.attr('action', data.paypal_url);
+            $paypalForm.attr('action', paypalUrl);
 
             $paypalForm[0].submit();
             console.log('Ticket created! To paypal we go...');
@@ -783,6 +795,41 @@
      'infolettre': {
          init: function()
          {
+             $('.send-single').click(function(e){
+                 var email = $('.single-email').val();
+                 var confirmBox = confirm('Envoyer la newsletter à '+email+' ?');
+                 if (!confirmBox) {
+                     return;
+                 }
+                 $(this).attr('disabled', 'disabled');
+                 $(this).css('cursor', 'default');
+                 $(this).css('opacity', '0.5');
+                 $(this).text('Envoi...');
+                 $button = $(this);
+                 $.ajax({
+                   url: ajaxData.ajaxUrl,
+                   type: 'post',
+                   data: {
+                       action: 'send_newsletter_to_email',
+                       nonce: ajaxData.nonce,
+                       email: email
+                   },
+                   dataType: 'json',
+                   success: function(response)
+                   {
+                       if (response.success)
+                       {
+                           $button.text('Envoyé!');
+                       } else {
+                           $button.text('Marche pô :(');
+                       }
+                   },
+                   error: function()
+                   {
+                       $button.text('Marche pô :(');
+                   }
+                 });
+             });
              $('.send-newsletter').click(function(e){
 
                  var confirmBox = confirm('Envoyer la newsletter à tous les invités ?');
@@ -816,6 +863,7 @@
                        } else {
                            $button.text('Marche pô :(');
                        }
+                       console.log(response);
                    },
                    error: function()
                    {
