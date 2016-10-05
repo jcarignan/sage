@@ -51,7 +51,7 @@
                     $soldTickets++;
                 }
             }
-            if ($ticket['scanned'] > 0)
+            if ($ticket['scanned'] > 0 && $ticket['price'] > 0)
             {
                 $scannedTickets++;
             }

@@ -273,12 +273,16 @@ function scan_ticket_php($qrcode) {
     }
     $currentAuthor = wp_get_current_user()->display_name;
 
-    if (!empty($ticket))
+    $valid = !empty($ticket);
+    $logStr;
+
+    if ($valid)
     {
+        $scanCount = intval($ticket['scanned']) + 1;
         $wpdb->update(
             'wp_tickets',
             array(
-                'scanned' =>intval($ticket['scanned']) + 1,
+                'scanned' => $scanCount,
                 'scanned_date' => current_time('mysql'),
                 'scanned_author' => $currentAuthor
             ),
@@ -292,7 +296,14 @@ function scan_ticket_php($qrcode) {
             ),
             array('%s')
         );
+        $logStr = 'Valid ('.$scanCount.') - '.$ticket['id'].' - '.$ticket['first_name'].' '.$ticket['last_name'].' '.$ticket['entreprise'].' - '.$ticket['title'];
+    } else {
+        $logStr = 'Invalid - '.$qrcode;
     }
+
+    $logStr .= ' - '.current_time('mysql').' (par '.$currentAuthor.')'.PHP_EOL;
+    $logFile = WP_CONTENT_DIR.'/uploads/qrcodes/_scans.log';
+    file_put_contents($logFile, $logStr, FILE_APPEND);
 
     if ($ticket['scanned'] != 0)
     {
